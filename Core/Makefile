@@ -1,5 +1,5 @@
 
-OBJDIR = obj
+BINDIR = bin
 #===========
 
 EXT = platform.o texture-atlas.o texture-font.o vector.o
@@ -7,10 +7,11 @@ GRAPHICS = sprite.o static_sprite.o shader.o window.o batchRenderer2D.o texture.
 LAYERS =  layer.o tilelayer.o group.o
 BUFFERS = buffer.o indexbuffer.o vertexarray.o
 MATHS = mat4.o vec2.o vec3.o vec4.o
+UTILS = filepath.o
 
 #============
 
-OBJS =  main.o $(EXT) $(GRAPHICS) $(BUFFERS) $(MATHS) $(LAYERS)
+OBJS =  main.o $(EXT) $(GRAPHICS) $(BUFFERS) $(MATHS) $(LAYERS) $(UTILS)
 CC = g++
 CFLAGS =-c -Wall -Wno-c++11-extensions -Wno-pragma-once-outside-header
 LFLAGS = -lglfw3 -lglew -lfreeimage -lfreetype -framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo
@@ -20,11 +21,9 @@ all: $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJS)
 	$(CC) $(LFLAGS) $(OBJS) -o $(EXECUTABLE)
-	mv *.o $(OBJDIR)/
 
 app: $(OBJS)
 	$(CC) $(LFLAGS) $(OBJS) -o $(EXECUTABLE).app
-	mv *.o $(OBJDIR)/
 
 #==================================
 
@@ -46,6 +45,8 @@ $(BUFFERS): %.o: src/graphics/buffers/%.cpp
 $(MATHS): %.o: src/maths/%.cpp
 	$(CC) $(CFLAGS) $^
 
+$(UTILS): %.o: src/utils/%.cpp
+	$(CC) $(CFLAGS) $^
+
 clean:
-	rm  obj/*o
-	rm $(EXECUTABLE)
+	rm *o

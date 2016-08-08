@@ -2,6 +2,7 @@
 
 #include <string>
 #include "../../ext/freetype-gl/freetype-gl.h"
+#include "../utils/filepath.hpp"
 
 namespace sparky { namespace graphics {
 

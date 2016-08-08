@@ -10,7 +10,7 @@ namespace sparky { namespace graphics {
 		if (!init())
 			glfwTerminate();
 
-		FontManager::add(new Font("SourceSansPro", "/Users/ivokoller/Documents/Game Development/Game Engine/Core2/SourceCodePro-Light.ttf", 32));
+		FontManager::add(new Font("SourceSansPro", "fonts/SourceSansPro-Light.ttf", 32));
 
 		for (int i = 0; i < MAX_KEYS; i++)
 		{
@@ -64,7 +64,7 @@ namespace sparky { namespace graphics {
 		glfwSetMouseButtonCallback(m_Window, mouse_button_callback);
 		glfwSetCursorPosCallback(m_Window, cursor_position_callback);
 		glfwSwapInterval(0.0);
-		
+
 		if (glewInit() != GLEW_OK)
 		{
 			std::cout << "Could not initialize GLEW!" << std::endl;

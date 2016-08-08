@@ -353,8 +353,8 @@ texture_atlas_upload( texture_atlas_t * self )
     }
 	else if (self->depth == 2)
 	{
-        GLint swizzle[] = { GL_ONE, GL_ONE, GL_ONE, GL_RED }; // Texture is white with alpha controlled by red
-        glTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_RGBA, swizzle);
+        //GLint swizzle[] = { GL_ONE, GL_ONE, GL_ONE, GL_RED }; // Texture is white with alpha controlled by red
+        //glTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_RGBA, swizzle);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, self->width, self->height,
 			0, GL_RED, GL_UNSIGNED_BYTE, self->data);
 	}
