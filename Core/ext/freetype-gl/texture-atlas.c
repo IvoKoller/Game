@@ -52,7 +52,7 @@ texture_atlas_new( const size_t width,
     // sampling texture
     ivec3 node = {{1,1,width-2}};
 
-	assert((depth == 1) || (depth == 2) || (depth == 3) || (depth == 4));
+	assert((depth == 1) || (depth == 3) || (depth == 4));
     if( self == NULL)
     {
         fprintf( stderr,
@@ -333,8 +333,8 @@ texture_atlas_upload( texture_atlas_t * self )
     glBindTexture( GL_TEXTURE_2D, self->id );
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 
     if( self->depth == 4 )
     {
@@ -351,16 +351,11 @@ texture_atlas_upload( texture_atlas_t * self )
         glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, self->width, self->height,
                       0, GL_RGB, GL_UNSIGNED_BYTE, self->data );
     }
-	else if (self->depth == 2)
-	{
-        //GLint swizzle[] = { GL_ONE, GL_ONE, GL_ONE, GL_RED }; // Texture is white with alpha controlled by red
-        //glTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_RGBA, swizzle);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, self->width, self->height,
-			0, GL_RED, GL_UNSIGNED_BYTE, self->data);
-	}
     else
     {
-        glTexImage2D( GL_TEXTURE_2D, 0, GL_RED, self->width, self->height,
+        GLint swizzle[] = { GL_ONE, GL_ONE, GL_ONE, GL_RED }; // Texture is white with alpha controlled by red
+        glTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_RGBA, swizzle);
+        glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, self->width, self->height,
 			0, GL_RED, GL_UNSIGNED_BYTE, self->data);
     }
 }

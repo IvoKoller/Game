@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 	//========DON'T DELETE=========
 
 	Window window("Sparky!", 960, 540);
-	//glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
+	glClearColor(0.0f, 1.0f, 1.0f, 0.8f);
 
 	//mat4 ortho = mat4::orthographic(0.0f, 16.0f, 0.0f, 9.0f, -1.0f, 1.0f);
 
@@ -55,6 +55,7 @@ int main(int argc, char *argv[])
 		new Texture("textures/tc.png")
 	};
 
+	
 	for (float y = -9.0f; y < 9.0f; y++)
 	{
 		for (float x = -16.0f; x < 16.0f; x++)
@@ -70,8 +71,9 @@ int main(int argc, char *argv[])
 		}
 	}
 
+
 	Group* g = new Group(maths::mat4::translation(maths::vec3(-15.8f, 7.0f, 0.0f)));
-	Label* fps = new Label("", 0.4f, 0.4f, "SourceSansPro", 50, 0xffffffff);
+	Label* fps = new Label("TEXT", 0.4f, 0.4f, "SourceSansPro", 0xffffffff, 50);
 	g->add(new Sprite(0, 0, 5, 1.5f, 0x505050DD));
 	g->add(fps);
 
@@ -97,14 +99,14 @@ int main(int argc, char *argv[])
 		window.getMousePosition(x, y);
 		shader.setUniform2f("light_pos", vec2((float)(x * 32.0f / window.getWidth() - 16.0f), (float)(9.0f - y * 18.0f / window.getHeight())));
 
+		layer.render();
+
 		const std::vector<Renderable2D*>& rs = layer.getRenderables();
 		for (int i = 0; i < rs.size(); i++)
 		{
 			float c = sin(t) / 2 + 0.5f;
 			rs[i]->setColor(maths::vec4(c, 0, 1, 1));
 		}
-
-		layer.render();
 
 		window.update();
 
@@ -116,6 +118,7 @@ int main(int argc, char *argv[])
 			printf("%d fps\n", frames);
 			frames = 0;
 		}
+
 	}
 	for (int i = 0; i < 3; i++)
 		delete textures[i];

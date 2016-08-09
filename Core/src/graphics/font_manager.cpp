@@ -9,7 +9,7 @@ namespace sparky { namespace graphics {
 		m_Fonts.push_back(font);
 	}
 
-	Font* FontManager::get(const std::string& name)
+	Font* FontManager::get(const std::string& name) //delete this part
 	{
 		for (Font* font : m_Fonts)
 		{
@@ -20,7 +20,7 @@ namespace sparky { namespace graphics {
 		return nullptr;
 	}
 
-	Font* FontManager::get(const std::string& name, unsigned int size)
+	Font* FontManager::get(const std::string& name, unsigned int size ) //unsigned int size = 32
 	{
 		for (Font* font : m_Fonts)
 		{

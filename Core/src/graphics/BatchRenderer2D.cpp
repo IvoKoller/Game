@@ -152,7 +152,7 @@ namespace sparky { namespace graphics {
 			ts = (float)(m_TextureSlots.size());
 		}
 
-		float scaleX = 960.0f / 32.0f;
+		float scaleX = 960.0f / 32.0f; //TODO: dynamic size
 		float scaleY = 540.0f / 18.0f;
 
 		float x = position.x;
