@@ -1,6 +1,6 @@
 #include "BatchRenderer2D.hpp"
 
-namespace sparky { namespace graphics {
+namespace evo { namespace graphics {
 
 	BatchRenderer2D::BatchRenderer2D()
 	{

@@ -1,6 +1,6 @@
 #include "shader.hpp"
 
-namespace sparky { namespace graphics {
+namespace evo { namespace graphics {
 
 	Shader::Shader(const char* vertPath, const char* fragPath)
 		: m_VertPath(vertPath), m_FragPath(fragPath)

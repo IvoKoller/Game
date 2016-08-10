@@ -5,7 +5,7 @@
 #include <GL/glew.h>
 #include "../utils/ImageLoad.hpp"
 
-namespace sparky { namespace graphics{
+namespace evo { namespace graphics{
 
 	class Texture
 	{

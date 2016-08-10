@@ -5,7 +5,7 @@
 #include <string>
 #include "filepath.hpp"
 
-namespace sparky {
+namespace evo {
 
 	static std::string read_file(const std::string relativeFilepath){
 		std::string filepath = filepath::makeAbsolute(relativeFilepath);

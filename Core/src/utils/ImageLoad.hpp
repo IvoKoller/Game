@@ -4,7 +4,7 @@
 #include <FreeImage.h>
 #include "filepath.hpp"
 
-namespace sparky {
+namespace evo {
 
 	static BYTE* load_image(const std::string relativeFilepath, GLsizei* width, GLsizei* height)
 	{

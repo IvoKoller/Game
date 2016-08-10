@@ -1,6 +1,6 @@
 #include "filepath.hpp"
 
-namespace sparky {
+namespace evo {
 
     filepath::filepath(const std::string& path) {
         m_PathToExec = path.substr(0,path.find_last_of("/\\")+1);

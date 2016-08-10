@@ -1,6 +1,6 @@
 #include "texture.hpp"
 
-namespace sparky { namespace graphics {
+namespace evo { namespace graphics {
 
 	Texture::Texture(const std::string& filename)
 		: m_FileName(filename)

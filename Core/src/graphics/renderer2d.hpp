@@ -6,7 +6,7 @@
 #include "../maths/maths.hpp"
 
 
-namespace sparky { namespace graphics {
+namespace evo { namespace graphics {
 
 	class Renderable2D;
 

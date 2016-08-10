@@ -1,6 +1,6 @@
 #include "label.hpp"
 
-namespace sparky { namespace graphics {
+namespace evo { namespace graphics {
 
 	Label::Label(std::string text, float x, float y, Font* font, unsigned int color)
 		: Renderable2D(), text(text), position(m_Position), m_Font(font)

@@ -1,8 +1,15 @@
 
 BINDIR = bin
 #===========
+FTGL = platform.o texture-atlas.o texture-font.o vector.o
+GA_1 =  ga_stream.o ga.o gau.o
+GA_2 = ga_openal.o
+GA_3 = gc_common.o gc_thread.o
+GA = $(GA_1) $(GA_2) $(GA_3)
 
-EXT = platform.o texture-atlas.o texture-font.o vector.o
+EXT = $(FTGL) $(GA)
+
+AUDIO = sound.o sound_manager.o
 GRAPHICS = sprite.o static_sprite.o shader.o window.o batchRenderer2D.o texture.o label.o font_manager.o font.o
 LAYERS =  layer.o tilelayer.o group.o
 BUFFERS = buffer.o indexbuffer.o vertexarray.o
@@ -11,10 +18,10 @@ UTILS = filepath.o
 
 #============
 
-OBJS =  main.o $(EXT) $(GRAPHICS) $(BUFFERS) $(MATHS) $(LAYERS) $(UTILS)
+OBJS =  main.o $(EXT) $(GRAPHICS) $(BUFFERS) $(MATHS) $(LAYERS) $(UTILS) $(AUDIO)
 CC = g++
 CFLAGS =-c -Wall -Wno-c++11-extensions -Wno-pragma-once-outside-header
-LFLAGS = -lglfw3 -lglew -lfreeimage -lfreetype -framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo
+LFLAGS = -lglfw3 -lglew -lfreeimage -lfreetype -logg -lvorbis -lvorbisfile -framework OpenAL -framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo
 EXECUTABLE = game
 
 all: $(EXECUTABLE)
@@ -26,12 +33,29 @@ app: $(OBJS)
 	$(CC) $(LFLAGS) $(OBJS) -o $(EXECUTABLE).app
 
 #==================================
+#==========EXT Libraries===========
+#==================================
+$(FTGL): %.o: ext/freetype-gl/%.c
+	gcc -c -I/usr/local/include/freetype2/ $^
+
+$(GA_1): %.o: ext/gorilla-audio/%.c
+	gcc -c $^
+
+$(GA_2): %.o: ext/gorilla-audio/devices/%.c
+	gcc -c $^
+
+$(GA_3): %.o: ext/gorilla-audio/common/%.c
+	gcc -c $^
+#==================================
+#==================================
+#==================================
 
 main.o: main.cpp
 	$(CC) $(CFLAGS) $^
 
-$(EXT): %.o: ext/freetype-gl/%.c
-	gcc -c -I/usr/local/include/freetype2/ -L/usr/local/include/freetype2/ $^
+$(AUDIO): %.o: src/audio/%.cpp
+	$(CC) $(CFLAGS) $^
+
 
 $(GRAPHICS): %.o: src/graphics/%.cpp
 	$(CC) $(CFLAGS) $^

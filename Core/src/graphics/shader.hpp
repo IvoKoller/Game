@@ -7,7 +7,7 @@
 #include "../maths/maths.hpp"
 #include "../utils/fileutils.hpp"
 
-namespace sparky { namespace graphics {
+namespace evo { namespace graphics {
 
 	class Shader
 	{

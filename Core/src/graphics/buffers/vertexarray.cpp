@@ -1,6 +1,6 @@
 #include "vertexarray.hpp"
 
-namespace sparky { namespace graphics {
+namespace evo { namespace graphics {
 
 	VertexArray::VertexArray()
 	{

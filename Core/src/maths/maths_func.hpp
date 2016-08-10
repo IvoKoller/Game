@@ -3,7 +3,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-namespace sparky { namespace maths {
+namespace evo { namespace maths {
 
 	inline float toRadians(float degrees)
 	{

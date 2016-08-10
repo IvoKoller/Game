@@ -1,6 +1,6 @@
 #include "mat4.hpp"
 
-namespace sparky { namespace maths {
+namespace evo { namespace maths {
 
 	mat4::mat4()
 	{

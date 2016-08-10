@@ -10,7 +10,7 @@
 #include "../maths/maths.hpp"
 #include "shader.hpp"
 
-namespace sparky { namespace graphics {
+namespace evo { namespace graphics {
 
 	struct VertexData
 	{

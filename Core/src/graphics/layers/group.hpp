@@ -2,7 +2,7 @@
 
 #include "../renderable2d.hpp"
 
-namespace sparky { namespace graphics {
+namespace evo { namespace graphics {
 
 	class Group : public Renderable2D
 	{

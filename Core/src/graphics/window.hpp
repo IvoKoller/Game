@@ -6,7 +6,9 @@
 
 #include "font_manager.hpp"
 
-namespace sparky { namespace graphics {
+#include "../audio/sound_manager.hpp"
+
+namespace evo { namespace graphics {
 
 #define MAX_KEYS	1024
 #define MAX_BUTTONS	32

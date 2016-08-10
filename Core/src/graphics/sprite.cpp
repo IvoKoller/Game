@@ -1,6 +1,6 @@
 #include "sprite.hpp"
 
-namespace sparky { namespace graphics {
+namespace evo { namespace graphics {
 
 	Sprite::Sprite(float x, float y, float width, float height, unsigned int color)
 		: Renderable2D(maths::vec3(x, y, 0), maths::vec2(width, height), color)

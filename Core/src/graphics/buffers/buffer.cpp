@@ -1,6 +1,6 @@
 #include "buffer.hpp"
 
-namespace sparky { namespace graphics {
+namespace evo { namespace graphics {
 
 	Buffer::Buffer(GLfloat* data, GLsizei count, GLuint componentCount)
 		: m_ComponentCount(componentCount)

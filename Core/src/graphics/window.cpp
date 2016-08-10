@@ -1,6 +1,6 @@
 #include "window.hpp"
 
-namespace sparky { namespace graphics {
+namespace evo { namespace graphics {
 
 	Window::Window(const char *title, int width, int height)
 	{
@@ -11,7 +11,7 @@ namespace sparky { namespace graphics {
 			glfwTerminate();
 
 		FontManager::add(new Font("SourceSansPro", "fonts/SourceSansPro-Light.ttf", 32));
-
+		audio::SoundManager::init();
 		for (int i = 0; i < MAX_KEYS; i++)
 		{
 			m_Keys[i] = false;
@@ -29,6 +29,8 @@ namespace sparky { namespace graphics {
 
 	Window::~Window()
 	{
+		FontManager::clean();
+		audio::SoundManager::clean();
 		glfwTerminate();
 	}
 
@@ -143,6 +145,8 @@ namespace sparky { namespace graphics {
 
 		glfwPollEvents();
 		glfwSwapBuffers(m_Window);
+
+		audio::SoundManager::update();
 	}
 
 	bool Window::closed() const

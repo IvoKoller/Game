@@ -3,7 +3,7 @@
 #include "layer.hpp"
 #include "../BatchRenderer2D.hpp"
 
-namespace sparky { namespace graphics {
+namespace evo { namespace graphics {
 
 	class TileLayer : public Layer
 	{

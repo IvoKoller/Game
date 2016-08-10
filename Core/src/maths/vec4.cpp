@@ -1,6 +1,6 @@
 #include "vec4.hpp"
 
-namespace sparky { namespace maths {
+namespace evo { namespace maths {
 
 	vec4::vec4(const float& x, const float& y, const float& z, const float& w)
 	{

@@ -1,6 +1,6 @@
 #include "font_manager.hpp"
 
-namespace sparky { namespace graphics {
+namespace evo { namespace graphics {
 
 	std::vector<Font*> FontManager::m_Fonts;
 

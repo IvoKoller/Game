@@ -7,7 +7,8 @@ This is the repo for my upcoming "Maturaproject" game. Enjoy!
 
 - [x] Add support for cross-platform relative directory
 - [x] Make fonts work
-- [ ] Add support for PortAudio
+- [x] Add support for Gorilla audio
+- [ ] Fix audio issues
 - [ ] Add event system
 - [ ] Add 2D Physics
 - [ ] Add logging system

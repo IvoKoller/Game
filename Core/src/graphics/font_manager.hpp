@@ -3,7 +3,7 @@
 #include <vector>
 #include "font.hpp"
 
-namespace sparky { namespace graphics {
+namespace evo { namespace graphics {
 
 	class FontManager
 	{

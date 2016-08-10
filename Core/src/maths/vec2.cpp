@@ -1,6 +1,6 @@
 #include "vec2.hpp"
 
-namespace sparky { namespace maths {
+namespace evo { namespace maths {
 
 	vec2::vec2()
 	{

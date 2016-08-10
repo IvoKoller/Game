@@ -25,10 +25,16 @@
 
 #include "src/graphics/font_manager.hpp"
 
+#include "ext/gorilla-audio/ga.h"
+#include "ext/gorilla-audio/gau.h"
+
+#include "src/audio/sound_manager.hpp"
+
 int main(int argc, char *argv[])
 {
-	using namespace sparky;
+	using namespace evo;
 	using namespace graphics;
+	using namespace audio;
 	using namespace maths;
 
 	//=======SETS FILEPATH========
@@ -36,8 +42,8 @@ int main(int argc, char *argv[])
 	filepath pathToExec(path);
 	//========DON'T DELETE=========
 
-	Window window("Sparky!", 960, 540);
-	glClearColor(0.0f, 1.0f, 1.0f, 0.8f);
+	Window window("evo!", 960, 540);
+	//glClearColor(0.0f, 1.0f, 1.0f, 0.8f);
 
 	//mat4 ortho = mat4::orthographic(0.0f, 16.0f, 0.0f, 9.0f, -1.0f, 1.0f);
 
@@ -55,7 +61,7 @@ int main(int argc, char *argv[])
 		new Texture("textures/tc.png")
 	};
 
-	
+
 	for (float y = -9.0f; y < 9.0f; y++)
 	{
 		for (float x = -16.0f; x < 16.0f; x++)
@@ -88,10 +94,16 @@ int main(int argc, char *argv[])
 	shader.setUniform1iv("textures", texIDs, 10);
 	shader.setUniformMat4("pr_matrix", maths::mat4::orthographic(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
 
+	SoundManager::add(new Sound("Zelda", "sounds/zelda.ogg"));
+
 	Timer time;
 	float timer = 0;
 	unsigned int frames = 0;
 	float t = 0.0f;
+
+	float gain = 0.5f;
+	SoundManager::get("Zelda")->setGain(gain);
+
 	while (!window.closed())
 	{
 		window.clear();
@@ -108,6 +120,33 @@ int main(int argc, char *argv[])
 			rs[i]->setColor(maths::vec4(c, 0, 1, 1));
 		}
 
+		if (window.isKeyTyped(GLFW_KEY_P))
+			SoundManager::get("Zelda")->play();
+
+		if (window.isKeyTyped(GLFW_KEY_L))
+			SoundManager::get("Zelda")->loop();
+
+		if (window.isKeyTyped(GLFW_KEY_S))
+			SoundManager::get("Zelda")->stop();
+
+		if (window.isKeyTyped(GLFW_KEY_1))
+			SoundManager::get("Zelda")->pause();
+
+		if (window.isKeyTyped(GLFW_KEY_2))
+			SoundManager::get("Zelda")->resume();
+
+		if (window.isKeyTyped(GLFW_KEY_UP))
+		{
+			gain += 0.05f;
+			SoundManager::get("Zelda")->setGain(gain);
+		}
+
+		if (window.isKeyTyped(GLFW_KEY_DOWN))
+		{
+			gain -= 0.05f;
+			SoundManager::get("Zelda")->setGain(gain);
+		}
+
 		window.update();
 
 		frames++;
@@ -120,7 +159,8 @@ int main(int argc, char *argv[])
 		}
 
 	}
-	for (int i = 0; i < 3; i++)
+
+	for (int i = 0; i < 3; i++) //TODO: textures::clean
 		delete textures[i];
 
 	FontManager::clean();

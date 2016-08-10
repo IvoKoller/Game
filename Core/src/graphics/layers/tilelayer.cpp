@@ -1,6 +1,6 @@
 #include "tilelayer.hpp"
 
-namespace sparky {
+namespace evo {
 	namespace graphics {
 
 		TileLayer::TileLayer(Shader* shader)

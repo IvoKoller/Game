@@ -1,6 +1,6 @@
 #include "font.hpp"
 
-namespace sparky { namespace graphics {
+namespace evo { namespace graphics {
 
 	Font::Font(std::string name, std::string relativeFilepath, int size)
 		: m_Name(name), m_Size(size)

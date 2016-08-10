@@ -4,7 +4,7 @@
 #include "vec4.hpp"
 #include "maths_func.hpp"
 
-namespace sparky { namespace maths {
+namespace evo { namespace maths {
 
 	struct mat4
 	{

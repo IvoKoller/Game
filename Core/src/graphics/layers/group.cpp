@@ -1,6 +1,6 @@
 #include "group.hpp"
 
-namespace sparky { namespace graphics {
+namespace evo { namespace graphics {
 
 	Group::Group(const maths::mat4& transform)
 		: m_TransformationMatrix(transform)

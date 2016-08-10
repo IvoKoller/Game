@@ -2,7 +2,7 @@
 
 #include "renderable2d.hpp"
 
-namespace sparky { namespace graphics {
+namespace evo { namespace graphics {
 
 	class StaticSprite : public Renderable2D
 	{

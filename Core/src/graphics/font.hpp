@@ -4,7 +4,7 @@
 #include "../../ext/freetype-gl/freetype-gl.h"
 #include "../utils/filepath.hpp"
 
-namespace sparky { namespace graphics {
+namespace evo { namespace graphics {
 
 	class Font
 	{

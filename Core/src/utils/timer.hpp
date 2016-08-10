@@ -2,7 +2,7 @@
 
 #include <chrono>
 
-namespace sparky {
+namespace evo {
 	class Timer
 	{
 	private:

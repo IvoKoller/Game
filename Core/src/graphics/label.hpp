@@ -3,7 +3,7 @@
 #include "renderable2d.hpp"
 #include "font_manager.hpp"
 
-namespace sparky { namespace graphics {
+namespace evo { namespace graphics {
 
 	class Label : public Renderable2D
 	{
