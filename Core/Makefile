@@ -73,4 +73,7 @@ $(UTILS): %.o: src/utils/%.cpp
 	$(CC) $(CFLAGS) $^
 
 clean:
-	rm *o
+	rm main.o $(GRAPHICS) $(BUFFERS) $(LAYERS) $(UTILS) $(AUDIO)
+
+allclean:
+	rm *o $(EXECUTABLE)

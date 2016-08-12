@@ -32,6 +32,9 @@ namespace evo { namespace audio {
 
 	void Sound::play()
 	{
+        if(m_Playing)
+            return;
+
 		gc_int32 quit = 0;
 		m_Handle = gau_create_handle_sound(SoundManager::m_Mixer, m_Sound, &destroy_on_finish, &quit, NULL);
 		m_Handle->sound = this;
@@ -39,7 +42,7 @@ namespace evo { namespace audio {
 		m_Playing = true;
 	}
 
-	void Sound::loop()
+	void Sound::loop() //TODO: fix this
 	{
 		gc_int32 quit = 0;
 		m_Handle = gau_create_handle_sound(SoundManager::m_Mixer, m_Sound, &loop_on_finish, &quit, NULL);

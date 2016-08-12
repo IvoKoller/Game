@@ -12,3 +12,4 @@ This is the repo for my upcoming "Maturaproject" game. Enjoy!
 - [ ] Add event system
 - [ ] Add 2D Physics
 - [ ] Add logging system
+- [ ] CMake instead of Makefile

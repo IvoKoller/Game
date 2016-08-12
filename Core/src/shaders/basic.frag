@@ -24,16 +24,16 @@ void main()
 		int tid = int(fs_in.tid - 0.5);
 
 		//texColor = fs_in.color * texture(textures[tid], fs_in.uv);
-		if(tid == 0) texColor = fs_in.color * texture(textures[0], fs_in.uv);
-		if(tid == 1) texColor = fs_in.color * texture(textures[1], fs_in.uv);
-		if(tid == 2) texColor = fs_in.color * texture(textures[2], fs_in.uv);
-		if(tid == 3) texColor = fs_in.color * texture(textures[3], fs_in.uv);
-		if(tid == 4) texColor = fs_in.color * texture(textures[4], fs_in.uv);
-		if(tid == 5) texColor = fs_in.color * texture(textures[5], fs_in.uv);
-		if(tid == 6) texColor = fs_in.color * texture(textures[6], fs_in.uv);
-		if(tid == 7) texColor = fs_in.color * texture(textures[7], fs_in.uv);
-		if(tid == 8) texColor = fs_in.color * texture(textures[8], fs_in.uv);
-		if(tid == 9) texColor = fs_in.color * texture(textures[9], fs_in.uv);
+		if(tid == 0) texColor = texture(textures[0], fs_in.uv); //fs_in.color *
+		if(tid == 1) texColor = texture(textures[1], fs_in.uv); //fs_in.color *
+		if(tid == 2) texColor = texture(textures[2], fs_in.uv); //fs_in.color *
+		if(tid == 3) texColor = texture(textures[3], fs_in.uv); //fs_in.color *
+		if(tid == 4) texColor = texture(textures[4], fs_in.uv); //fs_in.color *
+		if(tid == 5) texColor = texture(textures[5], fs_in.uv); //fs_in.color *
+		if(tid == 6) texColor = texture(textures[6], fs_in.uv); //fs_in.color *
+		if(tid == 7) texColor = texture(textures[7], fs_in.uv); //fs_in.color *
+		if(tid == 8) texColor = texture(textures[8], fs_in.uv); //fs_in.color *
+		if(tid == 9) texColor = texture(textures[9], fs_in.uv); //fs_in.color *
 	}
 	color = texColor;// * intensity;
 }

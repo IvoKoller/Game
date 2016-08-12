@@ -30,7 +30,7 @@ namespace audio {
 		return nullptr;
 	}
 
-	void SoundManager::clean()
+	void SoundManager::clean() //TODO: makes problems
 	{
 		for (int i = 0; i < m_Sounds.size(); i++)
 			delete m_Sounds[i];
