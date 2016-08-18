@@ -28,6 +28,7 @@ namespace evo { namespace graphics {
 		unsigned int m_Color;
 		std::vector<maths::vec2> m_UV;
 		Texture* m_Texture;
+
 	protected:
 		Renderable2D() : m_Texture(nullptr) { setUVDefaults(); }
 	public:
@@ -62,11 +63,10 @@ namespace evo { namespace graphics {
 		inline const maths::vec2& getSize() const { return m_Size; }
 		inline const unsigned int getColor() const { return m_Color; }
 		inline const std::vector<maths::vec2>& getUV() const { return m_UV; }
-
 		inline const GLuint getTID() const { return m_Texture ? m_Texture->getID() : 0; }
+
 	private:
-		void setUVDefaults()
-		{
+		void setUVDefaults() {
 			m_UV.push_back(maths::vec2(0, 0));
 			m_UV.push_back(maths::vec2(0, 1));
 			m_UV.push_back(maths::vec2(1, 1));

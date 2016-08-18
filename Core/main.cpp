@@ -17,11 +17,14 @@
 #include "src/graphics/static_sprite.hpp"
 #include "src/graphics/sprite.hpp"
 
-#include "src/graphics/layers/tilelayer.hpp"
+#include "src/graphics/layers/staticlayer.hpp"
+#include "src/graphics/layers/defaultlayer.hpp"
 
 #include "src/graphics/layers/group.hpp"
 #include "src/graphics/texture.hpp"
 #include "src/graphics/label.hpp"
+
+#include "src/graphics/camera.hpp"
 
 #include "src/graphics/font_manager.hpp"
 
@@ -43,50 +46,47 @@ int main(int argc, char *argv[])
 	//========DON'T DELETE=========
 
 	Window window("evo!", 960, 540);
-	//glClearColor(0.0f, 1.0f, 1.0f, 0.8f);
 
-	//mat4 ortho = mat4::orthographic(0.0f, 16.0f, 0.0f, 9.0f, -1.0f, 1.0f);
-
-	Shader* s = new Shader("src/shaders/basic.vert", "src/shaders/basic.frag");
-	Shader& shader = *s;
+	Shader shader("src/shaders/basic.vert", "src/shaders/basic.frag");
 	shader.enable();
 
-	TileLayer layer(&shader);
+	Camera camera;
+
+	StaticLayer staticlayer(&shader);
+	DefaultLayer defaultlayer(&shader, camera);
 
 	Texture* textures[] = {
-		new Texture("textures/pokemon.png")
+		new Texture("assets/textures/pokemon.png"),
+		new Texture("assets/textures/background.png")
 	};
 
+	Sprite* background = new Sprite(0, 0, 75, 75, textures[1]);
+	defaultlayer.add(background);
 
-	// for (float y = -9.0f; y < 9.0f; y++)
-	// {
-	// 	for (float x = -16.0f; x < 16.0f; x++)
-	// 	{
-	// 	//	layer.add(new Sprite(x, y, 0.9f, 0.9f, maths::vec4(rand() % 1000 / 1000.0f, 0, 1, 1)));
-	// 		int r = rand() % 256;
-	//
-	// 		int col = 0xffff00 << 8 | r;
-	// 		if (rand() % 4 == 0)
-	// 			layer.add(new Sprite(x, y, 0.9f, 0.9f, col));
-	// 		else
-	// 			layer.add(new Sprite(x, y, 0.9f, 0.9f, textures[rand() % 3]));
-	// 	}
-	// }
+	Sprite* character = new Sprite(0, 0, 5, 5, textures[0], 3, 4);
+	staticlayer.add(character);
 
+	float cameraX = 0;
+	float cameraY = 0;
 
-	float characterX = 0;
-	float characterY = 0;
-	Sprite* character = new Sprite(characterX, characterY, 5, 5, textures[0], 2.0f, 2.0f, 1.0f);
-	//Sprite* character = new Sprite(characterX, characterY, 9, 9, 0xffffffff);
-	layer.add(character);
+	character->addTile("right", 1);
+	character->addTile("up", 4);
+	character->addTile("left", 7);
+	character->addTile("down", 10);
 
+	character->addAnimation("walkDown", 9, 11, 10);
+	character->addAnimation("walkLeft", 6, 8, 7);
+	character->addAnimation("walkUp", 3, 5, 4);
+	character->addAnimation("walkRight", 0, 2, 1);
+
+	character->setTile("down");
 
 	Group* g = new Group(maths::mat4::translation(maths::vec3(-15.8f, 7.0f, 0.0f)));
+
 	Label* fps = new Label("", 0.4f, 0.4f, "SourceSansPro", 0xffffffff, 50);
 	g->add(new Sprite(0, 0, 5, 1.5f, 0x505050DD));
 	g->add(fps);
-
-	layer.add(g);
+	staticlayer.add(g);
 
 	GLint texIDs[] =
 	{
@@ -96,54 +96,40 @@ int main(int argc, char *argv[])
 	shader.enable();
 	shader.setUniform1iv("textures", texIDs, 10);
 
-	shader.setUniformMat4("pr_matrix", maths::mat4::orthographic(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
-
-	SoundManager::add(new Sound("Zelda", "sounds/zelda.ogg"));
-	//SoundManager::get("Zelda")->play();
+	SoundManager::add(new Sound("Pokemon", "assets/sounds/pallet-town.ogg"));
+	//SoundManager::get("Pokemon")->loop();
 
 	Timer time;
 	float timer = 0;
 	unsigned int frames = 0;
-	float t = 0.0f;
 
 	while (!window.closed())
 	{
 		window.clear();
-		double x, y;
-		window.getMousePosition(x, y);
-		shader.setUniform2f("light_pos", vec2((float)(x * 32.0f / window.getWidth() - 16.0f), (float)(9.0f - y * 18.0f / window.getHeight())));
-
-		layer.render();
-
-		const std::vector<Renderable2D*>& rs = layer.getRenderables();
-		for (int i = 0; i < rs.size(); i++)
-		{
-			float c = sin(t) / 2 + 0.5f;
-			rs[i]->setColor(maths::vec4(c, 0, 1, 1));
-		}
 
 		if (window.isKeyPressed(GLFW_KEY_LEFT)){
-			character->UVindex(1);
-			characterX -= 0.05f;
+			character->pingpong("walkLeft");
+			cameraX -= 0.05f;
+		}else if (window.isKeyPressed(GLFW_KEY_UP)){
+			character->pingpong("walkUp");
+			cameraY += 0.05f;
+		}else if (window.isKeyPressed(GLFW_KEY_RIGHT)){
+			character->pingpong("walkRight");
+			cameraX += 0.05f;
+		}else if (window.isKeyPressed(GLFW_KEY_DOWN)){
+			character->pingpong("walkDown");
+			cameraY -= 0.05f;
+		}else{
+			character->stop();
 		}
 
-		if (window.isKeyPressed(GLFW_KEY_UP)){
-			character->UVindex(0);
-			characterY += 0.05f;
-		}
-		if (window.isKeyPressed(GLFW_KEY_RIGHT)){
-			character->UVindex(3);
-			characterX += 0.05f;
-		}
+		camera.setPosition(maths::vec3(-cameraX, -cameraY, 0));
 
-		if (window.isKeyPressed(GLFW_KEY_DOWN)){
-			character->UVindex(2);
-			characterY -= 0.05f;
-		}
-
-		character->setPosition(maths::vec3(characterX,characterY,0));
-
+		Sprite::update();
+		defaultlayer.render();
+		staticlayer.render();
 		window.update();
+
 
 		frames++;
 		if (time.elapsed() - timer > 1.0f)

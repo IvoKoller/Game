@@ -10,11 +10,11 @@ GA = $(GA_1) $(GA_2) $(GA_3)
 EXT = $(FTGL) $(GA)
 
 AUDIO = sound.o sound_manager.o
-GRAPHICS = sprite.o static_sprite.o shader.o window.o batchRenderer2D.o texture.o label.o font_manager.o font.o
-LAYERS =  layer.o tilelayer.o group.o
+GRAPHICS = sprite.o static_sprite.o shader.o window.o batchRenderer2D.o texture.o label.o font_manager.o font.o camera.o
+LAYERS =  layer.o defaultlayer.o staticlayer.o group.o
 BUFFERS = buffer.o indexbuffer.o vertexarray.o
 MATHS = mat4.o vec2.o vec3.o vec4.o
-UTILS = filepath.o
+UTILS = filepath.o errorlog.o
 
 #============
 

@@ -1,42 +1,159 @@
 #include "sprite.hpp"
 
-namespace evo { namespace graphics {
+namespace evo {
+namespace graphics {
+
+	//define statics
+	std::vector<Sprite*> Sprite::m_ActiveAnimations;
+	std::vector<Animation*>Sprite:: m_Animations;
+	std::vector<Tile*> Sprite::m_Tiles;
+	int Sprite::m_IDCount;
 
 	Sprite::Sprite(float x, float y, float width, float height, unsigned int color)
-		: Renderable2D(maths::vec3(x, y, 0), maths::vec2(width, height), color)
-	{
-
+		: Renderable2D(maths::vec3(x, y, 0), maths::vec2(width, height), color) {
+		m_ID = m_IDCount++;
 	}
 
 	Sprite::Sprite(float x, float y, float width, float height, Texture* texture)
-		: Renderable2D(maths::vec3(x, y, 0), maths::vec2(width, height), 0xffffffff)
-	{
+		: Renderable2D(maths::vec3(x, y, 0), maths::vec2(width, height), 0xffffffff) {
 		m_Texture = texture;
+		m_ID = m_IDCount++;
 	}
-
-	Sprite::Sprite(float x, float y, float width, float height, Texture* texture, float columns, float rows, float index)
-		: Renderable2D(maths::vec3(x, y, 0), maths::vec2(width, height), 0xffffffff)
-	{
+	Sprite::Sprite(float x, float y, float width, float height, Texture* texture, int rows, int columns)
+		: Renderable2D(maths::vec3(x, y, 0), maths::vec2(width, height), 0xffffffff) {
 		m_Texture = texture;
-		m_Columns = columns;
+		m_ID = m_IDCount++;
 		m_Rows = rows;
-		m_Index = index;
-		setUV();
+		m_Columns = columns;
 	}
 
-	void Sprite::UVindex(float index){
-		m_Index = index;
-		setUV();
+	Sprite::~Sprite() {
+		//TODO: delete vectors
 	}
 
-	void Sprite::setUV(){
+	void Sprite::addAnimation(const std::string& name, int start, int end, int fallback) {
+		m_Animations.push_back(new Animation(name, start, end, fallback));
+	}
+
+	void Sprite::addTile(const std::string& name, int index, int height, int width){
+		m_Tiles.push_back(new Tile(name, index));
+	}
+
+	void Sprite::play(const std::string& name){
+		Animation* animation = getAnimation(name);
+		if(animation == m_ActiveAnimation) return;
+		if (animation != nullptr){
+			m_RepeatType = RepeatType::none;
+			m_ActiveAnimation = animation;
+			m_ActiveAnimations.push_back(this);
+			m_Timer.reset();
+			return;
+		}
+		std::cout << "Animation not found!" << std::endl;
+	}
+
+	void Sprite::loop(const std::string& name){
+		Animation* animation = getAnimation(name);
+		if(animation == m_ActiveAnimation) return;
+		if (animation != nullptr){
+			m_RepeatType = RepeatType::loop;
+			m_ActiveAnimation = animation;
+			m_ActiveAnimations.push_back(this);
+			m_Timer.reset();
+			return;
+		}
+		std::cout << "Animation not found!" << std::endl;
+	}
+
+	void Sprite::pingpong(const std::string &name){
+		Animation* animation = getAnimation(name);
+		if(animation == m_ActiveAnimation) return;
+		if (animation != nullptr){
+			m_RepeatType = RepeatType::pingpong;
+			m_ActiveAnimation = animation;
+			m_ActiveAnimations.push_back(this);
+			m_Timer.reset();
+			return;
+		}
+		std::cout << "Animation not found!" << std::endl;
+	}
+
+	void Sprite::stop(bool setToFallback){
+		if(m_ActiveAnimation != nullptr && m_ActiveAnimation->fallback >= 0 && setToFallback == true)
+			setUV(m_ActiveAnimation->fallback);
+
+		m_RepeatType = RepeatType::none;
+		m_ActiveAnimation = nullptr;
+		m_Ping = true;
+		deleteActive(this);
+	}
+
+	void Sprite::setTile(const std::string name){
+		stop(false);
+		Tile* tile = getTile(name);
+		setUV(tile->index);
+	}
+
+	void Sprite::update(){
+		for (Sprite* sprite : m_ActiveAnimations) {
+			Animation* animation = sprite->m_ActiveAnimation;
+			if(sprite->m_Timer.elapsed() > 0.15f){ //0.091 = 30fps
+				sprite->m_Timer.reset();
+				sprite->setUV(animation->current);
+				if(sprite->m_RepeatType == RepeatType::pingpong){
+					if (animation->current == animation->end)
+						sprite->m_Ping = false;
+
+					if (animation->current == animation->start)
+						sprite->m_Ping = true;
+
+					sprite->m_Ping ? animation->current++ : animation->current--;
+					break;
+				}
+				if (animation->current < animation->end){
+					animation->current++;
+					break;
+				} else if (sprite->m_RepeatType == RepeatType::loop){
+					animation->current = animation->start;
+					break;
+				} else sprite->stop();
+			}
+		}
+	}
+
+	void Sprite::deleteActive(Sprite* sprite){
+		for(int i = 0; i < m_ActiveAnimations.size(); i++){
+			if (m_ActiveAnimations[i]->m_ID == sprite->m_ID){
+				m_ActiveAnimations.erase(m_ActiveAnimations.begin() + i);
+			}
+		}
+	}
+
+	Animation* Sprite::getAnimation(const std::string& name){
+		for (Animation* animation : m_Animations) {
+			if (animation->name == name)
+				return animation;
+		}
+		return nullptr;
+	}
+
+	Tile* Sprite::getTile(const std::string& name){
+		for (Tile* tile : m_Tiles) {
+			if (tile->name == name)
+				return tile;
+		}
+		return nullptr;
+	}
+
+	void Sprite::setUV(int index, int height, int width){
+		float x = index % m_Rows;    float x1 = x + (float)width;
+		float y = floor((float)index / m_Rows); float y1 = y + (float)height;
+
+		y *= (1.0f / m_Columns);	y1 *= (1.0f / m_Columns);
+		x *= (1.0f / m_Rows); 		x1 *= (1.0f / m_Rows);
+
+		//TODO: access by index?
 		m_UV.clear();
-		float x = m_Index % m_Columns;    float x1 = x + 1.0f;
-		float y = (m_Index - (m_Index % m_Rows)) / m_Rows; float y1 = y + 1.0f;
-
-		y *= (1.0f / m_Rows);	y1 *= (1.0f / m_Rows);
-		x *= (1.0f / m_Columns); x1 *= (1.0f / m_Columns);
-
 		m_UV.push_back(maths::vec2(x, y));
 		m_UV.push_back(maths::vec2(x, y1));
 		m_UV.push_back(maths::vec2(x1, y1));

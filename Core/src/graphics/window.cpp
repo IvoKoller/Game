@@ -10,8 +10,9 @@ namespace evo { namespace graphics {
 		if (!init())
 			glfwTerminate();
 
-		FontManager::add(new Font("SourceSansPro", "fonts/SourceSansPro-Light.ttf", 32));
+		FontManager::add(new Font("SourceSansPro", "assets/fonts/SourceSansPro-Light.ttf", 32));
 		audio::SoundManager::init();
+
 		for (int i = 0; i < MAX_KEYS; i++)
 		{
 			m_Keys[i] = false;

@@ -5,11 +5,12 @@
 #include <GL/glew.h>
 #include "../utils/ImageLoad.hpp"
 
-namespace evo { namespace graphics{
+namespace evo {
+namespace graphics {
 
-	class Texture
-	{
+	class Texture {
 	private:
+		std::string m_Name;
 		std::string m_FileName;
 		GLuint m_TID;
 		GLsizei m_Width, m_Height;
@@ -26,4 +27,4 @@ namespace evo { namespace graphics{
 		GLuint load();
 	};
 
-} }
+}}
