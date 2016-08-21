@@ -14,7 +14,7 @@ GRAPHICS = sprite.o static_sprite.o shader.o window.o batchRenderer2D.o texture.
 LAYERS =  layer.o defaultlayer.o staticlayer.o group.o
 BUFFERS = buffer.o indexbuffer.o vertexarray.o
 MATHS = mat4.o vec2.o vec3.o vec4.o
-UTILS = filepath.o errorlog.o
+UTILS = filepath.o debug.o
 
 #============
 

@@ -15,7 +15,12 @@ namespace graphics {
 
         void setPosition(const maths::vec3& position) {
             m_Position = position;
-            m_ViewMatrix = maths::mat4::translation(m_Position);
+            m_ViewMatrix = maths::mat4::translate(m_Position);
+        }
+
+        void setPosition(const float& x, const float& y, const float& z = 0.0f) {
+            m_Position = maths::vec3(-x,-y,z);
+            m_ViewMatrix = maths::mat4::translate(m_Position);
         }
 
         maths::vec3 getPosition() const { return m_Position; }

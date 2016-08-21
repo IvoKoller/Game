@@ -1,46 +1,26 @@
 #include "sprite.hpp"
+#include "managers/animation_manager.hpp"
 
 namespace evo {
 namespace graphics {
 
-	//define statics
-	std::vector<Sprite*> Sprite::m_ActiveAnimations;
-	std::vector<Animation*>Sprite:: m_Animations;
-	std::vector<Tile*> Sprite::m_Tiles;
-	int Sprite::m_IDCount;
-
 	Sprite::Sprite(float x, float y, float width, float height, unsigned int color)
 		: Renderable2D(maths::vec3(x, y, 0), maths::vec2(width, height), color) {
-		m_ID = m_IDCount++;
+		//m_ID = m_IDCount++;
 	}
 
 	Sprite::Sprite(float x, float y, float width, float height, Texture* texture)
 		: Renderable2D(maths::vec3(x, y, 0), maths::vec2(width, height), 0xffffffff) {
 		m_Texture = texture;
-		m_ID = m_IDCount++;
-	}
-	Sprite::Sprite(float x, float y, float width, float height, Texture* texture, int rows, int columns)
-		: Renderable2D(maths::vec3(x, y, 0), maths::vec2(width, height), 0xffffffff) {
-		m_Texture = texture;
-		m_ID = m_IDCount++;
-		m_Rows = rows;
-		m_Columns = columns;
+		//call to addsprite animation manager
 	}
 
 	Sprite::~Sprite() {
 		//TODO: delete vectors
 	}
 
-	void Sprite::addAnimation(const std::string& name, int start, int end, int fallback) {
-		m_Animations.push_back(new Animation(name, start, end, fallback));
-	}
-
-	void Sprite::addTile(const std::string& name, int index, int height, int width){
-		m_Tiles.push_back(new Tile(name, index));
-	}
-
 	void Sprite::play(const std::string& name){
-		Animation* animation = getAnimation(name);
+		Animation* animation = AnimationManager::get(name);
 		if(animation == m_ActiveAnimation) return;
 		if (animation != nullptr){
 			m_RepeatType = RepeatType::none;

@@ -54,10 +54,7 @@ namespace evo { namespace graphics {
 			m_Color = a << 24 | b << 16 | g << 8 | r;
 		}
 
-		void setPosition(const maths::vec3& position){ m_Position = position; } //TODO: find a better solution than setpos
-
-		//TODO: Maybe set custom UV? Make new shader that takes dynamic uvs
-		//NOTE:make enum to name different parts of texture such that simple call is possible (instead of numbers)
+		void setPosition(const maths::vec3& position){ m_Position = position; } //TODO: find a better solution than setpos?
 
 		inline const maths::vec3& getPosition() const { return m_Position; }
 		inline const maths::vec2& getSize() const { return m_Size; }

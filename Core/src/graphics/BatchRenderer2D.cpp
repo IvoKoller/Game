@@ -11,7 +11,7 @@ namespace evo { namespace graphics {
 	{
 		delete m_IBO;
 		glDeleteBuffers(1, &m_VBO);
-		check_error();
+		Debug::CheckError();
 	}
 
 	void BatchRenderer2D::init()
@@ -54,7 +54,7 @@ namespace evo { namespace graphics {
 		m_IBO = new IndexBuffer(indices, RENDERER_INDICES_SIZE);
 
 		glBindVertexArray(0);
-		check_error();
+		Debug::CheckError();
 	}
 
 	void BatchRenderer2D::begin()
@@ -70,7 +70,7 @@ namespace evo { namespace graphics {
 		const unsigned int color = renderable->getColor();
 		const std::vector<maths::vec2>& uv = renderable->getUV();
 		const GLuint tid = renderable->getTID();
-		check_error();
+		Debug::CheckError();
 
 		float ts = 0.0f;
 		if (tid > 0)
@@ -214,7 +214,7 @@ namespace evo { namespace graphics {
 			}
 
 		}
-		check_error();
+		Debug::CheckError();
 	}
 
 	void BatchRenderer2D::end()
@@ -240,7 +240,7 @@ namespace evo { namespace graphics {
 		glBindVertexArray(0);
 
 		m_IndexCount = 0;
-		check_error();
+		Debug::CheckError();
 	}
 
 } }

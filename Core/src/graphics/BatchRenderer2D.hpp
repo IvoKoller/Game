@@ -1,5 +1,5 @@
 #pragma once
-#include "../utils/errorlog.hpp"
+#include "../utils/debug.hpp"
 
 #include <cstddef>
 

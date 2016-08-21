@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
 
 	character->setTile("down");
 
-	Group* g = new Group(maths::mat4::translation(maths::vec3(-15.8f, 7.0f, 0.0f)));
+	Group* g = new Group(maths::mat4::translate(maths::vec3(-15.8f, 7.0f, 0.0f)));
 
 	Label* fps = new Label("", 0.4f, 0.4f, "SourceSansPro", 0xffffffff, 50);
 	g->add(new Sprite(0, 0, 5, 1.5f, 0x505050DD));
@@ -97,7 +97,7 @@ int main(int argc, char *argv[])
 	shader.setUniform1iv("textures", texIDs, 10);
 
 	SoundManager::add(new Sound("Pokemon", "assets/sounds/pallet-town.ogg"));
-	//SoundManager::get("Pokemon")->loop();
+	SoundManager::get("Pokemon")->loop();
 
 	Timer time;
 	float timer = 0;
@@ -123,13 +123,12 @@ int main(int argc, char *argv[])
 			character->stop();
 		}
 
-		camera.setPosition(maths::vec3(-cameraX, -cameraY, 0));
+		camera.setPosition(cameraX, cameraY);
 
 		Sprite::update();
 		defaultlayer.render();
 		staticlayer.render();
 		window.update();
-
 
 		frames++;
 		if (time.elapsed() - timer > 1.0f)

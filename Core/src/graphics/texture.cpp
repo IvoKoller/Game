@@ -2,8 +2,8 @@
 
 namespace evo { namespace graphics {
 
-	Texture::Texture(const std::string& filename)
-		: m_FileName(filename)
+	Texture::Texture(const std::string& filename, const unsigned int& rows, const unsigned int& columns)
+		: m_FileName(filename), m_Rows(rows), m_Columns(columns)
 	{
 		m_TID = load();
 	}

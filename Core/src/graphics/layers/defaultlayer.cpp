@@ -11,7 +11,7 @@ namespace graphics {
 
 	void DefaultLayer::render() {
 		m_Shader->enable();
-		m_Shader->setUniformMat4("vw_matrix", maths::mat4::translation(m_Camera.getPosition()));
+		m_Shader->setUniformMat4("vw_matrix", maths::mat4::translate(m_Camera.getPosition()));
 		m_Renderer->begin();
 
 		for (const Renderable2D* renderable : m_Renderables)

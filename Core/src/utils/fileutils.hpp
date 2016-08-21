@@ -1,4 +1,5 @@
-#pragma once
+#ifndef FILEUTILS_H
+#define FILEUTILS_H
 
 #include <iostream>
 #include <fstream>
@@ -7,7 +8,7 @@
 
 namespace evo {
 
-	static std::string read_file(const std::string relativeFilepath){
+	static std::string read_file(const std::string& relativeFilepath){
 		std::string filepath = filepath::makeAbsolute(relativeFilepath);
 
 		std::string result;
@@ -53,3 +54,5 @@ namespace evo {
 	}
 
 }
+
+#endif /* end of include guard: FILEUTILS_H */

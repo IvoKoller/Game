@@ -1,17 +1,14 @@
 #ifndef ANIMATION_H
 #define ANIMATION_H
 
-#include <string>
-
 struct Animation {
-    std::string name;
     int start;
     int end;
-    int current;
     int fallback;
+    int speed; //NOTE: fps
 
-    Animation(std::string name, int start, int end, int fallback)
-    : name(name), start(start), end(end), current(start), fallback(fallback) { }
+    Animation(int start, int end, int fallback = -1)
+    : start(start), end(end), fallback(fallback) { }
 
 };
 

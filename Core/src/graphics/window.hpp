@@ -1,17 +1,19 @@
-#pragma once
+#ifndef WINDOW_H
+#define WINDOW_H
 
 #include <iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
 #include "font_manager.hpp"
-
 #include "../audio/sound_manager.hpp"
+
+#include "../utils/debug.hpp"
 
 namespace evo { namespace graphics {
 
-#define MAX_KEYS	1024
-#define MAX_BUTTONS	32
+	#define MAX_KEYS	1024
+	#define MAX_BUTTONS	32
 
 	class Window
 	{
@@ -53,3 +55,5 @@ namespace evo { namespace graphics {
 	};
 
 } }
+
+#endif /* end of include guard: WINDOW_H */

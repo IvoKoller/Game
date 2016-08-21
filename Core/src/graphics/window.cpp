@@ -37,6 +37,11 @@ namespace evo { namespace graphics {
 
 	bool Window::init()
 	{
+		Debug::Debug("log/");
+		Debug::Log("hello test 1", LogType::Note);
+		Debug::Log("hello test 2", LogType::Warning);
+		Debug::Log("hello test 3", LogType::Error);
+
 		if (!glfwInit())
 		{
 			std::cout << "Failed to initialize GLFW!" << std::endl;
