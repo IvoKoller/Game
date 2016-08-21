@@ -1,0 +1,4 @@
+Note: hello test 1 - src/graphics/window.cpp : 41
+Warning: hello test 2 - src/graphics/window.cpp : 42
+Error: hello test 3 - src/graphics/window.cpp : 43
+OpenGL error: Invalid enum - src/graphics/batchRenderer2D.cpp : 57
