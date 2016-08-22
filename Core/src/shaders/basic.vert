@@ -19,7 +19,7 @@ out DATA
 } vs_out;
 
 void main() {
-	gl_Position = pr_matrix * vw_matrix * ml_matrix * position;
+	gl_Position = pr_matrix * vw_matrix * ml_matrix * position; //invert because row major? Position * Model * View * Proj
 	vs_out.position = ml_matrix * position;
 	vs_out.uv = uv;
 	vs_out.tid = tid;
