@@ -1,61 +1,36 @@
 #include "sprite.hpp"
 #include "managers/animation_manager.hpp"
+#include "managers/tile_manager.hpp"
 
 namespace evo {
 namespace graphics {
 
 	Sprite::Sprite(float x, float y, float width, float height, unsigned int color)
 		: Renderable2D(maths::vec3(x, y, 0), maths::vec2(width, height), color) {
-		//m_ID = m_IDCount++;
+		m_ID = AnimationManager::getID();
 	}
 
 	Sprite::Sprite(float x, float y, float width, float height, Texture* texture)
 		: Renderable2D(maths::vec3(x, y, 0), maths::vec2(width, height), 0xffffffff) {
 		m_Texture = texture;
-		//call to addsprite animation manager
+		m_ID = AnimationManager::getID();
 	}
 
 	Sprite::~Sprite() {
 		//TODO: delete vectors
 	}
 
-	void Sprite::play(const std::string& name){
+	void Sprite::play(const std::string& name, const RepeatType& repeattype){
 		Animation* animation = AnimationManager::get(name);
 		if(animation == m_ActiveAnimation) return;
 		if (animation != nullptr){
-			m_RepeatType = RepeatType::none;
+			m_RepeatType = repeattype;
 			m_ActiveAnimation = animation;
-			m_ActiveAnimations.push_back(this);
-			m_Timer.reset();
+			m_StartOfAnimation = std::chrono::high_resolution_clock::now();
+			AnimationManager::addActive(*this);
 			return;
 		}
-		std::cout << "Animation not found!" << std::endl;
-	}
-
-	void Sprite::loop(const std::string& name){
-		Animation* animation = getAnimation(name);
-		if(animation == m_ActiveAnimation) return;
-		if (animation != nullptr){
-			m_RepeatType = RepeatType::loop;
-			m_ActiveAnimation = animation;
-			m_ActiveAnimations.push_back(this);
-			m_Timer.reset();
-			return;
-		}
-		std::cout << "Animation not found!" << std::endl;
-	}
-
-	void Sprite::pingpong(const std::string &name){
-		Animation* animation = getAnimation(name);
-		if(animation == m_ActiveAnimation) return;
-		if (animation != nullptr){
-			m_RepeatType = RepeatType::pingpong;
-			m_ActiveAnimation = animation;
-			m_ActiveAnimations.push_back(this);
-			m_Timer.reset();
-			return;
-		}
-		std::cout << "Animation not found!" << std::endl;
+		Debug::Log("Animation not found!", LogType::Error);
 	}
 
 	void Sprite::stop(bool setToFallback){
@@ -65,15 +40,16 @@ namespace graphics {
 		m_RepeatType = RepeatType::none;
 		m_ActiveAnimation = nullptr;
 		m_Ping = true;
-		deleteActive(this);
+		AnimationManager::removeActive(m_ID);
 	}
 
 	void Sprite::setTile(const std::string name){
 		stop(false);
-		Tile* tile = getTile(name);
+		Tile* tile = TileManager::get(name);
 		setUV(tile->index);
 	}
 
+	/*
 	void Sprite::update(){
 		for (Sprite* sprite : m_ActiveAnimations) {
 			Animation* animation = sprite->m_ActiveAnimation;
@@ -100,30 +76,7 @@ namespace graphics {
 			}
 		}
 	}
-
-	void Sprite::deleteActive(Sprite* sprite){
-		for(int i = 0; i < m_ActiveAnimations.size(); i++){
-			if (m_ActiveAnimations[i]->m_ID == sprite->m_ID){
-				m_ActiveAnimations.erase(m_ActiveAnimations.begin() + i);
-			}
-		}
-	}
-
-	Animation* Sprite::getAnimation(const std::string& name){
-		for (Animation* animation : m_Animations) {
-			if (animation->name == name)
-				return animation;
-		}
-		return nullptr;
-	}
-
-	Tile* Sprite::getTile(const std::string& name){
-		for (Tile* tile : m_Tiles) {
-			if (tile->name == name)
-				return tile;
-		}
-		return nullptr;
-	}
+	*/
 
 	void Sprite::setUV(int index, int height, int width){
 		float x = index % m_Rows;    float x1 = x + (float)width;

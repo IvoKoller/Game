@@ -24,9 +24,9 @@ namespace graphics {
         AnimationManager();
         static void update();
 
-        static const unsigned int getID(){ return m_IDCount++; }
+        static unsigned int getID(){ return m_IDCount++; }
         static void addActive(const Sprite& sprite);
-        static void removeActive();
+        static void removeActive(const unsigned int& ID);
     };
 
 }}

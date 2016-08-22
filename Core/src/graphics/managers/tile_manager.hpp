@@ -10,7 +10,7 @@ namespace graphics {
     class TileManager : public Manager<Tile> {
 
     public:
-        TileManager();
+        //TileManager();
 
     };
 

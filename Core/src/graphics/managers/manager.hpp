@@ -21,7 +21,7 @@ namespace graphics {
     public:
         static void add(const std::string& name, const T& object);
         static T* get(const std::string& name);
-        static void clean();
+        //static void clean();
         //void update();
 
     private:
