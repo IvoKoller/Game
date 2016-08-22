@@ -38,13 +38,10 @@ namespace evo { namespace graphics {
 	bool Window::init()
 	{
 		Debug::Debug("log/");
-		Debug::Log("hello test 1", LogType::Note);
-		Debug::Log("hello test 2", LogType::Warning);
-		Debug::Log("hello test 3", LogType::Error);
 
 		if (!glfwInit())
 		{
-			std::cout << "Failed to initialize GLFW!" << std::endl;
+			Debug::Log("Failed to initialize GLFW!", LogType::Error);
 			return false;
 		}
 		//create OpenGL 3.0+ context
@@ -58,13 +55,13 @@ namespace evo { namespace graphics {
 
 		if (!m_Window)
 		{
-			std::cout << "Failed to create GLFW window!" << std::endl;
+			Debug::Log("Failed to create GLFW window!", LogType::Error);
 			return false;
 		}
 		glfwMakeContextCurrent(m_Window);
 
 		//must be called BEFORE calling glewInit();
-		glewExperimental = true; // Needed in core profile - DO NOT DELETE!
+		glewExperimental = true; // DO NOT DELETE!
 
 		glfwSetWindowUserPointer(m_Window, this);
 		glfwSetFramebufferSizeCallback(m_Window, window_resize);
@@ -75,7 +72,7 @@ namespace evo { namespace graphics {
 
 		if (glewInit() != GLEW_OK)
 		{
-			std::cout << "Could not initialize GLEW!" << std::endl;
+			Debug::Log("Could not initialize GLEW!", LogType::Error);
 			return false;
 		}
 
@@ -83,7 +80,8 @@ namespace evo { namespace graphics {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		std::cout << "OpenGL " << glGetString(GL_VERSION) << std::endl;
+		std::string errmsg = "OpenGL Version: " + glGetString(GL_VERSION);
+		Debug::Log(errmsg, LogType::Note);
 		return true;
 	}
 
