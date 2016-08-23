@@ -10,13 +10,13 @@
 
 #include "../utils/debug.hpp"
 
-namespace evo { namespace graphics {
+namespace evo {
+namespace graphics {
 
 	#define MAX_KEYS	1024
 	#define MAX_BUTTONS	32
 
-	class Window
-	{
+	class Window {
 	private:
 		const char *m_Title;
 		int m_Width, m_Height;

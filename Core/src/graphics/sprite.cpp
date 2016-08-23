@@ -17,7 +17,7 @@ namespace graphics {
 	}
 
 	Sprite::~Sprite() {
-		//TODO: delete vectors
+		
 	}
 
 	void Sprite::play(const std::string& name, const RepeatType& repeattype){
@@ -56,11 +56,20 @@ namespace graphics {
 		y *= (1.0f / m_Columns);	y1 *= (1.0f / m_Columns);
 		x *= (1.0f / m_Rows); 		x1 *= (1.0f / m_Rows);
 
-		//TODO: access by index?
-		m_UV.clear();
-		m_UV.push_back(maths::vec2(x, y));
-		m_UV.push_back(maths::vec2(x, y1));
-		m_UV.push_back(maths::vec2(x1, y1));
-		m_UV.push_back(maths::vec2(x1, y));
+		//if(m_UV.size() = 4){
+		m_UV[0] = maths::vec2(x, y);
+		m_UV[1] = maths::vec2(x, y1);
+		m_UV[2] = maths::vec2(x1, y1);
+		m_UV[3] = maths::vec2(x1, y);
+		/*
+		}else{
+			m_UV.clear();
+			m_UV.push_back(maths::vec2(x, y));
+			m_UV.push_back(maths::vec2(x, y1));
+			m_UV.push_back(maths::vec2(x1, y1));
+			m_UV.push_back(maths::vec2(x1, y));
+		}
+		*/
 	}
+
 } }

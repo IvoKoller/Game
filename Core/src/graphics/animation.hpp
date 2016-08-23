@@ -5,7 +5,7 @@ struct Animation {
     int start;
     int end;
     int fallback;
-    int speed; //NOTE: fps
+    int speed; //NOTE: in fps or in ms?
 
     Animation(int start, int end, int fallback = -1)
     : start(start), end(end), fallback(fallback) { }

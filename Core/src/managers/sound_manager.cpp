@@ -8,20 +8,17 @@ namespace audio {
 
 	std::vector<Sound*> SoundManager::m_Sounds;
 
-	void SoundManager::init()
-	{
+	void SoundManager::init() {
 		gc_initialize(0);
 		m_Manager = gau_manager_create();
 		m_Mixer = gau_manager_mixer(m_Manager);
 	}
 
-	void SoundManager::add(Sound* sound)
-	{
+	void SoundManager::add(Sound* sound) {
 		m_Sounds.push_back(sound);
 	}
 
-	Sound* SoundManager::get(const std::string& name)
-	{
+	Sound* SoundManager::get(const std::string& name) {
 		for (Sound* sound : m_Sounds)
 		{
 			if (sound->getName() == name)
@@ -30,17 +27,15 @@ namespace audio {
 		return nullptr;
 	}
 
-	void SoundManager::clean() //TODO: makes problems
-	{
+	void SoundManager::clean() {
 		for (int i = 0; i < m_Sounds.size(); i++)
-			delete m_Sounds[i];
+			delete m_Sounds[i]; //TODO: makes problems
 
 		gau_manager_destroy(m_Manager);
 		gc_shutdown();
 	}
 
-	void SoundManager::update()
-	{
+	void SoundManager::update() {
 		gau_manager_update(m_Manager);
 	}
 

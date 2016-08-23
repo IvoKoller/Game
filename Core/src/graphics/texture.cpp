@@ -3,20 +3,17 @@
 namespace evo { namespace graphics {
 
 	Texture::Texture(const std::string& filename, const unsigned int& rows, const unsigned int& columns)
-		: m_FileName(filename), m_Rows(rows), m_Columns(columns)
-	{
+		: m_FileName(filename), m_Rows(rows), m_Columns(columns) {
 		m_TID = load();
 	}
 
-	Texture::~Texture()
-	{
+	Texture::~Texture() {
 		//TODO: write destructor for texture
 	}
 
 	//TODO: write tile texture constructor
 
-	GLuint Texture::load()
-	{
+	GLuint Texture::load() {
 		BYTE* pixels = load_image(m_FileName.c_str(), &m_Width, &m_Height);
 
 		GLuint result;
@@ -34,13 +31,11 @@ namespace evo { namespace graphics {
 		return result;
 	}
 
-	void Texture::bind() const
-	{
+	void Texture::bind() const {
 		glBindTexture(GL_TEXTURE_2D, m_TID);
 	}
 
-	void Texture::unbind() const
-	{
+	void Texture::unbind() const {
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 

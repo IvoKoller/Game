@@ -2,11 +2,10 @@
 
 #include "renderable2d.hpp"
 
-namespace evo { namespace graphics {
+namespace evo {
+namespace graphics {
 
-	class StaticSprite : public Renderable2D
-	{
-	private:
+	class StaticSprite : public Renderable2D {
 		VertexArray* m_VertexArray;
 		IndexBuffer* m_IndexBuffer;
 		Shader& m_Shader;

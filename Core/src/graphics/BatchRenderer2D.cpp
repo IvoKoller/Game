@@ -1,21 +1,19 @@
 #include "BatchRenderer2D.hpp"
 
-namespace evo { namespace graphics {
+namespace evo {
+namespace graphics {
 
-	BatchRenderer2D::BatchRenderer2D()
-	{
+	BatchRenderer2D::BatchRenderer2D() {
 		init();
 	}
 
-	BatchRenderer2D::~BatchRenderer2D()
-	{
+	BatchRenderer2D::~BatchRenderer2D() {
 		delete m_IBO;
 		glDeleteBuffers(1, &m_VBO);
 		Debug::CheckError();
 	}
 
-	void BatchRenderer2D::init()
-	{
+	void BatchRenderer2D::init() {
 		glGenVertexArrays(1, &m_VAO);
 		glGenBuffers(1, &m_VBO);
 
@@ -38,8 +36,7 @@ namespace evo { namespace graphics {
 		GLuint* indices = new GLuint[RENDERER_INDICES_SIZE];
 
 		int offset = 0;
-		for (int i = 0; i < RENDERER_INDICES_SIZE; i += 6)
-		{
+		for (int i = 0; i < RENDERER_INDICES_SIZE; i += 6) {
 			indices[  i  ] = offset + 0;
 			indices[i + 1] = offset + 1;
 			indices[i + 2] = offset + 2;
@@ -57,14 +54,12 @@ namespace evo { namespace graphics {
 		Debug::CheckError();
 	}
 
-	void BatchRenderer2D::begin()
-	{
+	void BatchRenderer2D::begin() {
 		glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 		m_Buffer = (VertexData*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
 	}
 
-	void BatchRenderer2D::submit(const Renderable2D* renderable)
-	{
+	void BatchRenderer2D::submit(const Renderable2D* renderable) {
 		const maths::vec3& position = renderable->getPosition();
 		const maths::vec2& size = renderable->getSize();
 		const unsigned int color = renderable->getColor();
@@ -76,20 +71,16 @@ namespace evo { namespace graphics {
 		if (tid > 0)
 		{
 			bool found = false;
-			for (int i = 0; i < m_TextureSlots.size(); i++)
-			{
-				if (m_TextureSlots[i] == tid)
-				{
+			for (int i = 0; i < m_TextureSlots.size(); i++) {
+				if (m_TextureSlots[i] == tid) {
 					ts = (float)(i + 1);
 					found = true;
 					break;
 				}
 			}
 
-			if (!found)
-			{
-				if (m_TextureSlots.size() >= 32)
-				{
+			if (!found) {
+				if (m_TextureSlots.size() >= 32) {
 					end();
 					flush();
 					begin();
@@ -126,26 +117,21 @@ namespace evo { namespace graphics {
 		m_IndexCount += 6;
 	}
 
-	void BatchRenderer2D::drawString(const std::string& text, const maths::vec3& position, const Font& font, unsigned int color)
-	{
+	void BatchRenderer2D::drawString(const std::string& text, const maths::vec3& position, const Font& font, unsigned int color) {
 		using namespace ftgl;
 
 		float ts = 0.0f;
 		bool found = false;
-		for (int i = 0; i < m_TextureSlots.size(); i++)
-		{
-			if (m_TextureSlots[i] == font.getID())
-			{
+		for (int i = 0; i < m_TextureSlots.size(); i++) {
+			if (m_TextureSlots[i] == font.getID()) {
 				ts = (float)(i + 1);
 				found = true;
 				break;
 			}
 		}
 
-		if (!found)
-		{
-			if (m_TextureSlots.size() >= 32)
-			{
+		if (!found) {
+			if (m_TextureSlots.size() >= 32) {
 				end();
 				flush();
 				begin();
@@ -161,15 +147,12 @@ namespace evo { namespace graphics {
 
 		texture_font_t* ftFont = font.getFTFont();
 
-		for (int i = 0; i < text.length(); i++)
-		{
+		for (int i = 0; i < text.length(); i++) {
 			char c = text[i];
 			texture_glyph_t* glyph = texture_font_get_glyph(ftFont, c);
-			if (glyph != NULL)
-			{
+			if (glyph != NULL) {
 
-				if (i > 0)
-				{
+				if (i > 0) {
 					float kerning = texture_glyph_get_kerning(glyph, text[i - 1]);
 					x += kerning / scaleX;
 				}
@@ -217,16 +200,13 @@ namespace evo { namespace graphics {
 		Debug::CheckError();
 	}
 
-	void BatchRenderer2D::end()
-	{
+	void BatchRenderer2D::end() {
 		glUnmapBuffer(GL_ARRAY_BUFFER);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
-	void BatchRenderer2D::flush()
-	{
-		for (int i = 0; i < m_TextureSlots.size(); i++)
-		{
+	void BatchRenderer2D::flush() {
+		for (int i = 0; i < m_TextureSlots.size(); i++) {
 			glActiveTexture(GL_TEXTURE0 + i);
 			glBindTexture(GL_TEXTURE_2D, m_TextureSlots[i]);
 		}

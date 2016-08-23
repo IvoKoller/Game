@@ -1,9 +1,9 @@
 #include "window.hpp"
 
-namespace evo { namespace graphics {
+namespace evo {
+namespace graphics {
 
-	Window::Window(const char *title, int width, int height)
-	{
+	Window::Window(const char *title, int width, int height) {
 		m_Title = title;
 		m_Width = width;
 		m_Height = height;
@@ -28,15 +28,13 @@ namespace evo { namespace graphics {
 		}
 	}
 
-	Window::~Window()
-	{
+	Window::~Window() {
 		FontManager::clean();
 		audio::SoundManager::clean();
 		glfwTerminate();
 	}
 
-	bool Window::init()
-	{
+	bool Window::init() {
 		Debug::Debug("log/");
 
 		if (!glfwInit())
@@ -85,8 +83,7 @@ namespace evo { namespace graphics {
 		return true;
 	}
 
-	bool Window::isKeyPressed(unsigned int keycode) const
-	{
+	bool Window::isKeyPressed(unsigned int keycode) const {
 		// TODO: Log this!
 		if (keycode >= MAX_KEYS)
 			return false;
@@ -94,8 +91,7 @@ namespace evo { namespace graphics {
 		return m_Keys[keycode];
 	}
 
-	bool Window::isKeyTyped(unsigned int keycode) const
-	{
+	bool Window::isKeyTyped(unsigned int keycode) const {
 		// TODO: Log this!
 		if (keycode >= MAX_KEYS)
 			return false;
@@ -103,8 +99,7 @@ namespace evo { namespace graphics {
 		return m_KeyTyped[keycode];
 	}
 
-	bool Window::isMouseButtonPressed(unsigned int button) const
-	{
+	bool Window::isMouseButtonPressed(unsigned int button) const {
 		// TODO: Log this!
 		if (button >= MAX_BUTTONS)
 			return false;
@@ -112,8 +107,7 @@ namespace evo { namespace graphics {
 		return m_MouseButtons[button];
 	}
 
-	bool Window::isMouseButtonClicked(unsigned int button) const
-	{
+	bool Window::isMouseButtonClicked(unsigned int button) const {
 		// TODO: Log this!
 		if (button >= MAX_BUTTONS)
 			return false;
@@ -121,19 +115,16 @@ namespace evo { namespace graphics {
 		return m_MouseClicked[button];
 	}
 
-	void Window::getMousePosition(double& x, double& y) const
-	{
+	void Window::getMousePosition(double& x, double& y) const {
 		x = mx;
 		y = my;
 	}
 
-	void Window::clear() const
-	{
+	void Window::clear() const {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
- 	void Window::update()
-	{
+ 	void Window::update() {
 		for (int i = 0; i < MAX_KEYS; i++)
 			m_KeyTyped[i] = m_Keys[i] && !m_KeyState[i];
 
@@ -153,33 +144,28 @@ namespace evo { namespace graphics {
 		audio::SoundManager::update();
 	}
 
-	bool Window::closed() const
-	{
+	bool Window::closed() const {
 		return glfwWindowShouldClose(m_Window) == 1;
 	}
 
-	void Window::window_resize(GLFWwindow *window, int width, int height)
-	{
+	void Window::window_resize(GLFWwindow *window, int width, int height) {
 		glViewport(0, 0, width, height);
 		Window* win = (Window*)glfwGetWindowUserPointer(window);
 		win->m_Width = width;
 		win->m_Height = height;
 	}
 
-	void Window::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-	{
+	void Window::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 		Window* win = (Window*)glfwGetWindowUserPointer(window);
 		win->m_Keys[key] = action != GLFW_RELEASE;
 	}
 
-	void Window::mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
-	{
+	void Window::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
 		Window* win = (Window*)glfwGetWindowUserPointer(window);
 		win->m_MouseButtons[button] = action != GLFW_RELEASE;
 	}
 
-	void Window::cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
-	{
+	void Window::cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
 		Window* win = (Window*)glfwGetWindowUserPointer(window);
 		win->mx = xpos;
 		win->my = ypos;

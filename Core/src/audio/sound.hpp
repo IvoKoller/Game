@@ -8,12 +8,12 @@
 #include "../../ext/gorilla-audio/ga.h"
 #include "../../ext/gorilla-audio/gau.h"
 
-namespace evo { namespace audio {
+namespace evo {
+namespace audio {
 
-	class Sound
-	{
+	class Sound {
 	private:
-		std::string m_Name;
+		std::string m_Name; //doesnt need name
 		std::string m_Filename;
 
 		ga_Sound* m_Sound;

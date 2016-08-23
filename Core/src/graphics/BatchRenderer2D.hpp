@@ -21,8 +21,7 @@ namespace evo { namespace graphics {
 #define SHADER_TID_INDEX			2
 #define SHADER_COLOR_INDEX			3
 
-	class BatchRenderer2D : public Renderer2D
-	{
+	class BatchRenderer2D : public Renderer2D {
 	private:
 		GLuint m_VAO;
 		GLuint m_VBO;

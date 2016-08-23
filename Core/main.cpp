@@ -63,23 +63,23 @@ int main(int argc, char *argv[])
 	Sprite* background = new Sprite(0, 0, 75, 75, textures[1]);
 	defaultlayer.add(background);
 
-	Sprite* character = new Sprite(0, 0, 5, 5, textures[0], 3, 4);
+	Sprite character(0, 0, 5, 5, textures[0], 3, 4);
 	staticlayer.add(character);
 
 	float cameraX = 0;
 	float cameraY = 0;
 
-	character->addTile("right", 1);
-	character->addTile("up", 4);
-	character->addTile("left", 7);
-	character->addTile("down", 10);
+	character.addTile("right", 1);
+	character.addTile("up", 4);
+	character.addTile("left", 7);
+	character.addTile("down", 10);
 
-	character->addAnimation("walkDown", 9, 11, 10);
-	character->addAnimation("walkLeft", 6, 8, 7);
-	character->addAnimation("walkUp", 3, 5, 4);
-	character->addAnimation("walkRight", 0, 2, 1);
+	character.addAnimation("walkDown", 9, 11, 10);
+	character.addAnimation("walkLeft", 6, 8, 7);
+	character.addAnimation("walkUp", 3, 5, 4);
+	character.addAnimation("walkRight", 0, 2, 1);
 
-	character->setTile("down");
+	character.setTile("down");
 
 	Group* g = new Group(maths::mat4::translate(maths::vec3(-15.8f, 7.0f, 0.0f)));
 
@@ -108,19 +108,19 @@ int main(int argc, char *argv[])
 		window.clear();
 
 		if (window.isKeyPressed(GLFW_KEY_LEFT)){
-			character->pingpong("walkLeft");
+			character.play("walkLeft", RepeatType::Pingpong);
 			cameraX -= 0.05f;
 		}else if (window.isKeyPressed(GLFW_KEY_UP)){
-			character->pingpong("walkUp");
+			character.play("walkUp", RepeatType::Pingpong);
 			cameraY += 0.05f;
 		}else if (window.isKeyPressed(GLFW_KEY_RIGHT)){
-			character->pingpong("walkRight");
+			character.play("walkRight", RepeatType::Pingpong);
 			cameraX += 0.05f;
 		}else if (window.isKeyPressed(GLFW_KEY_DOWN)){
-			character->pingpong("walkDown");
+			character.play("walkDown", RepeatType::Pingpong);
 			cameraY -= 0.05f;
 		}else{
-			character->stop();
+			character.stop();
 		}
 
 		camera.setPosition(cameraX, cameraY);

@@ -25,4 +25,9 @@ namespace graphics {
         return nullptr;
     }
 
+    template <typename T>
+    void Manager<T>::clean(){
+      for (int i = 0; i < m_Elements.size(); i++) delete m_Elements[i];
+    }
+
 }}

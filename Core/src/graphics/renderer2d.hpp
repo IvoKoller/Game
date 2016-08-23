@@ -5,25 +5,22 @@
 #include "font.hpp"
 #include "../maths/maths.hpp"
 
-
-namespace evo { namespace graphics {
+namespace evo {
+namespace graphics {
 
 	class Renderable2D;
 
-	class Renderer2D
-	{
+	class Renderer2D {
 	protected:
 		std::vector<maths::mat4> m_TransformationStack;
 		const maths::mat4* m_TransformationBack;
 	protected:
-		Renderer2D()
-		{
+		Renderer2D() {
 			m_TransformationStack.push_back(maths::mat4::identity());
 			m_TransformationBack = &m_TransformationStack.back();
 		}
 	public:
-		void push(const maths::mat4& matrix, bool override = false)
-		{
+		void push(const maths::mat4& matrix, bool override = false) {
 			if (override)
 				m_TransformationStack.push_back(matrix);
 			else
@@ -31,8 +28,7 @@ namespace evo { namespace graphics {
 
 			m_TransformationBack = &m_TransformationStack.back();
 		}
-		void pop()
-		{
+		void pop() {
 			// TODO: Add to log!
 			if (m_TransformationStack.size() > 1)
 				m_TransformationStack.pop_back();

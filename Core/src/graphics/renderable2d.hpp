@@ -10,18 +10,17 @@
 #include "../maths/maths.hpp"
 #include "shader.hpp"
 
-namespace evo { namespace graphics {
+namespace evo {
+namespace graphics {
 
-	struct VertexData
-	{
+	struct VertexData {
 		maths::vec3 vertex;
 		maths::vec2 uv;
 		float tid;
 		unsigned int color;
 	};
 
-	class Renderable2D
-	{
+	class Renderable2D {
 	protected:
 		maths::vec3 m_Position;
 		maths::vec2 m_Size;

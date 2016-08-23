@@ -10,7 +10,6 @@ namespace graphics {
 
 	class Texture {
 	private:
-		std::string m_Name;
 		std::string m_FileName;
 		GLuint m_TID;
 		GLsizei m_Width, m_Height;

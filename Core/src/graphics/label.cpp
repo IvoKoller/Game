@@ -1,6 +1,7 @@
 #include "label.hpp"
 
-namespace evo { namespace graphics {
+namespace evo {
+namespace graphics {
 
 	Label::Label(std::string text, float x, float y, Font* font, unsigned int color)
 		: Renderable2D(), text(text), position(m_Position), m_Font(font)
@@ -10,7 +11,7 @@ namespace evo { namespace graphics {
 	}
 
 
-	Label::Label(std::string text, float x, float y, const std::string& font, unsigned int color, unsigned int size) 
+	Label::Label(std::string text, float x, float y, const std::string& font, unsigned int color, unsigned int size)
 		: Renderable2D(), text(text), position(m_Position), m_Font(FontManager::get(font, size))
 	{
 		m_Position = maths::vec3(x, y, 0.0f);

@@ -45,6 +45,7 @@ This is the repo for my upcoming "Maturaproject" game. Enjoy!
 - [ ] Add manager class
 - [ ] CMake instead of Makefile
 - [ ] Vector template class
+- [ ] Link to local binaries
 
 ### Bugs:
 - [ ] Segmentation fault after running application for few minutes - buffer overflow?

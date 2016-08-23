@@ -15,10 +15,11 @@
 namespace evo {
 namespace graphics {
 
-	enum RepeatType {none, loop, pingpong};
+	enum RepeatType {None, Loop, Pingpong};
 
 	class Sprite : public Renderable2D {
 		friend class AnimationManager;
+
 		Animation* m_ActiveAnimation; //needs to be pointer as it can/will hold nullptr
 		std::chrono::high_resolution_clock::time_point m_StartOfAnimation;
 		RepeatType m_RepeatType;

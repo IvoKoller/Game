@@ -4,16 +4,14 @@
 #include "../../ext/freetype-gl/freetype-gl.h"
 #include "../utils/filepath.hpp"
 
-namespace evo { namespace graphics {
+namespace evo {
+namespace graphics {
 
-	class Font
-	{
+	class Font {
 	private:
 		ftgl::texture_atlas_t* m_FTAtlas;
 		ftgl::texture_font_t* m_FTFont;
 		unsigned int m_Size;
-
-		std::string m_Name;
 		std::string m_Filename;
 	public:
 		Font(std::string name, std::string filename, int size);

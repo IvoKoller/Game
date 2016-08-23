@@ -7,10 +7,10 @@
 #include "../maths/maths.hpp"
 #include "../utils/fileutils.hpp"
 
-namespace evo { namespace graphics {
+namespace evo {
+namespace graphics {
 
-	class Shader
-	{
+	class Shader {
 	private:
 		const char* m_VertPath;
 		const char* m_FragPath;

@@ -3,10 +3,10 @@
 #include "renderable2d.hpp"
 #include "font_manager.hpp"
 
-namespace evo { namespace graphics {
+namespace evo {
+namespace graphics {
 
-	class Label : public Renderable2D
-	{
+	class Label : public Renderable2D {
 	public:
 		Font* m_Font;
 		std::string text;
