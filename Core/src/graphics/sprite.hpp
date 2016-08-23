@@ -18,11 +18,12 @@ namespace graphics {
 	enum RepeatType {none, loop, pingpong};
 
 	class Sprite : public Renderable2D {
+		friend class AnimationManager;
 		Animation* m_ActiveAnimation; //needs to be pointer as it can/will hold nullptr
 		std::chrono::high_resolution_clock::time_point m_StartOfAnimation;
 		RepeatType m_RepeatType;
 		bool m_Ping = true;
-		int m_CurrentFrame, m_Columns, m_Rows;
+		int m_CurrentFrame, m_Columns, m_Rows; //could/should theoretically be unsigned
 		unsigned int m_ID;
 
 	public:
@@ -31,11 +32,15 @@ namespace graphics {
 
 		~Sprite();
 
+		std::chrono::high_resolution_clock::time_point getTimePoint() const {
+			return m_StartOfAnimation; }
+		void resetTimePoint() {
+			m_StartOfAnimation = std::chrono::high_resolution_clock::now(); }
+		void setUV(int index, int height = 1, int width = 1);
+		void setTile(const std::string name);
+
 		void play(const std::string& name, const RepeatType& repeattype);
 		void stop(bool setToFallback = true);
-		void setTile(const std::string name);
-	private:
-		void setUV(int index, int height = 1, int width = 1);
 	};
 
 } }

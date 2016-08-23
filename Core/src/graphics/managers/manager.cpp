@@ -3,21 +3,16 @@
 namespace evo {
 namespace graphics {
 
-    template <class T>
-    std::vector<(Manager<T>::Element)&> Manager<T>::m_Elements;
+    template <typename T>
+    std::vector<const typename Manager<T>::Element*> Manager<T>::m_Elements;
 
-    template <class T>
-    Manager<T>::Manager(){
-
-    }
-
-    template <class T>
+    template <typename T>
     void Manager<T>::add(const std::string& name, const T& object){
         Element element(name, object);
-        m_Elements.push_back(element); //NOTE: gets destroyed after it leaves scope?
+        m_Elements.push_back(element);
     }
 
-    template <class T>
+    template <typename T>
     T* Manager<T>::get(const std::string& name){
         int index = 0;
         for (Element& element : m_Elements) {

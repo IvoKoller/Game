@@ -8,7 +8,7 @@
 namespace evo {
 namespace graphics {
 
-    template <class T>
+    template <typename T> //template <class T> is synatacally equal
     class Manager {
         struct Element {
             const std::string& name; //value must exist, thus reference
@@ -17,15 +17,12 @@ namespace graphics {
                 : name(name), object(object) { }
         };
 
-        static std::vector<Element&> m_Elements;
+        static std::vector<const Element*> m_Elements;
     public:
         static void add(const std::string& name, const T& object);
         static T* get(const std::string& name);
         //static void clean();
         //void update();
-
-    private:
-        Manager();
     };
 
 }}

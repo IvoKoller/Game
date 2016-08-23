@@ -10,15 +10,16 @@ GA = $(GA_1) $(GA_2) $(GA_3)
 EXT = $(FTGL) $(GA)
 
 AUDIO = sound.o sound_manager.o
-GRAPHICS = sprite.o static_sprite.o shader.o window.o batchRenderer2D.o texture.o label.o font_manager.o font.o camera.o
+GRAPHICS = sprite.o static_sprite.o shader.o window.o batchRenderer2D.o texture.o label.o font.o camera.o
 LAYERS =  layer.o defaultlayer.o staticlayer.o group.o
+MANAGERS = manager.o animation_manager.o tile_manager.o
 BUFFERS = buffer.o indexbuffer.o vertexarray.o
 MATHS = mat4.o vec2.o vec3.o vec4.o
 UTILS = filepath.o debug.o
 
 #============
 
-OBJS =  main.o $(EXT) $(GRAPHICS) $(BUFFERS) $(MATHS) $(LAYERS) $(UTILS) $(AUDIO)
+OBJS =  main.o $(EXT) $(GRAPHICS) $(BUFFERS) $(MATHS) $(LAYERS) $(MANAGERS) $(UTILS) $(AUDIO)
 CC = g++
 CFLAGS =-c -Wall -Wno-c++11-extensions -Wno-pragma-once-outside-header
 LFLAGS = -lglfw3 -lglew -lfreeimage -lfreetype -logg -lvorbis -lvorbisfile -framework OpenAL -framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo
@@ -63,6 +64,9 @@ $(GRAPHICS): %.o: src/graphics/%.cpp
 $(LAYERS): %.o: src/graphics/layers/%.cpp
 	$(CC) $(CFLAGS) $^
 
+$(MANAGERS): %.o: src/graphics/managers/%.cpp
+	$(CC) $(CFLAGS) $^
+
 $(BUFFERS): %.o: src/graphics/buffers/%.cpp
 	$(CC) $(CFLAGS) $^
 
@@ -73,7 +77,7 @@ $(UTILS): %.o: src/utils/%.cpp
 	$(CC) $(CFLAGS) $^
 
 clean:
-	rm main.o $(GRAPHICS) $(BUFFERS) $(LAYERS) $(UTILS) $(AUDIO)
+	rm main.o $(GRAPHICS) $(BUFFERS) $(LAYERS) $(UTILS) $(AUDIO) $(MANAGERS)
 
 allclean:
 	rm *o $(EXECUTABLE)

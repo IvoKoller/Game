@@ -7,13 +7,13 @@ namespace graphics {
 
 	Sprite::Sprite(float x, float y, float width, float height, unsigned int color)
 		: Renderable2D(maths::vec3(x, y, 0), maths::vec2(width, height), color) {
-		m_ID = AnimationManager::getID();
+		m_ID = AnimationManager::createID();
 	}
 
 	Sprite::Sprite(float x, float y, float width, float height, Texture* texture)
 		: Renderable2D(maths::vec3(x, y, 0), maths::vec2(width, height), 0xffffffff) {
 		m_Texture = texture;
-		m_ID = AnimationManager::getID();
+		m_ID = AnimationManager::createID();
 	}
 
 	Sprite::~Sprite() {
@@ -48,35 +48,6 @@ namespace graphics {
 		Tile* tile = TileManager::get(name);
 		setUV(tile->index);
 	}
-
-	/*
-	void Sprite::update(){
-		for (Sprite* sprite : m_ActiveAnimations) {
-			Animation* animation = sprite->m_ActiveAnimation;
-			if(sprite->m_Timer.elapsed() > 0.15f){ //0.091 = 30fps
-				sprite->m_Timer.reset();
-				sprite->setUV(animation->current);
-				if(sprite->m_RepeatType == RepeatType::pingpong){
-					if (animation->current == animation->end)
-						sprite->m_Ping = false;
-
-					if (animation->current == animation->start)
-						sprite->m_Ping = true;
-
-					sprite->m_Ping ? animation->current++ : animation->current--;
-					break;
-				}
-				if (animation->current < animation->end){
-					animation->current++;
-					break;
-				} else if (sprite->m_RepeatType == RepeatType::loop){
-					animation->current = animation->start;
-					break;
-				} else sprite->stop();
-			}
-		}
-	}
-	*/
 
 	void Sprite::setUV(int index, int height, int width){
 		float x = index % m_Rows;    float x1 = x + (float)width;
