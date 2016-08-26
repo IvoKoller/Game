@@ -5,6 +5,7 @@ namespace graphics {
 
     std::vector<Sprite*> AnimationManager::m_Sprites;
     unsigned int AnimationManager::m_IDCount;
+    std::chrono::high_resolution_clock::time_point AnimationManager::m_TimePoint;
 
     AnimationManager::AnimationManager(){
         m_IDCount = 0;
@@ -32,10 +33,10 @@ namespace graphics {
     void AnimationManager::update(){
         for(Sprite* sprite : m_Sprites){
             Animation* animation = sprite->m_ActiveAnimation;
-            if(checkTime(sprite->m_StartOfAnimation)){ //0.091 = 30fps
+            if(checkTime(sprite->m_StartOfAnimation, animation->speed)){ //0.091 = 30fps
                 sprite->setUV(sprite->m_CurrentFrame);
                 sprite->resetTimePoint(); //should happen after uv update
-                if(sprite->m_RepeatType == RepeatType::pingpong){
+                if(sprite->m_RepeatType == RepeatType::Pingpong){
                     if (sprite->m_CurrentFrame == animation->end)
                     sprite->m_Ping = false;
 
@@ -48,13 +49,18 @@ namespace graphics {
                 if (sprite->m_CurrentFrame < animation->end){
                     sprite->m_CurrentFrame++;
                     break;
-                } else if (sprite->m_RepeatType == RepeatType::loop){
+                } else if (sprite->m_RepeatType == RepeatType::Loop){
                     sprite->m_CurrentFrame = animation->start;
                     break;
                 } else sprite->stop();
             }
 
         }
-
     }
+
+    bool AnimationManager::checkTime(std::chrono::high_resolution_clock::time_point timePoint, const unsigned int& speed){
+        return (std::chrono::duration_cast<std::chrono::milliseconds>(m_TimePoint - timePoint).count() < speed) ? true : false;
+    }
+
+
 }}

@@ -33,10 +33,8 @@ namespace graphics {
 
 		~Sprite();
 
-		std::chrono::high_resolution_clock::time_point getTimePoint() const {
-			return m_StartOfAnimation; }
-		void resetTimePoint() {
-			m_StartOfAnimation = std::chrono::high_resolution_clock::now(); }
+		std::chrono::high_resolution_clock::time_point getTimePoint() const { return m_StartOfAnimation; }
+		void resetTimePoint() { m_StartOfAnimation = std::chrono::high_resolution_clock::now(); }
 		void setUV(int index, int height = 1, int width = 1);
 		void setTile(const std::string name);
 

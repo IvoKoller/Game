@@ -14,14 +14,13 @@ namespace graphics {
 		unsigned int m_Size;
 		std::string m_Filename;
 	public:
-		Font(std::string name, std::string filename, int size);
+		Font(std::string filename, int size);
 
-		inline ftgl::texture_font_t* getFTFont() const { return m_FTFont; }
+		ftgl::texture_font_t* getFTFont() const { return m_FTFont; }
 
-		inline const unsigned int getID() const { return m_FTAtlas->id; }
-		inline const std::string& getName() const { return m_Name; }
-		inline const std::string& getFileName() const { return m_Filename; }
-		inline const int getSize() const { return m_Size; }
+		const unsigned int getID() const { return m_FTAtlas->id; }
+		const std::string& getFileName() const { return m_Filename; }
+		const int getSize() const { return m_Size; }
 	};
 
 } }

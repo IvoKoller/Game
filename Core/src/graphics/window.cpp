@@ -10,7 +10,7 @@ namespace graphics {
 		if (!init())
 			glfwTerminate();
 
-		FontManager::add(new Font("SourceSansPro", "assets/fonts/SourceSansPro-Light.ttf", 32));
+		FontManager::init();
 		audio::SoundManager::init();
 
 		for (int i = 0; i < MAX_KEYS; i++)
@@ -29,8 +29,6 @@ namespace graphics {
 	}
 
 	Window::~Window() {
-		FontManager::clean();
-		audio::SoundManager::clean();
 		glfwTerminate();
 	}
 
@@ -78,7 +76,7 @@ namespace graphics {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		std::string errmsg = "OpenGL Version: " + glGetString(GL_VERSION);
+		std::string errmsg = "OpenGL Version: " + std::string((char*)glGetString(GL_VERSION));
 		Debug::Log(errmsg, LogType::Note);
 		return true;
 	}
@@ -136,7 +134,7 @@ namespace graphics {
 
 		GLenum error = glGetError();
 		if (error != GL_NO_ERROR)
-			std::cout << "OpenGL Error: " << error << std::endl;
+			Debug::CheckError();
 
 		glfwPollEvents();
 		glfwSwapBuffers(m_Window);

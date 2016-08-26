@@ -1,6 +1,6 @@
 #include "sprite.hpp"
-#include "managers/animation_manager.hpp"
-#include "managers/tile_manager.hpp"
+#include "../managers/animation_manager.hpp"
+#include "../managers/tile_manager.hpp"
 
 namespace evo {
 namespace graphics {
@@ -17,7 +17,7 @@ namespace graphics {
 	}
 
 	Sprite::~Sprite() {
-		
+
 	}
 
 	void Sprite::play(const std::string& name, const RepeatType& repeattype){
@@ -37,7 +37,7 @@ namespace graphics {
 		if(m_ActiveAnimation != nullptr && m_ActiveAnimation->fallback >= 0 && setToFallback == true)
 			setUV(m_ActiveAnimation->fallback);
 
-		m_RepeatType = RepeatType::none;
+		m_RepeatType = RepeatType::None;
 		m_ActiveAnimation = nullptr;
 		m_Ping = true;
 		AnimationManager::removeActive(m_ID);

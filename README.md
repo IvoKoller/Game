@@ -40,7 +40,6 @@ This is the repo for my upcoming "Maturaproject" game. Enjoy!
 
 ### Refactoring, optimization & maintenance:
 - [ ] Forward declaration instead of include file
-- [ ] #ifndef header guards instead of #pragma once
 - [ ] Only pointers when necessary -> use references
 - [ ] Add manager class
 - [ ] CMake instead of Makefile

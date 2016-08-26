@@ -26,12 +26,14 @@
 
 #include "src/graphics/camera.hpp"
 
-#include "src/graphics/font_manager.hpp"
-
 #include "ext/gorilla-audio/ga.h"
 #include "ext/gorilla-audio/gau.h"
 
-#include "src/audio/sound_manager.hpp"
+#include "src/managers/font_manager.hpp"
+#include "src/managers/sound_manager.hpp"
+#include "src/managers/tile_manager.hpp"
+#include "src/managers/animation_manager.hpp"
+#include "src/managers/texture_manager.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -55,40 +57,35 @@ int main(int argc, char *argv[])
 	StaticLayer staticlayer(&shader);
 	DefaultLayer defaultlayer(&shader, camera);
 
-	Texture* textures[] = {
-		new Texture("assets/textures/pokemon.png"),
-		new Texture("assets/textures/background.png")
-	};
+	TextureManager::add("Spritesheet", new Texture("assets/textures/pokemon.png", 3, 4)); //NOTE: allocate on heap as it is a lot of data
+	TextureManager::add("Background", new Texture("assets/textures/background.png"));
 
-	Sprite* background = new Sprite(0, 0, 75, 75, textures[1]);
-	defaultlayer.add(background);
-
-	Sprite character(0, 0, 5, 5, textures[0], 3, 4);
+	Sprite character(0, 0, 5, 5, TextureManager::get("Spritesheet")); //NOTE: later probably also on heap
 	staticlayer.add(character);
 
-	float cameraX = 0;
-	float cameraY = 0;
+	Sprite background(0, 0, 75, 75, TextureManager::get("Background"));
+	defaultlayer.add(background);
 
-	character.addTile("right", 1);
-	character.addTile("up", 4);
-	character.addTile("left", 7);
-	character.addTile("down", 10);
+	TileManager::add("right", new Tile(1));
+	TileManager::add("up", new Tile(4));
+	TileManager::add("left", new Tile(7));
+	TileManager::add("down", new Tile(10));
 
-	character.addAnimation("walkDown", 9, 11, 10);
-	character.addAnimation("walkLeft", 6, 8, 7);
-	character.addAnimation("walkUp", 3, 5, 4);
-	character.addAnimation("walkRight", 0, 2, 1);
+	AnimationManager::add("walkDown", new Animation(9, 11, 10));
+	AnimationManager::add("walkLeft", new Animation(6, 8, 7));
+	AnimationManager::add("walkUp", new Animation(3, 5, 4));
+	AnimationManager::add("walkRight", new Animation(0, 2, 1));
 
 	character.setTile("down");
 
 	Group* g = new Group(maths::mat4::translate(maths::vec3(-15.8f, 7.0f, 0.0f)));
 
-	Label* fps = new Label("", 0.4f, 0.4f, "SourceSansPro", 0xffffffff, 50);
+	Label* fps = new Label("", 0.4f, 0.4f, "SourceSansPro", 0xffffffff);
 	g->add(new Sprite(0, 0, 5, 1.5f, 0x505050DD));
 	g->add(fps);
-	staticlayer.add(g);
+	staticlayer.add(*g);
 
-	GLint texIDs[] =
+	GLint texIDs[] = //TODO: Clean this up
 	{
 		0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 	};
@@ -96,7 +93,7 @@ int main(int argc, char *argv[])
 	shader.enable();
 	shader.setUniform1iv("textures", texIDs, 10);
 
-	SoundManager::add(new Sound("Pokemon", "assets/sounds/pallet-town.ogg"));
+	SoundManager::add("Pokemon", new Sound("assets/sounds/pallet-town.ogg"));
 	SoundManager::get("Pokemon")->loop();
 
 	Timer time;
@@ -109,23 +106,21 @@ int main(int argc, char *argv[])
 
 		if (window.isKeyPressed(GLFW_KEY_LEFT)){
 			character.play("walkLeft", RepeatType::Pingpong);
-			cameraX -= 0.05f;
+			camera.position.x -= 0.05f;
 		}else if (window.isKeyPressed(GLFW_KEY_UP)){
 			character.play("walkUp", RepeatType::Pingpong);
-			cameraY += 0.05f;
+			camera.position.y += 0.05f;
 		}else if (window.isKeyPressed(GLFW_KEY_RIGHT)){
 			character.play("walkRight", RepeatType::Pingpong);
-			cameraX += 0.05f;
+			camera.position.x += 0.05f;
 		}else if (window.isKeyPressed(GLFW_KEY_DOWN)){
 			character.play("walkDown", RepeatType::Pingpong);
-			cameraY -= 0.05f;
+			camera.position.y -= 0.05f;
 		}else{
 			character.stop();
 		}
 
-		camera.setPosition(cameraX, cameraY);
-
-		Sprite::update();
+		AnimationManager::update();
 		defaultlayer.render();
 		staticlayer.render();
 		window.update();
@@ -141,9 +136,9 @@ int main(int argc, char *argv[])
 
 	}
 
-	for (int i = 0; i < 3; i++) //TODO: textures::clean
-		delete textures[i];
-
+	//TODO: put this in ~window
+	TextureManager::clean();
+	SoundManager::clean();
 	FontManager::clean();
 
 	return 0;

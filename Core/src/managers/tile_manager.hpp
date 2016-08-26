@@ -2,18 +2,11 @@
 #define TILE_MANAGER_H
 
 #include "manager.hpp"
-#include "../tile.hpp"
 
-namespace evo {
-namespace graphics {
+namespace evo{
 
-    class TileManager : public Manager<Tile> {
+    class TileManager : public Manager<Tile> { };
 
-    public:
-        //TileManager();
-
-    };
-
-}}
+}
 
 #endif /* end of include guard: TILE_MANAGER_H */

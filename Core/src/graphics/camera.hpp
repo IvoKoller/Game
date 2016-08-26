@@ -6,25 +6,12 @@
 namespace evo {
 namespace graphics {
 
-    class Camera {
-        maths::mat4 m_ProjectionMatrix, m_ViewMatrix;
-		maths::vec3 m_Position; //, m_Rotation, m_FocalPoint;
-    public:
+    struct Camera {
+        maths::mat4 projectionMatrix, viewMatrix;
+		maths::vec3 position; //, Rotation, FocalPoint;
+
         Camera(const maths::mat4& projectionMatrix = maths::mat4::orthographic(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
         ~Camera();
-
-        void setPosition(const maths::vec3& position) {
-            m_Position = position;
-            m_ViewMatrix = maths::mat4::translate(m_Position);
-        }
-
-        void setPosition(const float& x, const float& y, const float& z = 0.0f) {
-            m_Position = maths::vec3(-x,-y,z);
-            m_ViewMatrix = maths::mat4::translate(m_Position);
-        }
-
-        maths::vec3 getPosition() const { return m_Position; }
-        maths::mat4 getProjectionMatrix() const { return m_ProjectionMatrix; }
     };
 
 }}

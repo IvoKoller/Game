@@ -11,8 +11,6 @@ namespace evo { namespace graphics {
 		//TODO: write destructor for texture
 	}
 
-	//TODO: write tile texture constructor
-
 	GLuint Texture::load() {
 		BYTE* pixels = load_image(m_FileName.c_str(), &m_Width, &m_Height);
 

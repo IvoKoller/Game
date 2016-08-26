@@ -5,8 +5,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "font_manager.hpp"
-#include "../audio/sound_manager.hpp"
+#include "../managers/font_manager.hpp"
+#include "../managers/sound_manager.hpp"
 
 #include "../utils/debug.hpp"
 

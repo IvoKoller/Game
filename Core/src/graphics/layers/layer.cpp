@@ -19,9 +19,9 @@ namespace evo { namespace graphics {
 			delete m_Renderables[i];
 	}
 
-	void Layer::add(Renderable2D* renderable)
+	void Layer::add(Renderable2D& renderable)
 	{
-		m_Renderables.push_back(renderable);
+		m_Renderables.push_back(&renderable);
 	}
 
 	void Layer::render()

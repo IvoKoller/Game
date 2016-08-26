@@ -1,27 +1,23 @@
-#pragma once
+#ifndef SOUND_MANAGER_H
+#define SOUND_MANAGER_H
 
-#include <vector>
-#include "sound.hpp"
+#include "manager.hpp"
 
 #define GAU_THREAD_POLICY_MULTI 2
 #include "../../ext/gorilla-audio/ga.h"
 #include "../../ext/gorilla-audio/gau.h"
 
-namespace evo { namespace audio {
+namespace evo {
+namespace audio {
 
-	class SoundManager
-	{
-	private:
+	class SoundManager : public Manager<Sound> {
 		friend class Sound;
 
 		static gau_Manager* m_Manager;
 		static ga_Mixer* m_Mixer;
 
-		static std::vector<Sound*> m_Sounds;
 	public:
 		static void init();
-		static void add(Sound* sound);
-		static Sound* get(const std::string& name);
 		static void update();
 		static void clean();
 	private:
@@ -29,3 +25,5 @@ namespace evo { namespace audio {
 	};
 
 } }
+
+#endif /* end of include guard: SOUND_MANAGER_H */

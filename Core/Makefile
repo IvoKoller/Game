@@ -9,10 +9,10 @@ GA = $(GA_1) $(GA_2) $(GA_3)
 
 EXT = $(FTGL) $(GA)
 
-AUDIO = sound.o sound_manager.o
+AUDIO = sound.o
 GRAPHICS = sprite.o static_sprite.o shader.o window.o batchRenderer2D.o texture.o label.o font.o camera.o
 LAYERS =  layer.o defaultlayer.o staticlayer.o group.o
-MANAGERS = manager.o animation_manager.o tile_manager.o
+MANAGERS = manager.o animation_manager.o sound_manager.o 
 BUFFERS = buffer.o indexbuffer.o vertexarray.o
 MATHS = mat4.o vec2.o vec3.o vec4.o
 UTILS = filepath.o debug.o
@@ -64,7 +64,7 @@ $(GRAPHICS): %.o: src/graphics/%.cpp
 $(LAYERS): %.o: src/graphics/layers/%.cpp
 	$(CC) $(CFLAGS) $^
 
-$(MANAGERS): %.o: src/graphics/managers/%.cpp
+$(MANAGERS): %.o: src/managers/%.cpp
 	$(CC) $(CFLAGS) $^
 
 $(BUFFERS): %.o: src/graphics/buffers/%.cpp

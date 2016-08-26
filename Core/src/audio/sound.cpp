@@ -1,14 +1,14 @@
 #include "sound.hpp"
 
-#include "sound_manager.hpp"
+#include "../managers/sound_manager.hpp"
 
 namespace evo { namespace audio {
     void loop_on_finish(ga_Handle* in_handle, void* in_context);
     void destroy_on_finish(ga_Handle* in_handle, void* in_context);
 
 
-	Sound::Sound(const std::string& name, const std::string& relativeFilepath)
-		: m_Name(name), m_Filename(relativeFilepath), m_Playing(false)
+	Sound::Sound(const std::string& relativeFilepath)
+		: m_Filename(relativeFilepath), m_Playing(false)
 	{
 		std::vector<std::string> split = split_string(m_Filename, '.');
 		if (split.size() < 2)

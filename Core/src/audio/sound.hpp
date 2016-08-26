@@ -13,7 +13,6 @@ namespace audio {
 
 	class Sound {
 	private:
-		std::string m_Name; //doesnt need name
 		std::string m_Filename;
 
 		ga_Sound* m_Sound;
@@ -23,7 +22,7 @@ namespace audio {
 		bool m_Playing;
 		float m_Gain;
 	public:
-		Sound(const std::string& name, const std::string& filename);
+		Sound(const std::string& filename);
 		~Sound();
 
 		void play();
@@ -36,7 +35,6 @@ namespace audio {
 
 		inline const bool isPlaying() const { return m_Playing; }
 		inline const float getGain() const { return m_Gain; }
-		inline const std::string& getName() const { return m_Name; }
 		inline const std::string& getFileName() const { return m_Filename; }
 
 		friend void destroy_on_finish(ga_Handle* in_handle, void* in_context);
