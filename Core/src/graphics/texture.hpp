@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURE_H
+#define TEXTURE_H
 
 #include <FreeImage.h>
 #include <string>
@@ -30,3 +31,4 @@ namespace graphics {
 	};
 
 }}
+#endif /* end of include guard: TEXTURE_H */

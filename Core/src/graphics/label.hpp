@@ -1,7 +1,7 @@
-#pragma once
+#ifndef LABEL_H
+#define LABEL_H
 
 #include "renderable2d.hpp"
-#include "../managers/font_manager.hpp"
 
 namespace evo {
 namespace graphics {
@@ -20,3 +20,5 @@ namespace graphics {
 	};
 
 } }
+
+#endif /* end of include guard: LABEL_H */

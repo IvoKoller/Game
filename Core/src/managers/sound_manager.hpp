@@ -1,11 +1,12 @@
 #ifndef SOUND_MANAGER_H
 #define SOUND_MANAGER_H
 
-#include "manager.hpp"
-
 #define GAU_THREAD_POLICY_MULTI 2
 #include "../../ext/gorilla-audio/ga.h"
 #include "../../ext/gorilla-audio/gau.h"
+
+#include "../audio/sound.hpp"
+#include "manager.hpp"
 
 namespace evo {
 namespace audio {
@@ -15,7 +16,6 @@ namespace audio {
 
 		static gau_Manager* m_Manager;
 		static ga_Mixer* m_Mixer;
-
 	public:
 		static void init();
 		static void update();

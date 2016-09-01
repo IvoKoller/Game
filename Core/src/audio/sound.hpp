@@ -1,10 +1,10 @@
-#pragma once
+#ifndef SOUND_H
+#define SOUND_H
 
 #include <iostream>
 #include <string>
 
 #include "../utils/filepath.hpp"
-
 #include "../../ext/gorilla-audio/ga.h"
 #include "../../ext/gorilla-audio/gau.h"
 
@@ -43,3 +43,5 @@ namespace audio {
 	};
 
 } }
+
+#endif /* end of include guard: SOUND_H */

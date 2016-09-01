@@ -2,6 +2,7 @@
 #define TEXTURE_MANAGER_H
 
 #include "manager.hpp"
+#include "../graphics/texture.hpp"
 
 namespace evo{
 

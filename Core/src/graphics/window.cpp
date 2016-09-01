@@ -3,15 +3,15 @@
 namespace evo {
 namespace graphics {
 
-	Window::Window(const char *title, int width, int height) {
-		m_Title = title;
-		m_Width = width;
-		m_Height = height;
+	Window::Window(const char *title, int width, int height)
+		: m_Title(title), m_Width(width), m_Height(height) {
+
 		if (!init())
 			glfwTerminate();
 
 		FontManager::init();
 		audio::SoundManager::init();
+		Debug::CheckError();
 
 		for (int i = 0; i < MAX_KEYS; i++)
 		{
@@ -33,8 +33,6 @@ namespace graphics {
 	}
 
 	bool Window::init() {
-		Debug::Debug("log/");
-
 		if (!glfwInit())
 		{
 			Debug::Log("Failed to initialize GLFW!", LogType::Error);
@@ -140,6 +138,7 @@ namespace graphics {
 		glfwSwapBuffers(m_Window);
 
 		audio::SoundManager::update();
+		Debug::CheckError();
 	}
 
 	bool Window::closed() const {

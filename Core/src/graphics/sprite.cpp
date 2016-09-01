@@ -1,4 +1,5 @@
 #include "sprite.hpp"
+
 #include "../managers/animation_manager.hpp"
 #include "../managers/tile_manager.hpp"
 

@@ -7,19 +7,7 @@ namespace graphics {
     unsigned int AnimationManager::m_IDCount;
     std::chrono::high_resolution_clock::time_point AnimationManager::m_TimePoint;
 
-    AnimationManager::AnimationManager(){
-        m_IDCount = 0;
-    }
-
-    unsigned int AnimationManager::createID(){
-        return m_IDCount++;
-    }
-
-    void AnimationManager::addActive(Sprite& sprite){
-        m_Sprites.push_back(&sprite);
-    }
-
-    void AnimationManager::removeActive(const unsigned int& ID){
+    void AnimationManager::removeActive(const unsigned int& ID) {
         unsigned int index = 0;
         for (Sprite* sprite : m_Sprites) {
             if (sprite->m_ID == ID){
@@ -54,13 +42,11 @@ namespace graphics {
                     break;
                 } else sprite->stop();
             }
-
         }
     }
 
-    bool AnimationManager::checkTime(std::chrono::high_resolution_clock::time_point timePoint, const unsigned int& speed){
+    bool AnimationManager::checkTime(std::chrono::high_resolution_clock::time_point timePoint, const unsigned int &speed){
         return (std::chrono::duration_cast<std::chrono::milliseconds>(m_TimePoint - timePoint).count() < speed) ? true : false;
     }
-
 
 }}

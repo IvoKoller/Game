@@ -12,14 +12,15 @@ namespace audio {
 		m_Mixer = gau_manager_mixer(m_Manager);
 	}
 
-	void SoundManager::clean() {
-		Manager::clean();
-		gau_manager_destroy(m_Manager);
-		gc_shutdown();
-	}
-
 	void SoundManager::update() {
 		gau_manager_update(m_Manager);
+	}
+
+	void SoundManager::clean() {
+		for (int i = 0; i < m_Elements.size(); i++) delete m_Elements[i].object; //this in order to access template variable
+
+		gau_manager_destroy(m_Manager);
+		gc_shutdown();
 	}
 
 } }

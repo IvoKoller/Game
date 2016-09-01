@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MAIN_CPP
+#define MAIN_CPP
 
 #include "src/graphics/window.hpp"
 #include "src/graphics/shader.hpp"
@@ -6,6 +7,7 @@
 
 #include "src/utils/timer.hpp"
 #include "src/utils/filepath.hpp"
+#include "src/utils/debug.hpp"
 
 #include "src/graphics/buffers/buffer.hpp"
 #include "src/graphics/buffers/indexbuffer.hpp"
@@ -35,8 +37,7 @@
 #include "src/managers/animation_manager.hpp"
 #include "src/managers/texture_manager.hpp"
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
 	using namespace evo;
 	using namespace graphics;
 	using namespace audio;
@@ -45,12 +46,14 @@ int main(int argc, char *argv[])
 	//=======SETS FILEPATH========
 	std::string path(argv[0]);
 	filepath pathToExec(path);
+	Debug::Debug("log/");
 	//========DON'T DELETE=========
 
 	Window window("evo!", 960, 540);
-
 	Shader shader("src/shaders/basic.vert", "src/shaders/basic.frag");
 	shader.enable();
+
+	Debug::CheckError();
 
 	Camera camera;
 
@@ -100,6 +103,7 @@ int main(int argc, char *argv[])
 	float timer = 0;
 	unsigned int frames = 0;
 
+	Debug::CheckError();
 	while (!window.closed())
 	{
 		window.clear();
@@ -121,6 +125,7 @@ int main(int argc, char *argv[])
 		}
 
 		AnimationManager::update();
+		Debug::CheckError();
 		defaultlayer.render();
 		staticlayer.render();
 		window.update();
@@ -143,3 +148,5 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
+
+#endif /* end of include guard: MAIN_CPP */

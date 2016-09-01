@@ -2,20 +2,16 @@
 #define FONT_MANAGER_H
 
 #include "manager.hpp"
+#include "../graphics/font.hpp"
 
 namespace evo {
-	namespace graphics {
+namespace graphics {
 
-		class FontManager : public Manager<Font>{
-			// dont call get() with size - change name accordingly instead: "SourceSansPro32"
-		public:
-			static void init(){
-				add("SourceSansPro", new Font("assets/fonts/SourceSansPro-Light.ttf", 32));
-			}
-		private:
-			FontManager();
-		};
+	class FontManager : public Manager<Font>  {
+	public:
+		static void init();
+	};
 
-	} }
+} }
 
 #endif /* end of include guard: FONT_MANAGER_H */

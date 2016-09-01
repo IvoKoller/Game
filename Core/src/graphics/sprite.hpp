@@ -1,4 +1,4 @@
-#ifndef SPRITE_H
+        #ifndef SPRITE_H
 #define SPRITE_H
 
 #include <vector>
@@ -6,7 +6,6 @@
 #include <cmath>
 #include <ctime>
 #include "../utils/debug.hpp"
-
 #include "renderable2d.hpp"
 
 #include "animation.hpp"

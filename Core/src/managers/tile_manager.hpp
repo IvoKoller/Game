@@ -5,7 +5,7 @@
 
 namespace evo{
 
-    class TileManager : public Manager<Tile> { };
+    class TileManager : public Manager<graphics::Tile> { };
 
 }
 

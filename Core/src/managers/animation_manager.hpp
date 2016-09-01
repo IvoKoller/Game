@@ -15,10 +15,9 @@ namespace graphics {
         static unsigned int m_IDCount;
         static std::chrono::high_resolution_clock::time_point m_TimePoint;
     public:
-        AnimationManager();
-
-        static unsigned int createID();
-        static void addActive(Sprite& sprite);
+        AnimationManager() { m_IDCount = 0; }
+        static unsigned int createID() { return m_IDCount++; }
+        static void addActive(Sprite& sprite) { m_Sprites.push_back(&sprite); }
         static void removeActive(const unsigned int& ID);
         static void update();
     private:

@@ -1,11 +1,16 @@
 #ifndef TILE_H
 #define TILE_H
 
-struct Tile {
-    int index, height, width;
+namespace evo {
+namespace graphics {
 
-    Tile(int index, int height = 1, int width = 1)
+    struct Tile {
+        int index, height, width;
+
+        Tile(int index, int height = 1, int width = 1)
         : index(index), height(height), width(width) { }
-};
+    };
+    
+}}
 
 #endif /* end of include guard: TILE_H */
