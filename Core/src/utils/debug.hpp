@@ -17,6 +17,7 @@ namespace evo {
     class Debug {
         static std::ofstream m_Log;
     public:
+
         Debug(const std::string& relativeFilepath);
         static void _checkError(const char *file, int line);
         static void _log(const std::string& message, LogType logtype,  const char* file, int line);

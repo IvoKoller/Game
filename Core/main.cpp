@@ -34,8 +34,8 @@
 #include "src/managers/font_manager.hpp"
 #include "src/managers/sound_manager.hpp"
 #include "src/managers/tile_manager.hpp"
-#include "src/managers/animation_manager.hpp"
 #include "src/managers/texture_manager.hpp"
+#include "src/managers/animation_manager.hpp"
 
 int main(int argc, char *argv[]) {
 	using namespace evo;
@@ -53,15 +53,13 @@ int main(int argc, char *argv[]) {
 	Shader shader("src/shaders/basic.vert", "src/shaders/basic.frag");
 	shader.enable();
 
-	Debug::CheckError();
-
 	Camera camera;
 
 	StaticLayer staticlayer(&shader);
 	DefaultLayer defaultlayer(&shader, camera);
 
-	TextureManager::add("Spritesheet", new Texture("assets/textures/pokemon.png", 3, 4)); //NOTE: allocate on heap as it is a lot of data
-	TextureManager::add("Background", new Texture("assets/textures/background.png"));
+	TextureManager::add(new Texture("Spritesheet", "assets/textures/pokemon.png", 3, 4)); //NOTE: allocate on heap as it is a lot of data
+	TextureManager::add(new Texture("Background", "assets/textures/background.png"));
 
 	Sprite character(0, 0, 5, 5, TextureManager::get("Spritesheet")); //NOTE: later probably also on heap
 	staticlayer.add(character);
@@ -69,15 +67,15 @@ int main(int argc, char *argv[]) {
 	Sprite background(0, 0, 75, 75, TextureManager::get("Background"));
 	defaultlayer.add(background);
 
-	TileManager::add("right", new Tile(1));
-	TileManager::add("up", new Tile(4));
-	TileManager::add("left", new Tile(7));
-	TileManager::add("down", new Tile(10));
+	TileManager::add(new Tile("right", 1));
+	TileManager::add(new Tile("up", 4));
+	TileManager::add(new Tile("left", 7));
+	TileManager::add(new Tile("down", 10));
 
-	AnimationManager::add("walkDown", new Animation(9, 11, 10));
-	AnimationManager::add("walkLeft", new Animation(6, 8, 7));
-	AnimationManager::add("walkUp", new Animation(3, 5, 4));
-	AnimationManager::add("walkRight", new Animation(0, 2, 1));
+	AnimationManager::add(new Animation("walkDown", 9, 11, 10));
+	AnimationManager::add(new Animation("walkLeft", 6, 8, 7));
+	AnimationManager::add(new Animation("walkUp", 3, 5, 4));
+	AnimationManager::add(new Animation("walkRight", 0, 2, 1));
 
 	character.setTile("down");
 
@@ -96,7 +94,7 @@ int main(int argc, char *argv[]) {
 	shader.enable();
 	shader.setUniform1iv("textures", texIDs, 10);
 
-	SoundManager::add("Pokemon", new Sound("assets/sounds/pallet-town.ogg"));
+	SoundManager::add(new Sound("Pokemon", "assets/sounds/pallet-town.ogg"));
 	SoundManager::get("Pokemon")->loop();
 
 	Timer time;
@@ -124,7 +122,7 @@ int main(int argc, char *argv[]) {
 			character.stop();
 		}
 
-		AnimationManager::update();
+		ActiveAnimationManager::update();
 		Debug::CheckError();
 		defaultlayer.render();
 		staticlayer.render();
@@ -142,9 +140,9 @@ int main(int argc, char *argv[]) {
 	}
 
 	//TODO: put this in ~window
-	TextureManager::clean();
-	SoundManager::clean();
-	FontManager::clean();
+	TextureManager::clear();
+	SoundManager::clear();
+	FontManager::clear();
 
 	return 0;
 }

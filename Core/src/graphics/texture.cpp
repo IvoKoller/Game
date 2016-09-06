@@ -1,10 +1,11 @@
 #include "texture.hpp"
+#include "../managers/texture_manager.hpp"
 
 namespace evo {
 namespace graphics {
 
-	Texture::Texture(const std::string& filename, const unsigned int& rows, const unsigned int& columns)
-		: m_FileName(filename), m_Rows(rows), m_Columns(columns) {
+	Texture::Texture(const std::string& name, const std::string& filename, const unsigned int& rows, const unsigned int& columns)
+		: Element(name, TextureManager::getID()), m_FileName(filename), m_Rows(rows), m_Columns(columns) {
 		m_TID = load();
 	}
 

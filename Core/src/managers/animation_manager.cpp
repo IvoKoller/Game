@@ -3,23 +3,11 @@
 namespace evo {
 namespace graphics {
 
-    std::vector<Sprite*> AnimationManager::m_Sprites;
-    unsigned int AnimationManager::m_IDCount;
-    std::chrono::high_resolution_clock::time_point AnimationManager::m_TimePoint;
+    std::chrono::high_resolution_clock::time_point ActiveAnimationManager::m_TimePoint;
 
-    void AnimationManager::removeActive(const unsigned int& ID) {
-        unsigned int index = 0;
-        for (Sprite* sprite : m_Sprites) {
-            if (sprite->m_ID == ID){
-                m_Sprites.erase(m_Sprites.begin() + index);
-                return;
-            }
-            index++;
-        }
-    }
-
-    void AnimationManager::update(){
-        for(Sprite* sprite : m_Sprites){
+    void ActiveAnimationManager::update(){
+        for(Element* element : m_Elements){
+            Sprite* sprite = static_cast<Sprite*>(element);
             Animation* animation = sprite->m_ActiveAnimation;
             if(checkTime(sprite->m_StartOfAnimation, animation->speed)){ //0.091 = 30fps
                 sprite->setUV(sprite->m_CurrentFrame);
@@ -45,7 +33,7 @@ namespace graphics {
         }
     }
 
-    bool AnimationManager::checkTime(std::chrono::high_resolution_clock::time_point timePoint, const unsigned int &speed){
+    bool ActiveAnimationManager::checkTime(std::chrono::high_resolution_clock::time_point timePoint, const unsigned int &speed){
         return (std::chrono::duration_cast<std::chrono::milliseconds>(m_TimePoint - timePoint).count() < speed) ? true : false;
     }
 

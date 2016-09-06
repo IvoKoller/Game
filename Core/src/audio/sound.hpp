@@ -8,10 +8,12 @@
 #include "../../ext/gorilla-audio/ga.h"
 #include "../../ext/gorilla-audio/gau.h"
 
+#include "../managers/element.hpp"
+
 namespace evo {
 namespace audio {
 
-	class Sound {
+	class Sound : public Element {
 	private:
 		std::string m_Filename;
 
@@ -22,7 +24,7 @@ namespace audio {
 		bool m_Playing;
 		float m_Gain;
 	public:
-		Sound(const std::string& filename);
+		Sound(const std::string& name, const std::string& filename);
 		~Sound();
 
 		void play();

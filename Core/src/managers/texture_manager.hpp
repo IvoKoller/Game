@@ -2,12 +2,13 @@
 #define TEXTURE_MANAGER_H
 
 #include "manager.hpp"
-#include "../graphics/texture.hpp"
 
-namespace evo{
+namespace evo {
+namespace graphics {
 
-    class TextureManager : public Manager<graphics::Texture> { };
+    class Texture;
 
-}
+    class TextureManager : public Manager<Texture> { };
+} }
 
 #endif /* end of include guard: TEXTURE_MANAGER_H */

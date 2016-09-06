@@ -1,30 +1,30 @@
-        #ifndef SPRITE_H
+#ifndef SPRITE_H
 #define SPRITE_H
 
 #include <vector>
 #include <string>
 #include <cmath>
 #include <ctime>
-#include "../utils/debug.hpp"
-#include "renderable2d.hpp"
 
-#include "animation.hpp"
-#include "tile.hpp"
+#include "renderable2d.hpp"
+#include "../utils/debug.hpp"
+#include "../managers/element.hpp"
 
 namespace evo {
 namespace graphics {
 
+    class Animation;
+    class Tile;
+
 	enum RepeatType {None, Loop, Pingpong};
 
-	class Sprite : public Renderable2D {
-		friend class AnimationManager;
-
-		Animation* m_ActiveAnimation; //needs to be pointer as it can/will hold nullptr
+	class Sprite : public Renderable2D, public Element {
+        friend class ActiveAnimationManager;
+		Animation* m_ActiveAnimation = nullptr; //needs to be pointer as it can/will hold nullptr
 		std::chrono::high_resolution_clock::time_point m_StartOfAnimation;
-		RepeatType m_RepeatType;
+		RepeatType m_RepeatType = RepeatType::None;
 		bool m_Ping = true;
 		int m_CurrentFrame, m_Columns, m_Rows; //could/should theoretically be unsigned
-		unsigned int m_ID;
 
 	public:
 		Sprite(float x, float y, float width, float height, unsigned int color);

@@ -6,17 +6,19 @@
 #include <GL/glew.h>
 #include "../utils/ImageLoad.hpp"
 
+#include "../managers/element.hpp"
+
 namespace evo {
 namespace graphics {
 
-	class Texture {
+	class Texture : public Element{
 	private:
 		std::string m_FileName;
 		GLuint m_TID;
 		GLsizei m_Width, m_Height;
 		const unsigned int m_Rows, m_Columns;
 	public:
-		Texture(const std::string& filename, const unsigned int& rows = 1, const unsigned int& columns = 1);
+		Texture(const std::string& name, const std::string& filename, const unsigned int& rows = 1, const unsigned int& columns = 1);
 		~Texture();
 		void bind() const;
 		void unbind() const;

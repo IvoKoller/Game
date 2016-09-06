@@ -4,7 +4,7 @@ namespace evo {
 namespace graphics {
 
 	void FontManager::init(){
-		add("SourceSansPro", new Font("assets/fonts/SourceSansPro-Light.ttf", 32));
+		add(new Font("SourceSansPro", "assets/fonts/SourceSansPro-Light.ttf", 32));
 	}
 
 } }

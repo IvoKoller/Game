@@ -1,13 +1,13 @@
 #ifndef FONT_MANAGER_H
 #define FONT_MANAGER_H
 
-#include "manager.hpp"
 #include "../graphics/font.hpp"
+#include "manager.hpp"
 
 namespace evo {
 namespace graphics {
 
-	class FontManager : public Manager<Font>  {
+	class FontManager : public Manager<Font> {
 	public:
 		static void init();
 	};

@@ -7,12 +7,12 @@ namespace audio {
     void loop_on_finish(ga_Handle* in_handle, void* in_context);
     void destroy_on_finish(ga_Handle* in_handle, void* in_context);
 
-	Sound::Sound(const std::string& relativeFilepath)
-		: m_Filename(relativeFilepath), m_Playing(false) {
+	Sound::Sound(const std::string& name, const std::string& relativeFilepath)
+		: Element(name, SoundManager::getID()), m_Filename(relativeFilepath), m_Playing(false) {
 		std::vector<std::string> split = split_string(m_Filename, '.');
 
         if (split.size() < 2) {
-			std::cout << "[Sound] Invalid file name '" << m_Filename << "'!" << std::endl;
+			std::cerr << "[Sound] Invalid file name '" << m_Filename << "'!" << std::endl;
 			return;
 		}
 
@@ -20,7 +20,7 @@ namespace audio {
 		m_Sound = gau_load_sound_file(filename.c_str(), split.back().c_str());
 
 		if (m_Sound == nullptr)
-			std::cout << "[Sound] Could not load file '" << m_Filename << "'!" << std::endl;
+			std::cerr << "[Sound] Could not load file '" << m_Filename << "'!" << std::endl;
 	}
 
 	Sound::~Sound() {
@@ -67,7 +67,7 @@ namespace audio {
 	void Sound::setGain(float gain) {
 		if (!m_Playing)
 		{
-			std::cout << "[Sound] Cannot set gain! Sound is not currently playing!" << std::endl;
+			std::cerr << "[Sound] Cannot set gain! Sound is not currently playing!" << std::endl;
 			return;
 		}
 		m_Gain = gain;

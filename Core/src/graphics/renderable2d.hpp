@@ -1,4 +1,5 @@
-#pragma once
+#ifndef RENDERABLE_H
+#define RENDERABLE_H
 
 #include "buffers/buffer.hpp"
 #include "buffers/indexbuffer.hpp"
@@ -60,7 +61,7 @@ namespace graphics {
 		inline const unsigned int getColor() const { return m_Color; }
 		inline const std::vector<maths::vec2>& getUV() const { return m_UV; }
 		inline const GLuint getTID() const { return m_Texture ? m_Texture->getID() : 0; }
-
+		
 	private:
 		void setUVDefaults() {
 			m_UV.push_back(maths::vec2(0, 0));
@@ -71,3 +72,5 @@ namespace graphics {
 	};
 
 } }
+
+#endif /* end of include guard: RENDERABLE_H */

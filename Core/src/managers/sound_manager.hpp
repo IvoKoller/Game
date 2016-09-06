@@ -5,6 +5,7 @@
 #include "../../ext/gorilla-audio/ga.h"
 #include "../../ext/gorilla-audio/gau.h"
 
+#include "../utils/debug.hpp"
 #include "../audio/sound.hpp"
 #include "manager.hpp"
 
@@ -19,8 +20,7 @@ namespace audio {
 	public:
 		static void init();
 		static void update();
-		static void clean();
-	private:
+		static void clear();
 		SoundManager() { }
 	};
 
