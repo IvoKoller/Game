@@ -1,5 +1,5 @@
-#ifndef VEC4_H
-#define VEC4_H
+#ifndef VEC4_HPP
+#define VEC4_HPP
 
 #include <iostream>
 
@@ -44,4 +44,4 @@ namespace maths {
 
 }}
 
-#endif /* end of include guard: VEC4_H */
+#endif /* end of include guard: VEC4_HPP */

@@ -1,5 +1,5 @@
-#ifndef AABB_H
-#define AABB_H
+#ifndef AABB_HPP
+#define AABB_HPP
 
 #include "vec2.hpp"
 #include "vec3.hpp"
@@ -37,4 +37,4 @@ namespace maths {
 
 } }
 
-#endif /* end of include guard: AABB_H */
+#endif /* end of include guard: AABB_HPP */

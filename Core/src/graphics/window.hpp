@@ -1,5 +1,5 @@
-#ifndef WINDOW_H
-#define WINDOW_H
+#ifndef WINDOW_HPP
+#define WINDOW_HPP
 
 #include <iostream>
 #include <GL/glew.h>
@@ -56,4 +56,4 @@ namespace graphics {
 
 } }
 
-#endif /* end of include guard: WINDOW_H */
+#endif /* end of include guard: WINDOW_HPP */

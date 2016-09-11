@@ -1,5 +1,5 @@
-#ifndef LABEL_H
-#define LABEL_H
+#ifndef LABEL_HPP
+#define LABEL_HPP
 
 #include "renderable2d.hpp"
 
@@ -21,4 +21,4 @@ namespace graphics {
 
 } }
 
-#endif /* end of include guard: LABEL_H */
+#endif /* end of include guard: LABEL_HPP */

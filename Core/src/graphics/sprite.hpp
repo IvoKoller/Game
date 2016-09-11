@@ -1,5 +1,5 @@
-#ifndef SPRITE_H
-#define SPRITE_H
+#ifndef SPRITE_HPP
+#define SPRITE_HPP
 
 #include <vector>
 #include <string>
@@ -44,4 +44,4 @@ namespace graphics {
 } }
 
 
-#endif /* end of include guard: SPRITE_H */
+#endif /* end of include guard: SPRITE_HPP */

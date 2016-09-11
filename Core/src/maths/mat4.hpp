@@ -1,5 +1,5 @@
-#ifndef MAT4_H
-#define MAT4_H
+#ifndef MAT4_HPP
+#define MAT4_HPP
 
 #include "maths_func.hpp"
 
@@ -53,4 +53,4 @@ namespace maths {
 
 } }
 
-#endif /* end of include guard: MAT4_H */
+#endif /* end of include guard: MAT4_HPP */

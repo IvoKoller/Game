@@ -1,5 +1,5 @@
-#ifndef ANIMATION_H
-#define ANIMATION_H
+#ifndef ANIMATION_HPP
+#define ANIMATION_HPP
 
 #include "../managers/element.hpp"
 
@@ -17,4 +17,4 @@ namespace graphics{
     };
 }}
 
-#endif /* end of include guard: ANIMATION_H */
+#endif /* end of include guard: ANIMATION_HPP */

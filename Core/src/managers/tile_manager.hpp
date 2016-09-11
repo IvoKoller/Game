@@ -1,5 +1,5 @@
-#ifndef TILE_MANAGER_H
-#define TILE_MANAGER_H
+#ifndef TILE_MANAGER_HPP
+#define TILE_MANAGER_HPP
 
 #include "manager.hpp"
 #include "../graphics/tile.hpp"
@@ -11,4 +11,4 @@ namespace graphics {
 
 } }
 
-#endif /* end of include guard: TILE_MANAGER_H */
+#endif /* end of include guard: TILE_MANAGER_HPP */

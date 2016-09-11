@@ -1,5 +1,5 @@
-#ifndef SOUND_MANAGER_H
-#define SOUND_MANAGER_H
+#ifndef SOUND_MANAGER_HPP
+#define SOUND_MANAGER_HPP
 
 #define GAU_THREAD_POLICY_MULTI 2
 #include "../../ext/gorilla-audio/ga.h"
@@ -26,4 +26,4 @@ namespace audio {
 
 } }
 
-#endif /* end of include guard: SOUND_MANAGER_H */
+#endif /* end of include guard: SOUND_MANAGER_HPP */

@@ -1,5 +1,5 @@
-#ifndef FONT_MANAGER_H
-#define FONT_MANAGER_H
+#ifndef FONT_MANAGER_HPP
+#define FONT_MANAGER_HPP
 
 #include "../graphics/font.hpp"
 #include "manager.hpp"
@@ -14,4 +14,4 @@ namespace graphics {
 
 } }
 
-#endif /* end of include guard: FONT_MANAGER_H */
+#endif /* end of include guard: FONT_MANAGER_HPP */

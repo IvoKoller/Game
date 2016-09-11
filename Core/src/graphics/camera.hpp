@@ -1,5 +1,5 @@
-#ifndef CAMERA_H
-#define CAMERA_H
+#ifndef CAMER_HPP
+#define CAMER_HPP
 
 #include "../maths/maths.hpp"
 
@@ -16,4 +16,4 @@ namespace graphics {
 
 }}
 
-#endif /* end of include guard: CAMERA_H */
+#endif /* end of include guard: CAMER_HPP */

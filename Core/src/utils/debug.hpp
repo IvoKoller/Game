@@ -1,5 +1,5 @@
-#ifndef DEBUG_H
-#define DEBUG_H
+#ifndef DEBUG_HPP
+#define DEBUG_HPP
 
 #include <iostream>
 #include <fstream>
@@ -25,4 +25,4 @@ namespace evo {
 
 }
 
-#endif /* end of include guard: DEBUG_H */
+#endif /* end of include guard: DEBUG_HPP */

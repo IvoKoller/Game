@@ -1,5 +1,5 @@
-#ifndef LAYER_H
-#define LAYER_H
+#ifndef LAYER_HPP
+#define LAYER_HPP
 
 #include "../renderer2d.hpp"
 #include "../renderable2d.hpp"
@@ -25,4 +25,4 @@ namespace evo {
 
 	} }
 
-#endif /* end of include guard: LAYER_H */
+#endif /* end of include guard: LAYER_HPP */

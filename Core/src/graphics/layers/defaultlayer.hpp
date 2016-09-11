@@ -1,5 +1,5 @@
-#ifndef DEFAULTLAYER_H
-#define DEFAULTLAYER_H
+#ifndef DEFAULTLAYER_HPP
+#define DEFAULTLAYER_HPP
 
 #include "layer.hpp"
 #include "../BatchRenderer2D.hpp"
@@ -19,4 +19,4 @@ namespace graphics {
 
 }}
 
-#endif /* end of include guard: DEFAULTLAYER_H */
+#endif /* end of include guard: DEFAULTLAYER_HPP */

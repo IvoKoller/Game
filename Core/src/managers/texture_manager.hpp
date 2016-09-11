@@ -1,5 +1,5 @@
-#ifndef TEXTURE_MANAGER_H
-#define TEXTURE_MANAGER_H
+#ifndef TEXTURE_MANAGER_HPP
+#define TEXTURE_MANAGER_HPP
 
 #include "manager.hpp"
 
@@ -11,4 +11,4 @@ namespace graphics {
     class TextureManager : public Manager<Texture> { };
 } }
 
-#endif /* end of include guard: TEXTURE_MANAGER_H */
+#endif /* end of include guard: TEXTURE_MANAGER_HPP */

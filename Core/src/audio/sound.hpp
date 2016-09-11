@@ -1,5 +1,5 @@
-#ifndef SOUND_H
-#define SOUND_H
+#ifndef SOUND_HPP
+#define SOUND_HPP
 
 #include <iostream>
 #include <string>
@@ -46,4 +46,4 @@ namespace audio {
 
 } }
 
-#endif /* end of include guard: SOUND_H */
+#endif /* end of include guard: SOUND_HPP */

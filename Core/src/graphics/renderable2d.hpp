@@ -1,5 +1,5 @@
-#ifndef RENDERABLE_H
-#define RENDERABLE_H
+#ifndef RENDERABLE_HPP
+#define RENDERABLE_HPP
 
 #include "buffers/buffer.hpp"
 #include "buffers/indexbuffer.hpp"
@@ -73,4 +73,4 @@ namespace graphics {
 
 } }
 
-#endif /* end of include guard: RENDERABLE_H */
+#endif /* end of include guard: RENDERABLE_HPP */

@@ -1,5 +1,5 @@
-#ifndef TEXTURE_H
-#define TEXTURE_H
+#ifndef TEXTURE_HPP
+#define TEXTURE_HPP
 
 #include <FreeImage.h>
 #include <string>
@@ -33,4 +33,4 @@ namespace graphics {
 	};
 
 }}
-#endif /* end of include guard: TEXTURE_H */
+#endif /* end of include guard: TEXTURE_HPP */

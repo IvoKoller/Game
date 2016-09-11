@@ -1,5 +1,5 @@
-#ifndef FILEUTILS_H
-#define FILEUTILS_H
+#ifndef FILEUTILS_HPP
+#define FILEUTILS_HPP
 
 #include <iostream>
 #include <fstream>
@@ -55,4 +55,4 @@ namespace evo {
 
 }
 
-#endif /* end of include guard: FILEUTILS_H */
+#endif /* end of include guard: FILEUTILS_HPP */

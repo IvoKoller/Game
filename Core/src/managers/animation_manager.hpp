@@ -1,5 +1,5 @@
-#ifndef ANIMATION_MANAGER_H
-#define ANIMATION_MANAGER_H
+#ifndef ANIMATION_MANAGER_HPP
+#define ANIMATION_MANAGER_HPP
 
 #include <ctime>
 
@@ -24,4 +24,4 @@ namespace graphics {
     };
 }}
 
-#endif /* end of include guard: ANIMATION_MANAGER_H */
+#endif /* end of include guard: ANIMATION_MANAGER_HPP */

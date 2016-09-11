@@ -13,7 +13,7 @@ AUDIO = sound.o
 GRAPHICS = sprite.o static_sprite.o shader.o window.o batchRenderer2D.o texture.o \
 animation.o tile.o label.o font.o camera.o
 LAYERS =  layer.o defaultlayer.o staticlayer.o group.o
-MANAGERS = font_manager.o sound_manager.o animation_manager.o
+MANAGERS = manager.o font_manager.o sound_manager.o animation_manager.o
 BUFFERS = buffer.o indexbuffer.o vertexarray.o
 MATHS = mat4.o vec2.o vec3.o vec4.o
 UTILS = filepath.o debug.o
