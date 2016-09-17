@@ -7,7 +7,7 @@ namespace graphics {
     : projectionMatrix(projectionMatrix) {
         viewMatrix = maths::mat4::identity();
 		position = maths::vec3();
-		//m_Rotation = maths::vec3();
+		//rotation = maths::vec3();
     }
 
     Camera::~Camera(){ }

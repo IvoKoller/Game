@@ -1,0 +1,6 @@
+Note: OpenGL Version: 4.1 NVIDIA-10.10.13 310.42.25f01 - src/graphics/window.cpp : 78
+OpenGL error: Invalid enum - src/graphics/window.cpp : 14
+Warning: ID [0] already exists! Object already added! - src/managers/manager.cpp : 20
+Warning: ID [0] already exists! Object already added! - src/managers/manager.cpp : 20
+Warning: ID [0] already exists! Object already added! - src/managers/manager.cpp : 20
+Warning: ID [0] already exists! Object already added! - src/managers/manager.cpp : 20

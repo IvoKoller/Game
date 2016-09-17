@@ -1,7 +1,5 @@
 #include "label.hpp"
 
-#include "../managers/font_manager.hpp"
-
 namespace evo {
 namespace graphics {
 
@@ -13,9 +11,9 @@ namespace graphics {
 	}
 
 
-	Label::Label(std::string text, float x, float y, const std::string& font, unsigned int color)
-		: Renderable2D(), text(text), position(m_Position), m_Font(FontManager::get(font)) {
-			
+	Label::Label(std::string text, float x, float y, const char* font, unsigned int color)
+		: Renderable2D(), text(text), position(m_Position), m_Font(Font::get(font)) {
+
 		m_Position = maths::vec3(x, y, 0.0f);
 		m_Color = color;
 	}

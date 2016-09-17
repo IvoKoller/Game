@@ -34,7 +34,7 @@ namespace graphics {
 	public:
 		Renderable2D(maths::vec3 position, maths::vec2 size, unsigned int color)
 			: m_Position(position), m_Size(size), m_Color(color), m_Texture(nullptr)
-		{ setUVDefaults(); }
+			{ setUVDefaults(); }
 
 		virtual ~Renderable2D() { }
 
@@ -56,12 +56,13 @@ namespace graphics {
 
 		void setPosition(const maths::vec3& position){ m_Position = position; } //TODO: find a better solution than setpos?
 
+		//inline const maths::AABB& getCollider() const { return m_Collider; }
 		inline const maths::vec3& getPosition() const { return m_Position; }
 		inline const maths::vec2& getSize() const { return m_Size; }
 		inline const unsigned int getColor() const { return m_Color; }
 		inline const std::vector<maths::vec2>& getUV() const { return m_UV; }
 		inline const GLuint getTID() const { return m_Texture ? m_Texture->getID() : 0; }
-		
+
 	private:
 		void setUVDefaults() {
 			m_UV.push_back(maths::vec2(0, 0));

@@ -10,7 +10,7 @@ namespace evo { namespace graphics {
 		m_Shader->disable();
 	}
 
-	Layer::~Layer()
+	Layer::~Layer() //TODO: does cause problemes 
 	{
 		delete m_Shader;
 		delete m_Renderer;

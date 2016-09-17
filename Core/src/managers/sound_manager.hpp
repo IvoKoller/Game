@@ -7,12 +7,12 @@
 
 #include "../utils/debug.hpp"
 #include "../audio/sound.hpp"
-#include "manager.hpp"
+#include "dynamicManager.hpp"
 
 namespace evo {
 namespace audio {
 
-	class SoundManager : public Manager<Sound> {
+	class SoundManager : public DynamicManager<Sound> {
 		friend class Sound;
 
 		static gau_Manager* m_Manager;
@@ -21,7 +21,7 @@ namespace audio {
 		static void init();
 		static void update();
 		static void clear();
-		SoundManager() { }
+		//SoundManager() { }
 	};
 
 } }

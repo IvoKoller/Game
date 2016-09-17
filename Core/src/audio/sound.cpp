@@ -7,8 +7,8 @@ namespace audio {
     void loop_on_finish(ga_Handle* in_handle, void* in_context);
     void destroy_on_finish(ga_Handle* in_handle, void* in_context);
 
-	Sound::Sound(const std::string& name, const std::string& relativeFilepath)
-		: Element(name, SoundManager::getID()), m_Filename(relativeFilepath), m_Playing(false) {
+	Sound::Sound(const char* name, const std::string& relativeFilepath)
+		: StaticManager(name), m_Filename(relativeFilepath), m_Playing(false) {
 		std::vector<std::string> split = split_string(m_Filename, '.');
 
         if (split.size() < 2) {

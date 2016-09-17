@@ -14,7 +14,7 @@ namespace graphics {
 		float x, y;
 	public:
 		Label(std::string text, float x, float y, Font* font, unsigned int color);
-		Label(std::string text, float x, float y, const std::string& font, unsigned int color);
+		Label(std::string text, float x, float y, const char* font, unsigned int color);
 
 		void submit(Renderer2D* renderer) const override;
 	};

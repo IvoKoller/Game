@@ -9,9 +9,9 @@ namespace evo {
 namespace graphics {
 
 	class DefaultLayer : public Layer {
-		const Camera& m_Camera;
+		Camera& m_Camera;
 	public:
-		DefaultLayer(Shader* shader, const Camera& camera);
+		DefaultLayer(Shader* shader, Camera& camera);
 		~DefaultLayer();
 
 		void render() override;

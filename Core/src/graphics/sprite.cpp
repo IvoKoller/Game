@@ -1,33 +1,41 @@
 #include "sprite.hpp"
 
 #include "../managers/animation_manager.hpp"
-#include "../managers/tile_manager.hpp"
-#include "animation.hpp"
-#include "tile.hpp"
 
 namespace evo {
 namespace graphics {
 
-	Sprite::Sprite(float x, float y, float width, float height, unsigned int color)
+	Sprite::Sprite(float x, float y, float width, float height, unsigned int color, bool StaticCollider)
 		: Renderable2D(maths::vec3(x, y, 0), maths::vec2(width, height), color),
-		  Element(ActiveAnimationManager::getID()) { }
+		StaticManager() { if(StaticCollider) addCollider(); }
 
-	Sprite::Sprite(float x, float y, float width, float height, Texture* texture)
+	Sprite::Sprite(float x, float y, float width, float height, Texture* texture, bool StaticCollider)
 		: Renderable2D(maths::vec3(x, y, 0), maths::vec2(width, height), 0xffffffff),
-		  Element(ActiveAnimationManager::getID()) {
-		m_Texture = texture;
+		StaticManager() { m_Texture = texture; if(StaticCollider) addCollider(); }
+
+	Sprite::~Sprite() { }
+
+	void Sprite::addCollider(physics::Layer layer, bool invert){
+		Manager* col = new physics::Collider(m_Position, m_Size.x, m_Size.y, layer, invert);
+		physics::Collider::add(col);
+		collider = static_cast<physics::Collider*>(col);
 	}
 
-	Sprite::~Sprite() {
-
+	void Sprite::addCollider(physics::Layer layer, float width, float height, bool invert){
+		Manager* col = new physics::Collider(m_Position, width, height, layer, invert);
+		physics::Collider::add(col);
+		collider = static_cast<physics::Collider*>(col);
 	}
 
 	void Sprite::setUV(int index, int height, int width){
-		float x = index % m_Rows;    float x1 = x + (float)width;
-		float y = floor((float)index / m_Rows); float y1 = y + (float)height;
+		int rows = m_Texture->getRows();
+		int columns = m_Texture->getColumns();
 
-		y *= (1.0f / m_Columns);	y1 *= (1.0f / m_Columns);
-		x *= (1.0f / m_Rows); 		x1 *= (1.0f / m_Rows);
+		float x = index % rows; float x1 = x + (float) width;
+		float y = floor((float) index / rows); float y1 = y + (float) height;
+
+		y *= (1.0f / columns);	y1 *= (1.0f / columns);
+		x *= (1.0f / rows); 		x1 *= (1.0f / rows);
 
 		m_UV[0] = maths::vec2(x, y);
 		m_UV[1] = maths::vec2(x, y1);
@@ -35,33 +43,36 @@ namespace graphics {
 		m_UV[3] = maths::vec2(x1, y);
 	}
 
-	void Sprite::setTile(const std::string name){
+	void Sprite::setTile(const char* name){
 		stop(false);
-		Tile* tile = TileManager::get(name);
+		Tile* tile = Tile::get(name);
+		m_Texture = tile->texture; //sets texture to tile texture
 		setUV(tile->index);
 	}
 
-	void Sprite::play(const std::string& name, const RepeatType& repeattype){
-		Animation* animation = AnimationManager::get(name);
-		if(animation == m_ActiveAnimation) return;
-		if (animation != nullptr){
+	void Sprite::play(const char* name, const RepeatType& repeattype){
+		Animation* animation = Animation::get(name);
+		m_Texture = animation->texture; //sets Texture to animation texture
+		if(animation == m_ActiveAnimation) return; //already playing
+		if (animation != nullptr){ //play for the first time
 			m_RepeatType = repeattype;
 			m_ActiveAnimation = animation;
 			m_StartOfAnimation = std::chrono::high_resolution_clock::now();
-			ActiveAnimationManager::add(this);
+			m_CurrentFrame = animation->startFrame; //prepares first frame
+			AnimationManager::add(id);
 			return;
 		}
 		Debug::Log("Animation not found!", LogType::Error);
 	}
 
 	void Sprite::stop(bool setToFallback){
-		if(m_ActiveAnimation != nullptr && m_ActiveAnimation->fallback >= 0 && setToFallback == true)
-			setUV(m_ActiveAnimation->fallback);
+		if(m_ActiveAnimation != nullptr && m_ActiveAnimation->fallbackFrame >= 0 && setToFallback == true)
+			setUV(m_ActiveAnimation->fallbackFrame);
 
 		m_RepeatType = RepeatType::None;
 		m_ActiveAnimation = nullptr;
 		m_Ping = true;
-		ActiveAnimationManager::remove(id);
+		AnimationManager::remove(id);
 	}
 
 } }

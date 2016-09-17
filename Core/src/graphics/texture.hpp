@@ -6,19 +6,19 @@
 #include <GL/glew.h>
 #include "../utils/ImageLoad.hpp"
 
-#include "../managers/element.hpp"
+#include "../managers/staticManager.hpp"
 
 namespace evo {
 namespace graphics {
 
-	class Texture : public Element{
+	class Texture : public StaticManager<Texture>{
 	private:
 		std::string m_FileName;
 		GLuint m_TID;
 		GLsizei m_Width, m_Height;
 		const unsigned int m_Rows, m_Columns;
 	public:
-		Texture(const std::string& name, const std::string& filename, const unsigned int& rows = 1, const unsigned int& columns = 1);
+		Texture(const char* name, const std::string& filename, const unsigned int& rows = 1, const unsigned int& columns = 1);
 		~Texture();
 		void bind() const;
 		void unbind() const;

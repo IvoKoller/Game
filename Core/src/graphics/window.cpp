@@ -9,7 +9,7 @@ namespace graphics {
 		if (!init())
 			glfwTerminate();
 
-		FontManager::init();
+		Font::init();
 		audio::SoundManager::init();
 		Debug::CheckError();
 
@@ -33,8 +33,7 @@ namespace graphics {
 	}
 
 	bool Window::init() {
-		if (!glfwInit())
-		{
+		if (!glfwInit()) {
 			Debug::Log("Failed to initialize GLFW!", LogType::Error);
 			return false;
 		}
@@ -47,8 +46,7 @@ namespace graphics {
 
 		m_Window = glfwCreateWindow(m_Width, m_Height, m_Title, NULL, NULL);
 
-		if (!m_Window)
-		{
+		if(!m_Window) {
 			Debug::Log("Failed to create GLFW window!", LogType::Error);
 			return false;
 		}
@@ -64,8 +62,7 @@ namespace graphics {
 		glfwSetCursorPosCallback(m_Window, cursor_position_callback);
 		glfwSwapInterval(0.0);
 
-		if (glewInit() != GLEW_OK)
-		{
+		if (glewInit() != GLEW_OK) {
 			Debug::Log("Could not initialize GLEW!", LogType::Error);
 			return false;
 		}

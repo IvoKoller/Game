@@ -17,7 +17,7 @@ namespace audio {
 	}
 
 	void SoundManager::clear() {
-		for (int i = 0; i < m_Elements.size(); i++) delete m_Elements[i];
+		Sound::clear();
 
 		gau_manager_destroy(m_Manager);
 		gc_shutdown();

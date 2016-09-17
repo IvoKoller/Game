@@ -4,6 +4,7 @@
 #include "src/graphics/window.hpp"
 #include "src/graphics/shader.hpp"
 #include "src/maths/maths.hpp"
+#include "src/physics/collider.hpp"
 
 #include "src/utils/timer.hpp"
 #include "src/utils/filepath.hpp"
@@ -25,16 +26,14 @@
 #include "src/graphics/layers/group.hpp"
 #include "src/graphics/texture.hpp"
 #include "src/graphics/label.hpp"
+#include "src/graphics/tile.hpp"
 
 #include "src/graphics/camera.hpp"
 
 #include "ext/gorilla-audio/ga.h"
 #include "ext/gorilla-audio/gau.h"
 
-#include "src/managers/font_manager.hpp"
 #include "src/managers/sound_manager.hpp"
-#include "src/managers/tile_manager.hpp"
-#include "src/managers/texture_manager.hpp"
 #include "src/managers/animation_manager.hpp"
 
 int main(int argc, char *argv[]) {
@@ -42,7 +41,7 @@ int main(int argc, char *argv[]) {
 	using namespace graphics;
 	using namespace audio;
 	using namespace maths;
-
+	using namespace physics;
 	//=======SETS FILEPATH========
 	std::string path(argv[0]);
 	filepath pathToExec(path);
@@ -58,24 +57,30 @@ int main(int argc, char *argv[]) {
 	StaticLayer staticlayer(&shader);
 	DefaultLayer defaultlayer(&shader, camera);
 
-	TextureManager::add(new Texture("Spritesheet", "assets/textures/pokemon.png", 3, 4)); //NOTE: allocate on heap as it is a lot of data
-	TextureManager::add(new Texture("Background", "assets/textures/background.png"));
+	Texture::add(new Texture("Spritesheet", "assets/textures/pokemon.png", 3, 4));
+	Texture::add(new Texture("Background", "assets/textures/background.png"));
 
-	Sprite character(0, 0, 5, 5, TextureManager::get("Spritesheet")); //NOTE: later probably also on heap
-	staticlayer.add(character);
-
-	Sprite background(0, 0, 75, 75, TextureManager::get("Background"));
+	Sprite background(0, 0, 75, 75, Texture::get("Background"));
+	Sprite::add(&background);
+	background.addCollider(physics::Layer::Static, true);
 	defaultlayer.add(background);
 
-	TileManager::add(new Tile("right", 1));
-	TileManager::add(new Tile("up", 4));
-	TileManager::add(new Tile("left", 7));
-	TileManager::add(new Tile("down", 10));
+	Sprite character(20, 20, 5, 5, Texture::get("Spritesheet")); //NOTE: later probably also on heap
+	Sprite::add(&character);
+	character.addCollider(physics::Layer::Dynamic);
+	defaultlayer.add(character);
 
-	AnimationManager::add(new Animation("walkDown", 9, 11, 10));
-	AnimationManager::add(new Animation("walkLeft", 6, 8, 7));
-	AnimationManager::add(new Animation("walkUp", 3, 5, 4));
-	AnimationManager::add(new Animation("walkRight", 0, 2, 1));
+	camera.bindToTarget(character.getPosition());
+
+	Tile::add(new Tile("right", 1));
+	Tile::add(new Tile("up", 4));
+	Tile::add(new Tile("left", 7));
+	Tile::add(new Tile("down", 10));
+
+	Animation::add(new Animation("walkDown", 9, 11, 10));
+	Animation::add(new Animation("walkLeft", 6, 8, 7));
+	Animation::add(new Animation("walkUp", 3, 5, 4));
+	Animation::add(new Animation("walkRight", 0, 2, 1));
 
 	character.setTile("down");
 
@@ -86,44 +91,45 @@ int main(int argc, char *argv[]) {
 	g->add(fps);
 	staticlayer.add(*g);
 
-	GLint texIDs[] = //TODO: Clean this up
-	{
-		0, 1, 2, 3, 4, 5, 6, 7, 8, 9
-	};
+	GLint texIDs[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }; //TODO: Clean this up
 
 	shader.enable();
 	shader.setUniform1iv("textures", texIDs, 10);
 
-	SoundManager::add(new Sound("Pokemon", "assets/sounds/pallet-town.ogg"));
-	SoundManager::get("Pokemon")->loop();
+	Sound::add(new Sound("Pokemon", "assets/sounds/pallet-town.ogg"));
+	//Sound::get("Pokemon")->loop();
 
 	Timer time;
 	float timer = 0;
 	unsigned int frames = 0;
 
-	Debug::CheckError();
-	while (!window.closed())
-	{
+	while (!window.closed()) {
 		window.clear();
 
-		if (window.isKeyPressed(GLFW_KEY_LEFT)){
-			character.play("walkLeft", RepeatType::Pingpong);
-			camera.position.x -= 0.05f;
-		}else if (window.isKeyPressed(GLFW_KEY_UP)){
-			character.play("walkUp", RepeatType::Pingpong);
-			camera.position.y += 0.05f;
-		}else if (window.isKeyPressed(GLFW_KEY_RIGHT)){
-			character.play("walkRight", RepeatType::Pingpong);
-			camera.position.x += 0.05f;
-		}else if (window.isKeyPressed(GLFW_KEY_DOWN)){
-			character.play("walkDown", RepeatType::Pingpong);
-			camera.position.y -= 0.05f;
-		}else{
-			character.stop();
-		}
+		//=================ps4 controller=============== TODO: later in window.cpp
+		int buttonsCount;
+		const unsigned char *buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &buttonsCount);
+		//==============================================
 
-		ActiveAnimationManager::update();
-		Debug::CheckError();
+		vec3 pos = character.getPosition();
+
+		if((window.isKeyPressed(GLFW_KEY_UP) || GLFW_PRESS == buttons[14]) && !character.collider->CollidesTop()){
+			character.play("walkUp", RepeatType::Pingpong);
+			if(character.isPlaying()) pos.y ++; //check if animation is on frame change
+		}else if((window.isKeyPressed(GLFW_KEY_RIGHT) || GLFW_PRESS == buttons[15]) && !character.collider->CollidesRight()){
+			character.play("walkRight", RepeatType::Pingpong);
+			if(character.isPlaying()) pos.x ++;
+		}else if((window.isKeyPressed(GLFW_KEY_DOWN) || GLFW_PRESS == buttons[16]) && !character.collider->CollidesBottom()){
+			character.play("walkDown", RepeatType::Pingpong);
+			if(character.isPlaying()) pos.y --;
+		}else if ((window.isKeyPressed(GLFW_KEY_LEFT) || GLFW_PRESS == buttons[17]) && !character.collider->CollidesLeft()){
+			character.play("walkLeft", RepeatType::Pingpong);
+			if(character.isPlaying()) pos.x --;
+		}else{ character.stop(); }
+
+		character.setPosition(pos);
+
+		AnimationManager::update();
 		defaultlayer.render();
 		staticlayer.render();
 		window.update();
@@ -140,9 +146,10 @@ int main(int argc, char *argv[]) {
 	}
 
 	//TODO: put this in ~window
-	TextureManager::clear();
+	Texture::clear();
 	SoundManager::clear();
-	FontManager::clear();
+	Font::clear();
+	Collider::clear();
 
 	return 0;
 }

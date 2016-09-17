@@ -5,7 +5,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "../managers/font_manager.hpp"
+#include "font.hpp"
 #include "../managers/sound_manager.hpp"
 
 #include "../utils/debug.hpp"

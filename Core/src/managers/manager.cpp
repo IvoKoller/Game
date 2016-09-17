@@ -4,15 +4,14 @@ namespace evo {
 
     void Manager::add(Manager* element, std::vector<Manager*>& vector) {
         if(element == nullptr){ //handle nullpointer
-            //Debug::Log("Nullptr exception, no object passed on to add function!", LogType::Error);
+            Debug::Log("Nullptr exception, no object passed on to add function!", LogType::Error);
             return;
         }
-
         //attention, unsigned int is used as "object not found"
         //unsigned int -1 corrisponds to the highest number of unsigned int
         //in order to prevent undefined behaviour, must protect manager from getting to big
         if(vector.size() == (unsigned int) -2){
-            //Debug::Log("Manager cannot store more objects!", LogType::Error);
+            Debug::Log("Manager cannot store more objects!", LogType::Error);
             return;
         }
 
@@ -26,6 +25,10 @@ namespace evo {
                 vector.push_back(element);
                 return;
             }
+            if(vector.size() == 1){ //vector size for insert() has to be bigger than one in order to work
+                vector.insert(vector.begin(), element); //special case, new id is smaller than last one
+                return;
+            }
             //insert element at sorted position
             insert(element, vector, 0, vector.size() -2);
             return;
@@ -36,14 +39,13 @@ namespace evo {
     Manager* Manager::get(const unsigned int& id, std::vector<Manager*>& vector) {
         unsigned int index = search(id, vector, 0, vector.size() - 1);
         if(index != -1) return vector[index];
-        //Debug::Log("Couldn't get ID [" + std::to_string(element->id) + "]", LogType::Error);
+        Debug::Log("Couldn't get ID [" + std::to_string(id) + "]", LogType::Error);
         return nullptr;
     }
 
     void Manager::remove(const unsigned int& id, std::vector<Manager*>& vector) {
         unsigned int index = search(id, vector, 0, vector.size() - 1);
         if(index != -1){
-            delete vector[index];
             vector.erase(vector.begin() + index);
         }
     }
