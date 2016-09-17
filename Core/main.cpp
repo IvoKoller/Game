@@ -139,7 +139,7 @@ int main(int argc, char *argv[]) {
 		{
 			timer += 1.0f;
 			fps->text = std::to_string(frames) + " fps";
-			printf("%d fps\n", frames);
+			//printf("%d fps\n", frames);
 			frames = 0;
 		}
 
