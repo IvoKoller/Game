@@ -16,6 +16,7 @@ namespace evo {
         static void add(Manager* element) { Manager::add(element, m_Vector); }
         static T* getAtIndex(const unsigned int& index) {
             return static_cast<T*>(Manager::getAtIndex(index, m_Vector)); }
+        unsigned int getID() { return Manager::getID(); }
         static T* get(const unsigned int& id) { return static_cast<T*>(Manager::get(id, m_Vector)); }
         static T* get(const char* name) { return static_cast<T*>(Manager::get(name, m_Vector)); }
         static void clear() { Manager::clear(m_Vector); }

@@ -7,8 +7,8 @@ LFLAGS = -lglfw3 -lglew -lfreeimage -lfreetype -logg -lvorbis -lvorbisfile \
 -framework OpenAL -framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo
 endif
 ifeq ($(UNAME), Linux)
-LFLAGS = -lGL -lGLU -lGLEW -lglfw -lX11 -lXxf86vm -lXrandr -lpthread -lXi -lfreeimage -lfreetype -logg -lvorbis -lvorbisfile \
--lopenal
+LFLAGS = -lGL -lGLU -lGLEW -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi -ldl -lXinerama -lXcursor \
+-lfreeimage -lfreetype -logg -lvorbis -lvorbisfile -lopenal
 endif
 
 
@@ -26,7 +26,7 @@ EXT = $(FTGL) $(GA)
 
 AUDIO = sound.o
 GRAPHICS = sprite.o static_sprite.o shader.o window.o BatchRenderer2D.o texture.o \
-label.o font.o camera.o
+label.o font.o camera.o button.o menuButton.o tileButton.o textfield.o editor.o
 LAYERS =  layer.o defaultlayer.o staticlayer.o group.o
 MANAGERS = manager.o sound_manager.o animation_manager.o
 BUFFERS = buffer.o indexbuffer.o vertexarray.o
@@ -36,15 +36,18 @@ UTILS = filepath.o debug.o
 
 #============
 
-OBJS =  main.o $(EXT) $(GRAPHICS) $(BUFFERS) $(MATHS) $(PHYSICS) $(LAYERS) $(UTILS) $(AUDIO) $(MANAGERS)
+OBJS = $(EXT) $(GRAPHICS) $(BUFFERS) $(MATHS) $(PHYSICS) $(LAYERS) $(UTILS) $(AUDIO) $(MANAGERS)
 CC = g++
 CFLAGS =-std=gnu++11 -c -Wall -Wno-c++11-extensions -Wno-pragma-once-outside-header
 EXECUTABLE = game
 
-all: $(EXECUTABLE)
+game: $(EXECUTABLE)
 
-$(EXECUTABLE): $(OBJS)
-	$(CC) $(OBJS) -o $(EXECUTABLE) $(LFLAGS)
+$(EXECUTABLE): gameMain.o $(OBJS)
+	$(CC) gameMain.o $(OBJS) -o $(EXECUTABLE) $(LFLAGS)
+
+editor: editorMain.o $(OBJS)
+	$(CC) editorMain.o $(OBJS) -o Editor $(LFLAGS)
 
 app: $(OBJS)
 	$(CC) $(LFLAGS) $(OBJS) -o $(EXECUTABLE).app
@@ -52,6 +55,7 @@ app: $(OBJS)
 #==================================
 #==========EXT Libraries===========
 #==================================
+
 ifeq ($(UNAME), Linux)
 $(FTGL): %.o: ext/freetype-gl/%.c
 	gcc -c -I/usr/include/freetype2/ $^
@@ -73,12 +77,14 @@ $(GA_3): %.o: ext/gorilla-audio/common/%.c
 #==================================
 #==================================
 
-main.o: main.cpp
+gameMain.o: gameMain.cpp
+	$(CC) $(CFLAGS) $^
+
+editorMain.o: editorMain.cpp
 	$(CC) $(CFLAGS) $^
 
 $(AUDIO): %.o: src/audio/%.cpp
 	$(CC) $(CFLAGS) $^
-
 
 $(GRAPHICS): %.o: src/graphics/%.cpp
 	$(CC) $(CFLAGS) $^

@@ -13,6 +13,14 @@ namespace graphics {
 		: Renderable2D(maths::vec3(x, y, 0), maths::vec2(width, height), 0xffffffff),
 		StaticManager() { m_Texture = texture; if(StaticCollider) addCollider(); }
 
+	Sprite::Sprite(float x, float y, float width, float height, const char* tile, bool StaticCollider)
+		: Renderable2D(maths::vec3(x, y, 0), maths::vec2(width, height), 0xffffffff),
+		StaticManager() { setTile(tile); if(StaticCollider) addCollider(); }
+
+	Sprite::Sprite(float x, float y, float width, float height, Tile* tile, bool StaticCollider)
+		: Renderable2D(maths::vec3(x, y, 0), maths::vec2(width, height), 0xffffffff),
+		StaticManager() { setTile(tile); if(StaticCollider) addCollider(); }
+
 	Sprite::~Sprite() { }
 
 	void Sprite::addCollider(physics::Layer layer, bool invert){
@@ -46,6 +54,12 @@ namespace graphics {
 	void Sprite::setTile(const char* name){
 		stop(false);
 		Tile* tile = Tile::get(name);
+		m_Texture = tile->texture; //sets texture to tile texture
+		setUV(tile->index);
+	}
+
+	void Sprite::setTile(Tile* tile){
+		stop(false);
 		m_Texture = tile->texture; //sets texture to tile texture
 		setUV(tile->index);
 	}

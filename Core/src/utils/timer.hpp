@@ -10,18 +10,10 @@ namespace evo {
 		typedef std::chrono::duration<float, std::milli> milliseconds_type;
 		std::chrono::time_point<HighResolutionClock> m_Start;
 	public:
-		Timer()
-		{
-			reset();
-		}
+		Timer() { reset(); }
+		void reset() { m_Start = HighResolutionClock::now(); }
 
-		void reset()
-		{
-			m_Start = HighResolutionClock::now();
-		}
-
-		float elapsed()
-		{
+		float elapsed() {
 			return std::chrono::duration_cast<milliseconds_type>(HighResolutionClock::now() - m_Start).count() / 1000.0f;
 		}
 

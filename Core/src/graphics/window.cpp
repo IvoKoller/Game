@@ -6,22 +6,19 @@ namespace graphics {
 	Window::Window(const char *title, int width, int height)
 		: m_Title(title), m_Width(width), m_Height(height) {
 
-		if (!init())
-			glfwTerminate();
+		if (!init()) glfwTerminate();
 
 		Font::init();
 		audio::SoundManager::init();
 		Debug::CheckError();
 
-		for (int i = 0; i < MAX_KEYS; i++)
-		{
+		for (int i = 0; i < MAX_KEYS; i++) {
 			m_Keys[i] = false;
 			m_KeyState[i] = false;
 			m_KeyTyped[i] = false;
 		}
 
-		for (int i = 0; i < MAX_BUTTONS; i++)
-		{
+		for (int i = 0; i < MAX_BUTTONS; i++) {
 			m_MouseButtons[i] = false;
 			m_MouseState[i] = false;
 			m_MouseClicked[i] = false;
@@ -73,7 +70,25 @@ namespace graphics {
 
 		std::string errmsg = "OpenGL Version: " + std::string((char*)glGetString(GL_VERSION));
 		Debug::Log(errmsg, LogType::Note);
+
+		std::cerr << glfwGetVersionString() << std::endl;
+
+		checkJoystick();
+		if(m_Joystick) std::cerr << "Buttoncount: " << m_JoystickButtonsCount << std::endl;
+
 		return true;
+	}
+
+
+	bool Window::isJoystickButtonPressed(unsigned int button) const {
+		if(m_Joystick && m_JoystickButtonsCount > button && m_JoystickButtons[button] == GLFW_PRESS) return true;
+		return false;
+	}
+
+	float Window::getJoystickAxis(unsigned int axis) const {
+		if(m_Joystick && m_JoystickAxesCount > axis) return m_JoystickAxes[axis];
+		Debug::Log("Joystick Axis count wrong", LogType::Error);
+		return 0;
 	}
 
 	bool Window::isKeyPressed(unsigned int keycode) const {
@@ -135,6 +150,7 @@ namespace graphics {
 		glfwSwapBuffers(m_Window);
 
 		audio::SoundManager::update();
+		checkJoystick();
 		Debug::CheckError();
 	}
 
@@ -147,6 +163,16 @@ namespace graphics {
 		Window* win = (Window*)glfwGetWindowUserPointer(window);
 		win->m_Width = width;
 		win->m_Height = height;
+	}
+
+	void Window::checkJoystick() {
+		if(glfwJoystickPresent(GLFW_JOYSTICK_1)){
+			m_Joystick = true;
+			m_JoystickButtons = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &m_JoystickButtonsCount);
+			m_JoystickAxes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &m_JoystickAxesCount);
+			return;
+		}
+		m_Joystick = false;
 	}
 
 	void Window::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {

@@ -19,7 +19,6 @@ namespace graphics {
 		Shader(const char* vertPath, const char* fragPath);
 		~Shader();
 
-
 		void setUniform1f(const GLchar* name, float value);
 		void setUniform1fv(const GLchar* name, float* value, int count);
 		void setUniform1i(const GLchar* name, int value);

@@ -24,6 +24,11 @@ namespace graphics {
 		GLFWwindow *m_Window;
 		bool m_Closed;
 
+		bool m_Joystick;
+		int m_JoystickButtonsCount;
+		int m_JoystickAxesCount;
+		const unsigned char *m_JoystickButtons;
+		const float *m_JoystickAxes;
 		bool m_Keys[MAX_KEYS];
 		bool m_KeyState[MAX_KEYS];
 		bool m_KeyTyped[MAX_KEYS];
@@ -41,6 +46,9 @@ namespace graphics {
 		inline int getWidth() const { return m_Width; }
 		inline int getHeight() const { return m_Height; }
 
+		bool isJoysickPresent() const { return m_Joystick; }
+		bool isJoystickButtonPressed(unsigned int button) const;
+		float getJoystickAxis(unsigned int axes) const;
 		bool isKeyPressed(unsigned int keycode) const;
 		bool isKeyTyped(unsigned int keycode) const;
 		bool isMouseButtonPressed(unsigned int button) const;
@@ -49,6 +57,7 @@ namespace graphics {
 
 	private:
 		bool init();
+		void checkJoystick();
 		static void window_resize(GLFWwindow* window, int width, int height);
 		static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 		static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);

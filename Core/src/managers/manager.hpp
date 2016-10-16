@@ -25,6 +25,7 @@ namespace evo {
         static Manager* getAtIndex(const unsigned int& index, std::vector<Manager*>& vector){
             return vector[index];
         }
+        unsigned int getID() { return id; }
         static Manager* get(const unsigned int& id, std::vector<Manager*>& vector);
         static Manager* get(const char* name, std::vector<Manager*>& vector){
             return get(hash(name), vector);

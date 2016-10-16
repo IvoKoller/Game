@@ -34,6 +34,8 @@ namespace graphics {
 
 		Sprite(float x, float y, float width, float height, unsigned int color, bool StaticCollider = false);
 		Sprite(float x, float y, float width, float height, Texture* texture, bool StaticCollider = false);
+		Sprite(float x, float y, float width, float height, const char* tile, bool StaticCollider = false);
+		Sprite(float x, float y, float width, float height, Tile* tile, bool StaticCollider = false);
 		~Sprite();
 
 		void addCollider(physics::Layer layer = physics::Layer::Static, bool invert = false);
@@ -43,6 +45,7 @@ namespace graphics {
 		std::chrono::high_resolution_clock::time_point getTimePoint() const { return m_StartOfAnimation; }
 		void resetTimePoint() { m_StartOfAnimation = std::chrono::high_resolution_clock::now(); }
 		void setTile(const char* name);
+		void setTile(Tile* tile);
 		void play(const char* name, const RepeatType& repeattype);
 		void stop(bool setToFallback = true);
 		bool isPlaying() { return m_IsPlaying; }

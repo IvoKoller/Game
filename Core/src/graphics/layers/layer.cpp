@@ -1,17 +1,16 @@
 #include "layer.hpp"
 
-namespace evo { namespace graphics {
+namespace evo {
+namespace graphics {
 
 	Layer::Layer(Renderer2D* renderer, Shader* shader, maths::mat4 projectionMatrix)
-		: m_Renderer(renderer), m_Shader(shader), m_ProjectionMatrix(projectionMatrix)
-	{
+		: m_Renderer(renderer), m_Shader(shader), m_ProjectionMatrix(projectionMatrix) {
 		m_Shader->enable();
 		m_Shader->setUniformMat4("pr_matrix", m_ProjectionMatrix);
 		m_Shader->disable();
 	}
 
-	Layer::~Layer() //TODO: does cause problemes 
-	{
+	Layer::~Layer(){ //TODO: causes problemes
 		delete m_Shader;
 		delete m_Renderer;
 
@@ -19,13 +18,11 @@ namespace evo { namespace graphics {
 			delete m_Renderables[i];
 	}
 
-	void Layer::add(Renderable2D& renderable)
-	{
+	void Layer::add(Renderable2D& renderable) {
 		m_Renderables.push_back(&renderable);
 	}
 
-	void Layer::render()
-	{
+	void Layer::render() {
 		m_Shader->enable();
 		m_Renderer->begin();
 
