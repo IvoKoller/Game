@@ -11,10 +11,10 @@ namespace graphics {
 
     class MenuButton : public Group, public StaticManager<MenuButton> {
         maths::vec2 m_Position;
-        Sprite* m_ButtonLeft;
-        Sprite* m_ButtonMiddle;
-        Sprite* m_ButtonRight;
-        Label* m_Label;
+        Sprite m_ButtonLeft;
+        Sprite m_ButtonMiddle;
+        Sprite m_ButtonRight;
+        Label m_Label;
         void (*m_CallbackFunction)(void);
         void (*m_ToggleCallbackFunction)(bool);
         bool m_Toggle = false;

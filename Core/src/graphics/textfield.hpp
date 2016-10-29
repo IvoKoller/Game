@@ -6,6 +6,7 @@
 #include "label.hpp"
 #include "../utils/timer.hpp"
 #include "layers/group.hpp"
+#include "editor.hpp"
 
 namespace evo {
 namespace graphics {
@@ -27,7 +28,6 @@ namespace graphics {
         bool m_Active = false;
     public:
         Textfield(float x, float y, float width, int max, bool input = true);
-
         static void update(const Window& window);
         std::string getString() { return m_String; }
         bool isActive() { return m_Active; }

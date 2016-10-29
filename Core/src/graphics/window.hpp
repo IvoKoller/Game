@@ -8,7 +8,7 @@
 
 #include "font.hpp"
 #include "../managers/sound_manager.hpp"
-
+#include "BatchRenderer2D.hpp"
 #include "../utils/debug.hpp"
 
 namespace evo {

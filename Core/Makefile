@@ -26,7 +26,8 @@ EXT = $(FTGL) $(GA)
 
 AUDIO = sound.o
 GRAPHICS = sprite.o static_sprite.o shader.o window.o BatchRenderer2D.o texture.o \
-label.o font.o camera.o button.o menuButton.o tileButton.o textfield.o editor.o
+label.o font.o camera.o button.o menuButton.o tileButton.o textfield.o editor.o \
+countButton.o
 LAYERS =  layer.o defaultlayer.o staticlayer.o group.o
 MANAGERS = manager.o sound_manager.o animation_manager.o
 BUFFERS = buffer.o indexbuffer.o vertexarray.o

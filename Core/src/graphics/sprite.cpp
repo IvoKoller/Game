@@ -23,14 +23,14 @@ namespace graphics {
 
 	Sprite::~Sprite() { }
 
-	void Sprite::addCollider(physics::Layer layer, bool invert){
-		Manager* col = new physics::Collider(m_Position, m_Size.x, m_Size.y, layer, invert);
+	void Sprite::addCollider(maths::vec3 clrlvl, physics::Layer layer, bool invert){
+		Manager* col = new physics::Collider(m_Position, m_Size.x, m_Size.y, clrlvl, layer, invert);
 		physics::Collider::add(col);
 		collider = static_cast<physics::Collider*>(col);
 	}
 
-	void Sprite::addCollider(physics::Layer layer, float width, float height, bool invert){
-		Manager* col = new physics::Collider(m_Position, width, height, layer, invert);
+	void Sprite::addCollider(maths::vec3 clrlvl, physics::Layer layer, float width, float height, bool invert){
+		Manager* col = new physics::Collider(m_Position, width, height, clrlvl, layer, invert);
 		physics::Collider::add(col);
 		collider = static_cast<physics::Collider*>(col);
 	}

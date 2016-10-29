@@ -19,28 +19,34 @@ namespace physics {
         const maths::vec3& m_Min; //min = position
         float m_Width;
         float m_Height;
+        maths::vec3 m_ColorLevel;
         Layer m_Layer;
         bool m_Inverted;
 
     public:
         Collider(const maths::vec3& position, float width, float height,
-            Layer layer = Layer::Static, bool invert = false);
+            maths::vec3 clrlvl = maths::vec3(1,1,1), Layer layer = Layer::Static, bool invert = false);
 
         bool CollidesWith(const char* name) const;
         bool CollidesWith(const unsigned int& id) const;
         bool CollidesWith(const Collider& other) const;
 
-        bool Collides(Layer layer = Layer::All) const ; //layer = all checks all layers
+        bool Collides(maths::vec3 clrlvl = maths::vec3(1,1,1),
+        Layer layer = Layer::All) const ; //layer::all checks all layers
 
         bool CollidesTopWith(const Collider& other) const;
         bool CollidesBottomWith(const Collider& other) const;
         bool CollidesLeftWith(const Collider& other) const;
         bool CollidesRightWith(const Collider& other) const;
 
-        bool CollidesTop(Layer layer = Layer::All) const;
-        bool CollidesBottom(Layer layer = Layer::All) const;
-        bool CollidesLeft(Layer layer = Layer::All) const;
-        bool CollidesRight(Layer layer = Layer::All) const;
+        bool CollidesTop(maths::vec3 clrlvl = maths::vec3(1,1,1),
+        Layer layer = Layer::All) const;
+        bool CollidesBottom(maths::vec3 clrlvl = maths::vec3(1,1,1),
+        Layer layer = Layer::All) const;
+        bool CollidesLeft(maths::vec3 clrlvl = maths::vec3(1,1,1),
+        Layer layer = Layer::All) const;
+        bool CollidesRight(maths::vec3 clrlvl = maths::vec3(1,1,1),
+        Layer layer = Layer::All) const;
 
         bool Contains(const maths::vec2& point) const;
 
@@ -50,7 +56,6 @@ namespace physics {
         bool operator<(const Collider& other) const;
         bool operator>(const Collider& other) const;
 
-        friend std::ostream& operator<<(std::ostream& stream, const Collider& collider);
     private:
         bool Intersects(const Collider& other) const;
     };

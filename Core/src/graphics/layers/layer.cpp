@@ -22,6 +22,16 @@ namespace graphics {
 		m_Renderables.push_back(&renderable);
 	}
 
+	void Layer::rem(Renderable2D& renderable) {
+		for(int i = 0; i < m_Renderables.size(); i++) {
+			if(m_Renderables[i] == &renderable){
+				m_Renderables.erase(m_Renderables.begin() + i);
+				std::cout << "found!!" << std::endl;
+				break;
+			}
+		}
+	}
+
 	void Layer::render() {
 		m_Shader->enable();
 		m_Renderer->begin();

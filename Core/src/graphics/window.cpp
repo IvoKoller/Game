@@ -87,7 +87,7 @@ namespace graphics {
 
 	float Window::getJoystickAxis(unsigned int axis) const {
 		if(m_Joystick && m_JoystickAxesCount > axis) return m_JoystickAxes[axis];
-		Debug::Log("Joystick Axis count wrong", LogType::Error);
+		//Debug::Log("Joystick Axis count wrong", LogType::Error);
 		return 0;
 	}
 
@@ -148,7 +148,7 @@ namespace graphics {
 
 		glfwPollEvents();
 		glfwSwapBuffers(m_Window);
-
+		BatchRenderer2D::setWindowSize(maths::vec2((float)m_Width,(float)m_Height));
 		audio::SoundManager::update();
 		checkJoystick();
 		Debug::CheckError();

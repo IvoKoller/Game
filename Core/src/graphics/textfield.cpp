@@ -7,12 +7,12 @@ namespace graphics {
     : Group(maths::mat4::translate(maths::vec3(x, y, 0.0f))) {
         m_Position = maths::vec2(x,y);
         m_Max = max;
-        m_TextfieldLeft = new Sprite(-1.5f,0,1.5f, 1.5f, "TextfieldLeft");
-        m_Textfield = new Sprite(0,0,width, 1.5f, "TextfieldMiddle", true);
-        m_TextfieldRight = new Sprite(width,0,1.5f, 1.5f, "TextfieldRight");
+        m_TextfieldLeft = new Sprite(-1,0,1, 1, "TextfieldLeft");
+        m_Textfield = new Sprite(0,0,width, 1, "TextfieldMiddle", true);
+        m_TextfieldRight = new Sprite(width,0,1, 1, "TextfieldRight");
         m_Cursor = new Sprite(0.1f,0.5f,0.3f,0.6f, 0xffffffff);
-        m_Label = new Label("",0.1f,0.6f,"Bpdots20",0xff000000);
-        m_Label->setColor(maths::vec4(157,168,201,1));
+        m_Label = new Label("",0.1f,0.6f,"Bpdots32",0xff000000);
+        m_Label->setColor(maths::vec4(157,168,201,255));
 
         Sprite::add(m_TextfieldLeft);
         Sprite::add(m_Textfield);
@@ -55,6 +55,8 @@ namespace graphics {
             if(tf->m_Active) tf->getInput(window);
             tf->m_Cursor->setPosition(maths::vec3(0.1f + 0.4f * tf->m_String.size(),0.5f,0));
             tf->m_Label->text = tf->m_String;
+
+            Editor::setFile(tf->m_String); //reeeally bad, just for the sake of getting things done
         }
     }
 

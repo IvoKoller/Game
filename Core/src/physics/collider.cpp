@@ -4,8 +4,9 @@ namespace evo {
 namespace physics {
 
 	Collider::Collider(const maths::vec3& position, float width, float height,
-		Layer layer, bool invert)
-		: m_Min(position), m_Width(width), m_Height(height), m_Layer(layer), m_Inverted(invert) { }
+		maths::vec3 clrlvl, Layer layer, bool invert)
+		: m_Min(position), m_Width(width), m_Height(height), m_ColorLevel(clrlvl),
+		 m_Layer(layer), m_Inverted(invert) { }
 
 	bool Collider::CollidesWith(const char* name) const {
 		return CollidesWith(hash(name));
@@ -25,10 +26,13 @@ namespace physics {
 		return result;
 	}
 
-	bool Collider::Collides(Layer layer) const {
+	bool Collider::Collides(maths::vec3 clrlvl, Layer layer) const {
 		for(Manager* element : m_Vector) {
 			Collider* collider = static_cast<Collider*>(element);
-			if(collider->m_Layer == layer || layer == Layer::All)
+			if(collider != this && (layer == Layer::All || collider->m_Layer == layer)
+			&& (collider->m_ColorLevel.x + clrlvl.x == 2 ||
+				collider->m_ColorLevel.y + clrlvl.y == 2 ||
+				collider->m_ColorLevel.z + clrlvl.z == 2))
 				if(this->CollidesWith(*collider)) return true;
 		}
 	}
@@ -69,34 +73,46 @@ namespace physics {
 		return result;
 	}
 
-	bool Collider::CollidesTop(Layer layer) const {
+	bool Collider::CollidesTop(maths::vec3 clrlvl, Layer layer) const {
 		for(Manager* element : m_Vector) {
 			Collider* collider = static_cast<Collider*>(element);
-			if(collider != this && (layer == Layer::All || collider->m_Layer == layer))
-			if(this->CollidesTopWith(*collider)) return true;
+			if(collider != this && (layer == Layer::All || collider->m_Layer == layer)
+			&& (collider->m_ColorLevel.x + clrlvl.x == 2 ||
+				collider->m_ColorLevel.y + clrlvl.y == 2 ||
+				collider->m_ColorLevel.z + clrlvl.z == 2))
+				if(this->CollidesTopWith(*collider)) return true;
 		}
 	}
 
-	bool Collider::CollidesBottom(Layer layer) const {
+	bool Collider::CollidesBottom(maths::vec3 clrlvl, Layer layer) const {
 		for(Manager* element : m_Vector) {
 			Collider* collider = static_cast<Collider*>(element);
-			if(collider != this && (layer == Layer::All || collider->m_Layer == layer))
+			if(collider != this && (layer == Layer::All || collider->m_Layer == layer)
+			&& (collider->m_ColorLevel.x + clrlvl.x == 2 ||
+				collider->m_ColorLevel.y + clrlvl.y == 2 ||
+				collider->m_ColorLevel.z + clrlvl.z == 2))
 				if(this->CollidesBottomWith(*collider)) return true;
 		}
 	}
 
-	bool Collider::CollidesLeft(Layer layer) const {
+	bool Collider::CollidesLeft(maths::vec3 clrlvl, Layer layer) const {
 		for(Manager* element : m_Vector) {
 			Collider* collider = static_cast<Collider*>(element);
-			if(collider != this && (layer == Layer::All || collider->m_Layer == layer))
+			if(collider != this && (layer == Layer::All || collider->m_Layer == layer)
+			&& (collider->m_ColorLevel.x + clrlvl.x == 2 ||
+				collider->m_ColorLevel.y + clrlvl.y == 2 ||
+				collider->m_ColorLevel.z + clrlvl.z == 2))
 				if(this->CollidesLeftWith(*collider)) return true;
 		}
 	}
 
-	bool Collider::CollidesRight(Layer layer) const {
+	bool Collider::CollidesRight(maths::vec3 clrlvl, Layer layer) const {
 		for(Manager* element : m_Vector) {
 			Collider* collider = static_cast<Collider*>(element);
-			if(collider != this && (layer == Layer::All || collider->m_Layer == layer))
+			if(collider != this && (layer == Layer::All || collider->m_Layer == layer)
+			&& (collider->m_ColorLevel.x + clrlvl.x == 2 ||
+				collider->m_ColorLevel.y + clrlvl.y == 2 ||
+				collider->m_ColorLevel.z + clrlvl.z == 2))
 				if(this->CollidesRightWith(*collider)) return true;
 		}
 	}

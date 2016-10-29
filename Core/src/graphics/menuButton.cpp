@@ -4,23 +4,18 @@ namespace evo {
 namespace graphics {
 
     MenuButton::MenuButton(float x, float y, float width, std::string name)
-        : Group(maths::mat4::translate(maths::vec3(x, y, 0.0f))) {
-        m_Position = maths::vec2(x,y);
+        : Group(maths::mat4::translate(maths::vec3(x, y, 0.0f))),
+        m_Position(maths::vec2(x,y)),
+        m_ButtonLeft(-1 ,0, 1, 1,"ButtonLeftNormal"),
+        m_ButtonMiddle(0, 0,width, 1,"ButtonMiddleNormal",true),
+        m_ButtonRight(width, 0, 1, 1, "ButtonRightNormal"),
+        m_Label(name, 0, 0, "Bpdots32", 0xff000000) {
+        this->Group::add(&m_ButtonLeft);
+        this->Group::add(&m_ButtonMiddle);
+        this->Group::add(&m_ButtonRight);
+        this->Group::add(&m_Label);
 
-        m_ButtonLeft = new Sprite(-1.5f ,0, 1.5f, 1.5f,"ButtonLeftNormal");
-        m_ButtonMiddle = new Sprite(0, 0,width, 1.5f,"ButtonMiddleNormal",true);
-        m_ButtonRight = new Sprite(width, 0, 1.5f, 1.5f, "ButtonRightNormal");
-        m_Label = new Label(name, 0.1f, 0.5f, "Bpdots20", 0xff000000);
-
-        Sprite::add(m_ButtonLeft);
-        Sprite::add(m_ButtonMiddle);
-        Sprite::add(m_ButtonRight);
-        Label::add(m_Label);
-
-        this->Group::add(m_ButtonLeft);
-        this->Group::add(m_ButtonMiddle);
-        this->Group::add(m_ButtonRight);
-        this->Group::add(m_Label);
+        MenuButton::StaticManager::add(this);
     }
 
     MenuButton::~MenuButton() { }
@@ -36,7 +31,7 @@ namespace graphics {
             maths::vec2 relativeMousePosition = cursor - button->m_Position;
             if(button->m_Toggle){
                 if(!button->m_ToggleActive){
-                    if(button->m_ButtonMiddle->collider->Contains(relativeMousePosition)){
+                    if(button->m_ButtonMiddle.collider->Contains(relativeMousePosition)){
                         if(window.isMouseButtonClicked(0)){
                             button->m_ToggleCallbackFunction(true);
                             button->pressed();
@@ -44,7 +39,7 @@ namespace graphics {
                         } else button->hover();
                     } else button->normal();
                 } else {
-                    if(button->m_ButtonMiddle->collider->Contains(relativeMousePosition)
+                    if(button->m_ButtonMiddle.collider->Contains(relativeMousePosition)
                     && window.isMouseButtonClicked(0)){
                         button->m_ToggleCallbackFunction(false);
                         button->normal();
@@ -52,7 +47,7 @@ namespace graphics {
                     }
                 }
             }else{
-                if(button->m_ButtonMiddle->collider->Contains(relativeMousePosition)){
+                if(button->m_ButtonMiddle.collider->Contains(relativeMousePosition)){
                     if(window.isMouseButtonClicked(0)) button->m_CallbackFunction();
                     else if(window.isMouseButtonPressed(0)) button->pressed();
                     else button->hover();
@@ -62,27 +57,27 @@ namespace graphics {
     }
 
     void MenuButton::normal() {
-        m_ButtonLeft->setTile("ButtonLeftNormal");
-        m_ButtonMiddle->setTile("ButtonMiddleNormal");
-        m_ButtonRight->setTile("ButtonRightNormal");
-        m_Label->setColor(maths::vec4(0,0,0,1));
-        m_Label->setPosition(maths::vec3(0.15f,0.6f,0));
+        m_ButtonLeft.setTile("ButtonLeftNormal");
+        m_ButtonMiddle.setTile("ButtonMiddleNormal");
+        m_ButtonRight.setTile("ButtonRightNormal");
+        m_Label.setColor(maths::vec4(0,0,0,255));
+        m_Label.setPosition(maths::vec3(0.15f,0.4f,0));
     }
 
     void MenuButton::hover() {
-        m_ButtonLeft->setTile("ButtonLeftHover");
-        m_ButtonMiddle->setTile("ButtonMiddleHover");
-        m_ButtonRight->setTile("ButtonRightHover");
-        m_Label->setColor(0xff000000);
-        m_Label->setPosition(maths::vec3(0.15f,0.6f,0));
+        m_ButtonLeft.setTile("ButtonLeftHover");
+        m_ButtonMiddle.setTile("ButtonMiddleHover");
+        m_ButtonRight.setTile("ButtonRightHover");
+        m_Label.setColor(0xff000000);
+        m_Label.setPosition(maths::vec3(0.15f,0.4f,0));
     }
 
     void MenuButton::pressed() {
-        m_ButtonLeft->setTile("ButtonLeftPressed");
-        m_ButtonMiddle->setTile("ButtonMiddlePressed");
-        m_ButtonRight->setTile("ButtonRightPressed");
-        m_Label->setColor(0xff000000);
-        m_Label->setPosition(maths::vec3(0.15f,0.4f,0));
+        m_ButtonLeft.setTile("ButtonLeftPressed");
+        m_ButtonMiddle.setTile("ButtonMiddlePressed");
+        m_ButtonRight.setTile("ButtonRightPressed");
+        m_Label.setColor(0xff000000);
+        m_Label.setPosition(maths::vec3(0.15f,0.3f,0));
     }
 
 } }

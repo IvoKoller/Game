@@ -14,6 +14,8 @@ namespace evo {
         StaticManager(const char* name) : Manager(name) { }
         StaticManager() : Manager(m_IDCount) { }
         static void add(Manager* element) { Manager::add(element, m_Vector); }
+        static void remove(const unsigned int& index) {
+            Manager::removeFromStatic(index, m_Vector); }//implement remove, it is useful!
         static T* getAtIndex(const unsigned int& index) {
             return static_cast<T*>(Manager::getAtIndex(index, m_Vector)); }
         unsigned int getID() { return Manager::getID(); }

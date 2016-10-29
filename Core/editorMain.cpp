@@ -38,16 +38,6 @@
 #include "src/managers/sound_manager.hpp"
 #include "src/managers/animation_manager.hpp"
 
-void func(){ std::cout << "button clicked" << std::endl; }
-
-unsigned int selectedID;
-unsigned int IDarray[16*16] = { };
-
-void funct(unsigned int textureID) { selectedID = textureID; }
-
-void addInfo(unsigned int index) { IDarray[index] = selectedID; }
-void removeInfo(unsigned int index) { IDarray[index] = NULL; }
-
 int main(int argc, char *argv[]) {
 	using namespace evo;
 	using namespace graphics;
@@ -62,19 +52,20 @@ int main(int argc, char *argv[]) {
 	//========DON'T DELETE=========
 
 	//=================== INIT WINDOW ========================
-	Window window("EVO Game Engine - Editor", 960, 540);
+	Window window("EVO Game Engine - Editor", 1920, 1080);
 	Shader shader("src/shaders/basic.vert", "src/shaders/basic.frag");
-	Editor editor(window, shader);
+	StaticLayer uilayer(&shader); // could all happen inside Editor
+	Editor editor(window, shader, uilayer);
 	shader.enable();
 	shader.setUniform4f("filter", maths::vec4(1,1,1,1));
 	//Camera camera;
 	//========================================================
 
-    StaticLayer uilayer(&shader);
+	// could all happen inside Editor
 
     //ui sprites separate texture
-    Texture::add(new Texture("Spritesheet", "assets/textures/sprite.png", 23, 1));
-    Texture::add(new Texture("UI-Spritesheet", "assets/textures/sprite.png", 23, 1));
+    Texture::add(new Texture("Spritesheet", "assets/textures/sprite.png", 32, 1));
+    Texture::add(new Texture("UI-Spritesheet", "assets/textures/sprite.png", 32, 1));
 
 	Tile::clear();
 
@@ -98,42 +89,63 @@ int main(int argc, char *argv[]) {
     Tile::add(new Tile("ButtonRightNormal", 16, 1, 1, Texture::getAtIndex(1)));
     Tile::add(new Tile("ButtonRightHover", 17, 1, 1, Texture::getAtIndex(1)));
     Tile::add(new Tile("ButtonRightPressed", 18, 1, 1, Texture::getAtIndex(1)));
+
 	Tile::add(new Tile("TextfieldLeft", 19, 1, 1, Texture::getAtIndex(1)));
 	Tile::add(new Tile("TextfieldMiddle", 20, 1, 1, Texture::getAtIndex(1)));
 	Tile::add(new Tile("TextfieldMiddleHover", 21, 1, 1, Texture::getAtIndex(1)));
 	Tile::add(new Tile("TextfieldRight", 22, 1, 1, Texture::getAtIndex(1)));
+
+	Tile::add(new Tile("CountButtonNormal", 23, 1, 1, Texture::getAtIndex(1)));
+	Tile::add(new Tile("CountButtonPlusHover", 24, 1, 1, Texture::getAtIndex(1)));
+	Tile::add(new Tile("CountButtonPlusPressed", 25, 1, 1, Texture::getAtIndex(1)));
+	Tile::add(new Tile("CountButtonMinusHover", 26, 1, 1, Texture::getAtIndex(1)));
+	Tile::add(new Tile("CountButtonMinusPressed", 27, 1, 1, Texture::getAtIndex(1)));
+
+	Tile::add(new Tile("Collider", 28, 1, 1, Texture::getAtIndex(1)));
+	Tile::add(new Tile("Player", 29, 1, 1, Texture::getAtIndex(1)));
+	Tile::add(new Tile("PlayerButton", 30, 1, 1, Texture::getAtIndex(1)));
+	Tile::add(new Tile("PlayerButtonHover", 31, 1, 1, Texture::getAtIndex(1)));
 
     GLint texIDs[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }; //TODO: Clean this up
     shader.enable();
     shader.setUniform1iv("textures", texIDs, 10);
 
     //=============== FONTS =================
-    Font::add(new Font("Bpdots32", "assets/fonts/bpdots.otf", 32)); //TODO: font size dipendent on screen size
-    Font::add(new Font("Bpdots20", "assets/fonts/bpdots.otf", 20)); //For Editor
+    Font::add(new Font("Bpdots32", "assets/fonts/bpdots.otf", 32)); //For Editor
     //======================================
 
 	Sprite background(-16,-9,32,18,0xffffffff);
-	background.setColor(maths::vec4(67, 72, 84, 1));
-	Sprite backgroundGrid(-1,-8,16,16,0xff000000);
+	background.setColor(maths::vec4(67, 72, 84, 255));
+	Sprite backgroundGrid(-1,-8.75,16,16,0xff000000);
+	Sprite menubar(-16,7.5,32,1.5,0xffffffff);
+	menubar.setColor(maths::vec4(71, 76, 92, 255));
 
 	uilayer.add(background);
 	uilayer.add(backgroundGrid);
+	uilayer.add(menubar);
 
-	MenuButton loadButton(-7, 6.5, 2, "Load");
-	MenuButton saveButton(-4, 6.5, 2, "Save");
-	Textfield textfield(-7, 4.5, 5, 11);
-    MenuButton runButton(-7, 2.5, 2, "Run");
+	MenuButton loadButton(-15.5, 7.75, 1.5, "Load");
+	Textfield textfield(-13, 7.75, 5, 11);
+	MenuButton saveButton(-7, 7.75, 1.5, "Save");
+	MenuButton runButton(-4.5, 7.75, 1.5, "Run");
+	CountButton mapsize(-2,7.75,Editor::updateWorldMap);
+
 	//output field (build failed, build successfull etc.)
 
-	//MenuButton ColliderOn()
-	//MenuButton ColliderOff()
-	MenuButton red(-7, 0, 2, "Red");
-	MenuButton green(-4, 0, 2, "Green");
-	MenuButton blue(-7, -2, 2, "Blue");
+	Label colorChannels("Color channels", -7.2, 1.7f,"Bpdots32", 0xff000000);
+	MenuButton red(-7, 0, 1.5, "Red");
+	MenuButton green(-4, 0, 1.8, "Green");
+	MenuButton blue(-7, -2, 1.5, "Blue");
 
-	loadButton.setFunction(func);
-	saveButton.setFunction(func);
-	runButton.setFunction(func);
+	Label colliders("Colliders", -7.2, -3,"Bpdots32", 0xff000000);
+	MenuButton colliderButton(-7,-5,3,"Default");
+	//tile-like collider button
+	//character button
+
+	loadButton.setFunction(Editor::load);
+	saveButton.setFunction(Editor::save);
+	runButton.setFunction(Editor::run);
+	colliderButton.setFunction(Editor::setColliderDefault);
 
 	red.setToggleFunction(Editor::red);
 	green.setToggleFunction(Editor::green);
@@ -143,71 +155,68 @@ int main(int argc, char *argv[]) {
 	green.setToggleActive();
 	blue.setToggleActive();
 
-	MenuButton::StaticManager::add(&loadButton);
 	Textfield::StaticManager::add(&textfield);
-    MenuButton::StaticManager::add(&saveButton);
-    MenuButton::StaticManager::add(&runButton);
-	MenuButton::StaticManager::add(&red);
-	MenuButton::StaticManager::add(&green);
-	MenuButton::StaticManager::add(&blue);
 
-	uilayer.add(loadButton);
+	Label::add(&colorChannels);
+	Label::add(&colliders);
+
 	uilayer.add(textfield);
+	uilayer.add(loadButton);
     uilayer.add(saveButton);
     uilayer.add(runButton);
 	uilayer.add(red);
 	uilayer.add(green);
 	uilayer.add(blue);
+	uilayer.add(colliderButton);
+	uilayer.add(mapsize);
+
+	uilayer.add(colorChannels);
+	uilayer.add(colliders);
 
 	Sprite* preview = new Sprite(-4,-8,2,2,Tile::get("Grid"));
-	selectedID = Tile::get("Grid")->getID();
+	Editor::select(Tile::get("Grid")->getID());
 	uilayer.add(*preview);
 
-	//Group palette(maths::mat4::translate(maths::vec3(-15, -8, 0)));
+	float tilesize = 1;
 	int x, y, c = 0;
     for(int i = 0; i < Tile::size(); i++){
-		//Check if texture is
+		//Check if texture is correct
         if (Tile::getAtIndex(i)->texture == Texture::getAtIndex(0)){
 			x = c%4; y = c/4; c++; //LOL
-			TileButton* tilebutton = new TileButton(-15+x,-8+y,1,1,Tile::getAtIndex(i)->getID(),Tile::getAtIndex(i), funct);
-			TileButton::StaticManager::add(tilebutton);
+			TileButton* tilebutton = new TileButton(-15+x*tilesize,-8+y*tilesize,
+			tilesize,tilesize,Tile::getAtIndex(i)->getID(),Tile::getAtIndex(i), Editor::select);
 			//palette.add(tilebutton);
 			uilayer.add(*tilebutton);
         }
     }
 
-	//Group worldGrid(maths::mat4::translate(maths::vec3(-8, -8, 0)));
-	Group worldmap(maths::mat4::translate(maths::vec3(0, 0, 0)));
+	bool sign = false;
+	int sideMax = 16;
+	x = y = 0;
+	int index = 0;
 
-	for(int x = 0; x < 16; x++) {
-		for(int y = 0; y < 16; y++) {
-			TileButton* grid = new TileButton(-1+x,-8+y,1,1,x*16+y,"Grid", addInfo, true);
-			TileButton::StaticManager::add(grid);
-			grid->setSecondCallback(removeInfo);
-			//IDarray[x*16+y] = Tile::get("Grid")->getID();
+	for(int i = 0; i < sideMax; i++){
+		for(int n = 0; n < i*2+1; n++){
+			if(n == 0) sign ? x++ : x--;
+			else if(n < i+1) sign ? y-- : y++;
+			else sign ? x-- : x++;
+			TileButton* grid = new TileButton(7+x*tilesize, -0.75+y*tilesize,tilesize,
+				tilesize, index, Tile::get("Grid"), Editor::addTile, true);
+			grid->setSecondCallback(Editor::removeTile);
 			uilayer.add(*grid);
+			TileButton::StaticManager::add(grid);
+			std::cout << grid << std::endl;
+			index++;
 		}
+		sign = !sign;
 	}
-	//uilayer.add(worldGrid);
 
     Timer time;
     while(!window.closed()) {
         if(time.elapsed() > 0.05f){ //Lock frame rate
             window.clear();
-            MenuButton::checkstate(window);
-            TileButton::checkstate(window);
-			Textfield::update(window);
 			Editor::update();
-			preview->setTile(Tile::get(selectedID));
-
-			for(int i = 0; i < TileButton::size(); i++){
-				TileButton* button = TileButton::getAtIndex(i);
-				if(button->isGridTile()){
-					if(IDarray[button->getValue()] == 0) button->setTile(Tile::get("Grid"));
-					else button->setTile(Tile::get(IDarray[button->getValue()]));
-				}
-			}
-
+			preview->setTile(Tile::get(Editor::getSelected()));
 			uilayer.render();
             window.update();
             time.reset();
@@ -215,6 +224,5 @@ int main(int argc, char *argv[]) {
     }
 
 }
-
 
 #endif /* end of include guard: EDITORMAIN_HPP */

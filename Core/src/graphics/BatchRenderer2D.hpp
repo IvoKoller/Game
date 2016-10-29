@@ -29,11 +29,12 @@ namespace graphics {
 		IndexBuffer* m_IBO;
 		GLsizei m_IndexCount;
 		VertexData* m_Buffer;
-
 		std::vector<GLuint> m_TextureSlots;
+		static maths::vec2 m_Windowsize;
 	public:
 		BatchRenderer2D();
 		~BatchRenderer2D();
+		static void setWindowSize(maths::vec2 size) { m_Windowsize = size; }
 		void begin() override;
 		void submit(const Renderable2D* renderable) override;
 		void drawString(const std::string& text, const maths::vec3& position, const Font& font, unsigned int color) override;

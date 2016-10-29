@@ -1,20 +1,13 @@
-// #include <vector>
 #include <iostream>
+#include <vector>
 
-void func(){ std::cout << "asfd" << std::endl; }
 
-class test {
-    void (*functionp)(void);
-public:
-    test(void (*func)(void)) {
-        functionp = func;
-        functionp();
-    }
-};
+int main() {
 
-int main(){
-    test asdf(func);
-    int a;
-    std::cin >> a;
+    std::vector<int*> v;
+    v.push_back(new int(8));
+    std::cout << v.size() << std::endl;
+    delete v[0];
+    if(v[0] == nullptr) std::cout << "hello" << std::endl;
     return 0;
 }

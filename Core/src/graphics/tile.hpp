@@ -3,6 +3,7 @@
 
 #include "../managers/staticManager.hpp"
 #include "texture.hpp"
+#include "../maths/maths.hpp"
 
 namespace evo {
 namespace graphics {
@@ -12,8 +13,10 @@ namespace graphics {
         const int index;
         const int height;
         const int width;
-        Tile(const char* name, int index, int height = 1, int width = 1, Texture* tex = Texture::getAtIndex(0))
-            : StaticManager(name), index(index), height(height), width(width), texture(tex) { }
+        const maths::vec3 ColorLevel;
+        Tile(const char* name, int index, int height = 1, int width = 1,
+            Texture* tex = Texture::getAtIndex(0), maths::vec3 clrlvl = maths::vec3(1,1,1))
+            : StaticManager(name), ColorLevel(clrlvl), index(index), height(height), width(width), texture(tex) { }
     };
 
 }}

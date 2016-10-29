@@ -46,7 +46,7 @@ namespace graphics {
 			int r = color.x; //* 255.0f;
 			int g = color.y; //* 255.0f;
 			int b = color.z; //* 255.0f;
-			int a = color.w * 255.0f;
+			int a = color.w;
 
 			m_Color = a << 24 | b << 16 | g << 8 | r;
 		}

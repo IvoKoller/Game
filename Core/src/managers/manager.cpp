@@ -50,6 +50,16 @@ namespace evo {
         }
     }
 
+    void Manager::removeFromStatic(const unsigned int& id, std::vector<Manager*>& vector) {
+        unsigned int index = search(id, vector, 0, vector.size() - 1);
+
+        if(index != -1){
+            delete vector[index];
+            std::cout << 1 << std::endl;
+            vector.erase(vector.begin() + index);
+        }
+    }
+
     void Manager::clear(std::vector<Manager*>& vector) {
         for (Manager* element : vector) delete element;
         vector.clear();

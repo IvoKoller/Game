@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
 	//========DON'T DELETE=========
 
 	//=================== INIT WINDOW ========================
-	Window window("EVO GAME ENGINE", 960, 540);
+	Window window("GAME", 960, 540);
 	Shader shader("src/shaders/basic.vert", "src/shaders/basic.frag");
 	shader.enable();
 	shader.setUniform4f("filter", maths::vec4(1,1,1,1));
@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
 
 	//==================== LOAD TEXTURES ===================
 	Texture::add(new Texture("Spritesheet", "assets/textures/pokemon.png", 3, 4));
-	Texture::add(new Texture("Sprite", "assets/textures/sprite.png", 19, 1));
+	Texture::add(new Texture("Sprite", "assets/textures/sprite.png", 32, 1));
 	//Texture::add(new Texture("Background", "assets/textures/colorTest.png"));
 
 	//Sprite background(-16, -9, 32, 18, Texture::get("Background"));
@@ -81,27 +81,13 @@ int main(int argc, char *argv[]) {
 	Tile::add(new Tile("left", 7));
 	Tile::add(new Tile("down", 10));
 
-	Tile::add(new Tile("FloorWhite", 0, 1, 1, Texture::getAtIndex(1)));
-	Tile::add(new Tile("FloorRed", 1, 1, 1, Texture::getAtIndex(1)));
-	Tile::add(new Tile("FloorGreen", 2, 1, 1, Texture::getAtIndex(1)));
-	Tile::add(new Tile("FloorBlue", 3, 1, 1, Texture::getAtIndex(1)));
-	Tile::add(new Tile("FloorYellow", 4, 1, 1, Texture::getAtIndex(1)));
-	Tile::add(new Tile("FloorCyan", 5, 1, 1,Texture::getAtIndex(1)));
-	Tile::add(new Tile("FloorMagenta", 6, 1, 1, Texture::getAtIndex(1)));
-	Tile::add(new Tile("Grid", 7, 1, 1, Texture::getAtIndex(1)));
-	Tile::add(new Tile("Hover", 8, 1, 1, Texture::getAtIndex(1)));
-	Tile::add(new Tile("Selected", 9, 1, 1, Texture::getAtIndex(1)));
-
-	Tile::add(new Tile("ButtonLeftNormal", 10, 1, 1, Texture::getAtIndex(1)));
-	Tile::add(new Tile("ButtonLeftHover", 11, 1, 1, Texture::getAtIndex(1)));
-	Tile::add(new Tile("ButtonLeftPressed", 12, 1, 1, Texture::getAtIndex(1)));
-	Tile::add(new Tile("ButtonMiddleNormal", 13, 1, 1, Texture::getAtIndex(1)));
-	Tile::add(new Tile("ButtonMiddleHover", 14, 1, 1, Texture::getAtIndex(1)));
-	Tile::add(new Tile("ButtonMiddlePressed", 15, 1, 1, Texture::getAtIndex(1)));
-	Tile::add(new Tile("ButtonRightNormal", 16, 1, 1, Texture::getAtIndex(1)));
-	Tile::add(new Tile("ButtonRightHover", 17, 1, 1, Texture::getAtIndex(1)));
-	Tile::add(new Tile("ButtonRightPressed", 18, 1, 1, Texture::getAtIndex(1)));
-
+	Tile::add(new Tile("FloorWhite",  0, 1, 1,	Texture::getAtIndex(1), vec3(1,1,1)));
+	Tile::add(new Tile("FloorRed", 	  1, 1, 1, 	Texture::getAtIndex(1), vec3(1,0,0)));
+	Tile::add(new Tile("FloorGreen",  2, 1, 1, 	Texture::getAtIndex(1), vec3(0,1,0)));
+	Tile::add(new Tile("FloorBlue",   3, 1, 1, 	Texture::getAtIndex(1), vec3(0,0,1)));
+	Tile::add(new Tile("FloorYellow", 4, 1, 1, 	Texture::getAtIndex(1), vec3(1,1,0)));
+	Tile::add(new Tile("FloorCyan",   5, 1, 1, 	Texture::getAtIndex(1), vec3(0,1,1)));
+	Tile::add(new Tile("FloorMagenta",6, 1, 1,  Texture::getAtIndex(1), vec3(1,0,1)));
 
 	//===========================================
 
@@ -118,7 +104,7 @@ int main(int argc, char *argv[]) {
 
 	//=============== FONTS =================
 	Font::add(new Font("Bpdots32", "assets/fonts/bpdots.otf", 32)); //TODO: font size dipendent on screen size
-	Font::add(new Font("Bpdots20", "assets/fonts/bpdots.otf", 15)); //For Editor
+	Font::add(new Font("Bpdots32", "assets/fonts/bpdots.otf", 15)); //For Editor
 	//======================================
 
 	//================= LOAD FROM FILE =====================
@@ -153,39 +139,53 @@ int main(int argc, char *argv[]) {
 
 	//===================== LOAD LEVEL =======================
 
+	std::vector<unsigned int> m_Tiles;
+
+	std::ifstream file;
+	file.open(filepath::makeAbsolute("assets/scenes/red.lvl"));
+	if(file.is_open()){
+		for(int i = 0; i < 16*16; i++){
+			unsigned int n;
+			file >> n;
+			m_Tiles.push_back(n);
+		}
+		file.close();
+	} else { std::cout << "file not found!" << std::endl; }
+
+	//loading and building could be a combined process in the future
+
 	//========================================================
-	enum ColorLevel { All, Red, Blue, Green, Yellow, Magenta, Cyan };
-	ColorLevel masterColorLevel, currentColorLevel;
-
-	masterColorLevel = ColorLevel::Yellow; //initialization dependent on level
-	currentColorLevel = masterColorLevel; //change dependent on input
 
 
-	//=============INIT SPRITES===================
-	for(int i=0;i<3;i++){
-		Sprite* s = new Sprite(2*i, 0, 2, 2, Texture::get("Sprite"));
-		Sprite::add(s);
-		//tile1.addCollider(physics::Layer::Static, true);
-		worldlayer.add(*s);
-		s->setTile("FloorYellow");
+	//=============BUILD WORLD===================
+	maths::vec3 currentColorLevel = {1,1,0};
+	maths::vec3 masterColorLevel = {1,1,0};
+	bool sign = false;
+	int x = 0, y = 0, index = 0, tilesize = 5;
+	for(int i = 0; i < 16; i++){
+		for(int n = 0; n < i*2+1; n++){
+			if(n == 0) sign ? x++ : x--;
+			else if(n < i+1) sign ? y-- : y++;
+			else sign ? x-- : x++;
+			if(m_Tiles[index] != 0) {
+				Tile* tile = Tile::get(m_Tiles[index]);
+				Sprite* s = new Sprite(7+x*tilesize, y*tilesize,tilesize,tilesize,tile);
+				Sprite::add(s);
+				std::cout << "colorlevel of tile is " << tile->ColorLevel << std::endl;
+				s->addCollider(tile->ColorLevel, physics::Layer::Static);
+				worldlayer.add(*s);
+			}
+			index++;
+		}
+		sign = !sign;
 	}
 
-	Sprite* c = new Sprite(8,0,6,2,0xFF000000);
-	//c->addCollider(physics::)
-	Sprite::add(c);
-	worldlayer.add(*c);
 
-	for(int i=0;i<3;i++){
-		Sprite* s = new Sprite(10+2*i, 0, 2, 2, Texture::get("Sprite"));
-		Sprite::add(s);
-		//tile1.addCollider(physics::Layer::Static, true);
-		worldlayer.add(*s);
-		s->setTile("FloorYellow");
-	}
+	//====================CREATE CHARACTER==========================
 
-	Sprite character(0, 0, 5, 5, Texture::get("Spritesheet")); //NOTE: later probably also on heap
+	Sprite character(-8, 0, 2, 2, Texture::get("Spritesheet")); //NOTE: later probably also on heap
 	Sprite::add(&character);
-	character.addCollider(physics::Layer::Dynamic);
+	character.addCollider(vec3(1,1,1), physics::Layer::Dynamic);
 	worldlayer.add(character);
 	character.setTile("down");
 	camera.bindToTarget(character.getPosition(),character.getSize());
@@ -201,23 +201,6 @@ int main(int argc, char *argv[]) {
 	float timer = 0;
 	unsigned int frames = 0;
 
-	//Group* menu = new Group(maths::mat4::translate(maths::vec3(0, 0, 0)));
-	//menu->add(new Sprite(-8, -8, 16, 16, 0xffffffff));
-	//menu->add(new Sprite(-7.5f, -7.5f, 15, 15, 0xFF000000));
-	//BUTTONS
-
-	//dont do them by hand but add them with sprite
-	//decide size and number of sprites
-	//layout in pyxel
-
-	//menu->add(new Sprite(-4, -7, 4, 14, 0xffffffff));
-	//menu->add(new Sprite(-3.5, -7, 4, 14, 0xffffffff));
-
-	//menu->add(new Sprite(-6, -7, 4, 14, 0xffffffff));
-	//menu->add(new Sprite(-5.5, -7, 4, 14, 0xffffffff));
-
-
-	//uilayer.add(*menu);
 	//=========================================
 
 	//================= AUDIO =================
@@ -229,16 +212,9 @@ int main(int argc, char *argv[]) {
 		window.clear();
 
 		//=================== UI MENU ===================
-		//how to save
+		//save
 		//settings
 
-		//if(window.isKeyPressed(GLFW_KEY_ESCAPE)){ //toggle
-
-			//deactivate normal behaviour of buttons
-
-		//}
-
-		//else (rest)
 		//=========================================================
 
 		//=================== MOVEMENT CONTROL ===================
@@ -248,19 +224,19 @@ int main(int argc, char *argv[]) {
 		vec3 pos = character.getPosition();
 
 		if((window.isKeyPressed(GLFW_KEY_UP) || window.getJoystickAxis(7) == -1.0f)
-		&& !character.collider->CollidesTop()){
+		&& !character.collider->CollidesTop(currentColorLevel)){
 			character.play("walkUp", RepeatType::Pingpong);
 			if(character.isPlaying()) pos.y ++; //check if animation is on frame change
 		}else if((window.isKeyPressed(GLFW_KEY_RIGHT) || window.getJoystickAxis(6) == 1.0f)
-		&& !character.collider->CollidesRight()){
+		&& !character.collider->CollidesRight(currentColorLevel)){
 			character.play("walkRight", RepeatType::Pingpong);
 			if(character.isPlaying()) pos.x ++;
 		}else if((window.isKeyPressed(GLFW_KEY_DOWN) || window.getJoystickAxis(7) == 1.0f)
-		&& !character.collider->CollidesBottom()){
+		&& !character.collider->CollidesBottom(currentColorLevel)){
 			character.play("walkDown", RepeatType::Pingpong);
 			if(character.isPlaying()) pos.y --;
 		}else if ((window.isKeyPressed(GLFW_KEY_LEFT) || window.getJoystickAxis(6)== -1.0f)
-		&& !character.collider->CollidesLeft()){
+		&& !character.collider->CollidesLeft(currentColorLevel)){
 			character.play("walkLeft", RepeatType::Pingpong);
 			if(character.isPlaying()) pos.x --;
 		}else{ character.stop(); }
@@ -275,15 +251,15 @@ int main(int argc, char *argv[]) {
 
 		}else if(window.isKeyPressed(GLFW_KEY_2) || window.isJoystickButtonPressed(1)){ //red
 			shader.setUniform4f("filter", maths::vec4(1,0,0,1));
-			currentColorLevel = ColorLevel::Red;
+			currentColorLevel = maths::vec3(1,0,0);
 
 		}else if(window.isKeyPressed(GLFW_KEY_3) || window.isJoystickButtonPressed(0)){ //green
 			shader.setUniform4f("filter", maths::vec4(0,1,0,1));
-			currentColorLevel = ColorLevel::Green;
+			currentColorLevel = maths::vec3(0,1,0);
 
 		}else if(window.isKeyPressed(GLFW_KEY_4) || window.isJoystickButtonPressed(2)) { //blue
 			shader.setUniform4f("filter", maths::vec4(0,0,1,1));
-			currentColorLevel = ColorLevel::Blue;
+			currentColorLevel = maths::vec3(0,0,1);
 
 		}
 		//=========================================================

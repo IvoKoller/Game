@@ -33,6 +33,7 @@ namespace evo {
         static void remove(const unsigned int& id, std::vector<Manager*>& vector);
         static void remove(const char* name, std::vector<Manager*>& vector){
             Manager::remove(hash(name), vector); } //remove already exists
+        static void removeFromStatic(const unsigned int& id, std::vector<Manager*>& vector);
         static void clear(std::vector<Manager*>& vector);
 
         static bool empty(std::vector<Manager*>& vector){ return vector.empty(); }

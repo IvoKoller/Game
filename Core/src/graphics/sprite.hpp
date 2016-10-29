@@ -38,9 +38,8 @@ namespace graphics {
 		Sprite(float x, float y, float width, float height, Tile* tile, bool StaticCollider = false);
 		~Sprite();
 
-		void addCollider(physics::Layer layer = physics::Layer::Static, bool invert = false);
-		void addCollider(physics::Layer layer, float width, float height, bool invert = false);
-
+		void addCollider(maths::vec3 clrlvl = maths::vec3(1,1,1), physics::Layer layer = physics::Layer::Static, bool invert = false);
+		void addCollider(maths::vec3 clrlvl, physics::Layer layer, float width, float height, bool invert = false);
 
 		std::chrono::high_resolution_clock::time_point getTimePoint() const { return m_StartOfAnimation; }
 		void resetTimePoint() { m_StartOfAnimation = std::chrono::high_resolution_clock::now(); }

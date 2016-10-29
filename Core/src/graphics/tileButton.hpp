@@ -10,8 +10,8 @@ namespace graphics {
 
     class TileButton : public Group, public StaticManager<TileButton> {
         maths::vec2 m_Position;
-        Sprite* m_Overlay;
-        Sprite* m_Button;
+        Sprite m_Overlay;
+        Sprite m_Button;
         bool m_GridTile;
         unsigned int m_Value;
         void (*m_CallbackFunction)(unsigned int);
@@ -23,11 +23,11 @@ namespace graphics {
         TileButton(float x, float y, float width, float height, unsigned int ID,
             Tile* tile, void (*callbackFunction)(unsigned int), bool grid = false);
 
-        ~TileButton() { }
+        ~TileButton();
 
         bool isGridTile() { return m_GridTile; }
         unsigned int getValue() { return m_Value; }
-        void setTile(Tile* tile){ m_Button->setTile(tile); }
+        void setTile(Tile* tile){ m_Button.setTile(tile); }
         void setSecondCallback(void (*callbackFunction)(unsigned int)) {
             m_SecondCallbackFunction = callbackFunction;
          }
