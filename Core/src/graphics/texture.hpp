@@ -12,7 +12,7 @@
 namespace evo {
 namespace graphics {
 
-	class Texture : public StaticManager<Texture>{
+	class Texture : public StaticManager<Texture> {
 	private:
 		std::string m_FileName;
 		GLuint m_TID;

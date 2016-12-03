@@ -7,8 +7,8 @@ namespace graphics {
 		: m_TransformationMatrix(transform) { }
 
 	Group::~Group() {
-		for (int i = 0; i < m_Renderables.size(); i++)
-			delete m_Renderables[i];
+		//for (int i = 0; i < m_Renderables.size(); i++)
+		//	delete m_Renderables[i];
 	}
 
 	void Group::add(Renderable2D* renderable) {

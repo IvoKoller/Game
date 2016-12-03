@@ -14,7 +14,10 @@ namespace graphics {
 		m_Shader->enable();
 		m_Shader->setUniformMat4("vw_matrix", maths::mat4::identity());
 		m_Renderer->begin();
-		for (const Renderable2D* renderable : m_Renderables) renderable->submit(m_Renderer);
+		for (Renderable2D* renderable : m_Renderables){
+			renderable->submit(m_Renderer);
+			renderable->update();
+		}
 		m_Renderer->end();
 		m_Renderer->flush();
 	}

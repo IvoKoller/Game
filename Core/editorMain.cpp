@@ -28,7 +28,7 @@
 #include "src/graphics/label.hpp"
 #include "src/graphics/tile.hpp"
 
-#include "src/graphics/editor.hpp"
+#include "src/graphics/gui/editor.hpp"
 
 #include "src/graphics/camera.hpp"
 
@@ -52,22 +52,26 @@ int main(int argc, char *argv[]) {
 	//========DON'T DELETE=========
 
 	//=================== INIT WINDOW ========================
-	Window window("EVO Game Engine - Editor", 1920, 1080);
-	Shader shader("src/shaders/basic.vert", "src/shaders/basic.frag");
-	StaticLayer uilayer(&shader); // could all happen inside Editor
-	Editor editor(window, shader, uilayer);
-	shader.enable();
-	shader.setUniform4f("filter", maths::vec4(1,1,1,1));
-	//Camera camera;
-	//========================================================
+	Window window("EVO Game Engine - Editor", 1024,576);//1920, 1080);
+	Shader* shader = new Shader("src/shaders/basic.vert", "src/shaders/basic.frag");
+	Camera camera;
 
-	// could all happen inside Editor
+	DefaultLayer layer0(shader, camera, 2.0/10);
+	DefaultLayer layer1(shader, camera, 6.0/10);
+	DefaultLayer layer2(shader, camera);
+	DefaultLayer layer3(shader, camera, 14.0/10);
+	DefaultLayer layer4(shader, camera, 18.0/10);
+	StaticLayer uilayer(shader);
 
-    //ui sprites separate texture
+	// Editor editor(window, shader, uilayer);
+	GLint texIDs[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }; //TODO: Clean this up
+	shader->enable();
+	shader->setUniform1iv("textures", texIDs, 10);
+	shader->setUniform4f("filter", maths::vec4(1,1,1,1));
+	shader->disable();
+
     Texture::add(new Texture("Spritesheet", "assets/textures/sprite.png", 32, 1));
     Texture::add(new Texture("UI-Spritesheet", "assets/textures/sprite.png", 32, 1));
-
-	Tile::clear();
 
     Tile::add(new Tile("FloorWhite", 0, 1, 1));
 	Tile::add(new Tile("FloorRed", 1, 1, 1));
@@ -106,122 +110,129 @@ int main(int argc, char *argv[]) {
 	Tile::add(new Tile("PlayerButton", 30, 1, 1, Texture::getAtIndex(1)));
 	Tile::add(new Tile("PlayerButtonHover", 31, 1, 1, Texture::getAtIndex(1)));
 
-    GLint texIDs[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }; //TODO: Clean this up
-    shader.enable();
-    shader.setUniform1iv("textures", texIDs, 10);
 
     //=============== FONTS =================
-    Font::add(new Font("Bpdots32", "assets/fonts/bpdots.otf", 32)); //For Editor
+    Font::add(new Font("Bpdots32", "assets/fonts/bpdots.otf", 48)); //For Editor
     //======================================
 
-	Sprite background(-16,-9,32,18,0xffffffff);
-	background.setColor(maths::vec4(67, 72, 84, 255));
-	Sprite backgroundGrid(-1,-8.75,16,16,0xff000000);
-	Sprite menubar(-16,7.5,32,1.5,0xffffffff);
-	menubar.setColor(maths::vec4(71, 76, 92, 255));
+	Sprite* background = new Sprite(-16,-9,15,18,0xffffffff);
+	background->setColor(maths::vec4(67, 72, 84, 255));
+	uilayer.add(*background);
 
-	uilayer.add(background);
-	uilayer.add(backgroundGrid);
-	uilayer.add(menubar);
+	uilayer.add(*new MenuButton(-15.5, 7.75, 1.5, "Load", Editor::load));
+	uilayer.add(*new Textfield(-13, 7.75, 5, 11));
+	uilayer.add(*new MenuButton(-7, 7.75, 1.5, "Save", Editor::save));
+	uilayer.add(*new MenuButton(-4.5, 7.75, 1.5, "Run", Editor::run));
 
-	MenuButton loadButton(-15.5, 7.75, 1.5, "Load");
-	Textfield textfield(-13, 7.75, 5, 11);
-	MenuButton saveButton(-7, 7.75, 1.5, "Save");
-	MenuButton runButton(-4.5, 7.75, 1.5, "Run");
-	CountButton mapsize(-2,7.75,Editor::updateWorldMap);
+	uilayer.add(*new Label("WIDTH:", -15.5, 6.5, Font::get("Bpdots32"),0xff000000));
+	uilayer.add(*new CountButton(-13, 6.25, Editor::setWidth, 16, 1, 32)); //width
+	Editor::setWidth(16); //init value
 
-	//output field (build failed, build successfull etc.)
+	uilayer.add(*new Label("HEIGHT:", -9.75, 6.5, Font::get("Bpdots32"),0xff000000));
+	uilayer.add(*new CountButton(-7, 6.25, Editor::setHeight, 9, 1, 32)); //height
+	Editor::setHeight(9); //init value
 
-	Label colorChannels("Color channels", -7.2, 1.7f,"Bpdots32", 0xff000000);
-	MenuButton red(-7, 0, 1.5, "Red");
-	MenuButton green(-4, 0, 1.8, "Green");
-	MenuButton blue(-7, -2, 1.5, "Blue");
+	uilayer.add(*new Label("PARALLAX FACTOR:", -15.5, 5, Font::get("Bpdots32"),0xff000000));
+	uilayer.add(*new CountButton(-10, 4.75, Editor::setParaFactor, 3, 1, 32)); //width
+	Editor::setParaFactor(4);
 
-	Label colliders("Colliders", -7.2, -3,"Bpdots32", 0xff000000);
-	MenuButton colliderButton(-7,-5,3,"Default");
-	//tile-like collider button
-	//character button
-
-	loadButton.setFunction(Editor::load);
-	saveButton.setFunction(Editor::save);
-	runButton.setFunction(Editor::run);
-	colliderButton.setFunction(Editor::setColliderDefault);
-
-	red.setToggleFunction(Editor::red);
-	green.setToggleFunction(Editor::green);
-	blue.setToggleFunction(Editor::blue);
-
-	red.setToggleActive();
-	green.setToggleActive();
-	blue.setToggleActive();
-
-	Textfield::StaticManager::add(&textfield);
-
-	Label::add(&colorChannels);
-	Label::add(&colliders);
-
-	uilayer.add(textfield);
-	uilayer.add(loadButton);
-    uilayer.add(saveButton);
-    uilayer.add(runButton);
-	uilayer.add(red);
-	uilayer.add(green);
-	uilayer.add(blue);
-	uilayer.add(colliderButton);
-	uilayer.add(mapsize);
-
-	uilayer.add(colorChannels);
-	uilayer.add(colliders);
+	uilayer.add(*new Label("LAYER:", -6.75, 5, Font::get("Bpdots32"),0xff000000));
+	uilayer.add(*new CountButton(-4.5, 4.75, Editor::setLayer, 2, 0, 4)); //layer
+	uilayer.add(*new MenuButton(-4.5, 3.5, 2.75, "Parallax", Editor::setParallax));
 
 	Sprite* preview = new Sprite(-4,-8,2,2,Tile::get("Grid"));
 	Editor::select(Tile::get("Grid")->getID());
 	uilayer.add(*preview);
 
-	float tilesize = 1;
 	int x, y, c = 0;
     for(int i = 0; i < Tile::size(); i++){
 		//Check if texture is correct
         if (Tile::getAtIndex(i)->texture == Texture::getAtIndex(0)){
-			x = c%4; y = c/4; c++; //LOL
-			TileButton* tilebutton = new TileButton(-15+x*tilesize,-8+y*tilesize,
-			tilesize,tilesize,Tile::getAtIndex(i)->getID(),Tile::getAtIndex(i), Editor::select);
-			//palette.add(tilebutton);
-			uilayer.add(*tilebutton);
+			x = c%9; y = c/9; c++; //LOL
+			uilayer.add(*new TileButton(-15+x,-8+y,
+			1,1,Tile::getAtIndex(i)->getID(),Tile::getAtIndex(i), Editor::select));
         }
     }
 
-	bool sign = false;
-	int sideMax = 16;
-	x = y = 0;
-	int index = 0;
-
-	for(int i = 0; i < sideMax; i++){
-		for(int n = 0; n < i*2+1; n++){
-			if(n == 0) sign ? x++ : x--;
-			else if(n < i+1) sign ? y-- : y++;
-			else sign ? x-- : x++;
-			TileButton* grid = new TileButton(7+x*tilesize, -0.75+y*tilesize,tilesize,
-				tilesize, index, Tile::get("Grid"), Editor::addTile, true);
-			grid->setSecondCallback(Editor::removeTile);
-			uilayer.add(*grid);
-			TileButton::StaticManager::add(grid);
-			std::cout << grid << std::endl;
-			index++;
-		}
-		sign = !sign;
-	}
-
     Timer time;
+	bool ui = true;
     while(!window.closed()) {
-        if(time.elapsed() > 0.05f){ //Lock frame rate
+        if(time.elapsed() > 0.01f){ //Lock frame rate
             window.clear();
+			if(Editor::hasChanged()){
+				int width = Editor::getWidth();
+				int height = Editor::getHeight();
+				int paraFactor = Editor::getParaFactor();
+				if(width-2*paraFactor > 0) {
+					Editor::resize(width, height);
+					Editor::build(layer0, 0, width-2*paraFactor, height);
+					Editor::build(layer1, 1, width-paraFactor, height);
+					Editor::build(layer2, 2, width, height);
+					Editor::build(layer3, 3, width+paraFactor, height);
+					Editor::build(layer4, 4, width+2*paraFactor, height);
+					Editor::setChanged(false);
+				}
+			}
 			Editor::update();
+
+			//controls
+			//change color channel (1,2,3)
+
+			//m_Shader->setUniform4f("filter",
+	        //maths::vec4(m_ActiveColors[0],m_ActiveColors[1],m_ActiveColors[2],1));
+
+			//change transparency (4)
+			//change position (arrow keys)
 			preview->setTile(Tile::get(Editor::getSelected()));
-			uilayer.render();
+
+			if(window.isKeyPressed(GLFW_KEY_RIGHT)){
+				camera.position.x += 0.1;
+			}else if(window.isKeyPressed(GLFW_KEY_LEFT)){
+				camera.position.x -= 0.1;
+			}else if(window.isKeyPressed(GLFW_KEY_UP)){
+				camera.position.y += 0.1;
+			} else if(window.isKeyPressed(GLFW_KEY_DOWN)){
+				camera.position.y -= 0.1;
+			} else if(window.isKeyTyped(GLFW_KEY_1)){
+				shader->setUniform4f("filter", maths::vec4(1,1,1,1));
+			} else if(window.isKeyTyped(GLFW_KEY_2)){
+				shader->setUniform4f("filter", maths::vec4(1,0,0,1));
+			} else if(window.isKeyTyped(GLFW_KEY_3)){
+				shader->setUniform4f("filter", maths::vec4(0,1,0,1));
+			} else if(window.isKeyTyped(GLFW_KEY_4)){
+				shader->setUniform4f("filter", maths::vec4(0,0,1,1));
+			} else if(window.isKeyTyped(GLFW_KEY_ESCAPE)) ui = ui ? false : true;
+
+			if(Editor::getParallax()){
+				layer0.render();
+				layer1.render();
+				layer2.render();
+				layer3.render();
+				layer4.render();
+			}else{
+				switch(Editor::getLayer()) {
+					case 0 : layer0.render();
+							 break;
+					case 1 : layer1.render();
+							 break;
+					case 2 : layer2.render();
+							 break;
+					case 3 : layer3.render();
+							 break;
+					case 4 : layer4.render();
+							 break;
+				}
+			}
+
+			if(ui) uilayer.render();
             window.update();
             time.reset();
         }
     }
+
+	Tile::clear();
+	Font::clear();
+	Texture::clear();
 
 }
 

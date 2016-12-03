@@ -9,7 +9,7 @@ namespace graphics {
     struct Camera {
         const maths::vec3* target = nullptr;
         maths::mat4 projectionMatrix, viewMatrix;
-		maths::vec3 position;
+        maths::vec3 position; 
         maths::vec3 correction;
         //Rotation, FocalPoint;
 
@@ -22,10 +22,14 @@ namespace graphics {
             correction.y = size.y/2;
         }
         void unbind() { target = nullptr; }
-        void update() {
-            if(target != nullptr) position = *target;
-            position = -position; //inverts coordinates in any case
-            position -= correction;
+        maths::vec3 getPosition(){
+            maths::vec3 result;
+            if(target != nullptr) {
+                position = *target;
+            }
+            result = -position;
+            result -= correction;
+            return result;
         }
 
     };

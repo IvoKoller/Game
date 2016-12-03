@@ -20,7 +20,7 @@ namespace graphics {
 	class Window {
 	private:
 		const char *m_Title;
-		int m_Width, m_Height;
+		static int m_Width, m_Height;
 		GLFWwindow *m_Window;
 		bool m_Closed;
 
@@ -29,13 +29,13 @@ namespace graphics {
 		int m_JoystickAxesCount;
 		const unsigned char *m_JoystickButtons;
 		const float *m_JoystickAxes;
-		bool m_Keys[MAX_KEYS];
-		bool m_KeyState[MAX_KEYS];
-		bool m_KeyTyped[MAX_KEYS];
-		bool m_MouseButtons[MAX_BUTTONS];
-		bool m_MouseState[MAX_BUTTONS];
-		bool m_MouseClicked[MAX_BUTTONS];
-		double mx, my;
+		static bool m_Keys[MAX_KEYS];
+		static bool m_KeyState[MAX_KEYS];
+		static bool m_KeyTyped[MAX_KEYS];
+		static bool m_MouseButtons[MAX_BUTTONS];
+		static bool m_MouseState[MAX_BUTTONS];
+		static bool m_MouseClicked[MAX_BUTTONS];
+		static double mx, my;
 	public:
 		Window(const char *name, int width, int height);
 		~Window();
@@ -43,17 +43,18 @@ namespace graphics {
 		void update();
 		bool closed() const;
 
-		inline int getWidth() const { return m_Width; }
-		inline int getHeight() const { return m_Height; }
+		static int getWidth() { return m_Width; }
+		static int getHeight() { return m_Height; }
 
+		void setSize(maths::vec2&);
 		bool isJoysickPresent() const { return m_Joystick; }
 		bool isJoystickButtonPressed(unsigned int button) const;
 		float getJoystickAxis(unsigned int axes) const;
-		bool isKeyPressed(unsigned int keycode) const;
-		bool isKeyTyped(unsigned int keycode) const;
-		bool isMouseButtonPressed(unsigned int button) const;
-		bool isMouseButtonClicked(unsigned int button) const;
-		void getMousePosition(double& x, double& y) const;
+		static bool isKeyPressed(unsigned int keycode);
+		static bool isKeyTyped(unsigned int keycode) ;
+		static bool isMouseButtonPressed(unsigned int button);
+		static bool isMouseButtonClicked(unsigned int button);
+		static void getMousePosition(double& x, double& y);
 
 	private:
 		bool init();

@@ -160,6 +160,7 @@ int main(int argc, char *argv[]) {
 	//=============BUILD WORLD===================
 	maths::vec3 currentColorLevel = {1,1,0};
 	maths::vec3 masterColorLevel = {1,1,0};
+
 	bool sign = false;
 	int x = 0, y = 0, index = 0, tilesize = 5;
 	for(int i = 0; i < 16; i++){
@@ -240,6 +241,8 @@ int main(int argc, char *argv[]) {
 			character.play("walkLeft", RepeatType::Pingpong);
 			if(character.isPlaying()) pos.x --;
 		}else{ character.stop(); }
+
+		//if(!character.collider->CollidesBottom(currentColorLevel)) pos.y = pos.y - 0.0001; //gravity
 
 		character.setPosition(pos);
 		//=========================================================

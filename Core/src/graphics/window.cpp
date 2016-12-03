@@ -3,9 +3,19 @@
 namespace evo {
 namespace graphics {
 
-	Window::Window(const char *title, int width, int height)
-		: m_Title(title), m_Width(width), m_Height(height) {
+	double Window::mx, Window::my;
+	int Window::m_Width, Window::m_Height;
+	bool Window::m_MouseButtons[MAX_BUTTONS],
+		 Window::m_MouseState[MAX_BUTTONS],
+		 Window::m_MouseClicked[MAX_BUTTONS],
+		 Window::m_Keys[MAX_KEYS],
+		 Window::m_KeyState[MAX_KEYS],
+		 Window::m_KeyTyped[MAX_KEYS];
 
+	Window::Window(const char *title, int width, int height)
+		: m_Title(title) {
+		m_Width = width;
+		m_Height = height;
 		if (!init()) glfwTerminate();
 
 		Font::init();
@@ -27,6 +37,7 @@ namespace graphics {
 
 	Window::~Window() {
 		glfwTerminate();
+		audio::SoundManager::clear();
 	}
 
 	bool Window::init() {
@@ -40,6 +51,7 @@ namespace graphics {
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); //MacOS
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		//glfwWindowHint(GLFW_DECORATED, false);
 
 		m_Window = glfwCreateWindow(m_Width, m_Height, m_Title, NULL, NULL);
 
@@ -57,6 +69,7 @@ namespace graphics {
 		glfwSetKeyCallback(m_Window, key_callback);
 		glfwSetMouseButtonCallback(m_Window, mouse_button_callback);
 		glfwSetCursorPosCallback(m_Window, cursor_position_callback);
+		glfwSetWindowSizeCallback(m_Window, window_resize);
 		glfwSwapInterval(0.0);
 
 		if (glewInit() != GLEW_OK) {
@@ -91,7 +104,7 @@ namespace graphics {
 		return 0;
 	}
 
-	bool Window::isKeyPressed(unsigned int keycode) const {
+	bool Window::isKeyPressed(unsigned int keycode) {
 		// TODO: Log this!
 		if (keycode >= MAX_KEYS)
 			return false;
@@ -99,7 +112,7 @@ namespace graphics {
 		return m_Keys[keycode];
 	}
 
-	bool Window::isKeyTyped(unsigned int keycode) const {
+	bool Window::isKeyTyped(unsigned int keycode) {
 		// TODO: Log this!
 		if (keycode >= MAX_KEYS)
 			return false;
@@ -107,7 +120,7 @@ namespace graphics {
 		return m_KeyTyped[keycode];
 	}
 
-	bool Window::isMouseButtonPressed(unsigned int button) const {
+	bool Window::isMouseButtonPressed(unsigned int button) {
 		// TODO: Log this!
 		if (button >= MAX_BUTTONS)
 			return false;
@@ -115,7 +128,7 @@ namespace graphics {
 		return m_MouseButtons[button];
 	}
 
-	bool Window::isMouseButtonClicked(unsigned int button) const {
+	bool Window::isMouseButtonClicked(unsigned int button) {
 		// TODO: Log this!
 		if (button >= MAX_BUTTONS)
 			return false;
@@ -123,7 +136,7 @@ namespace graphics {
 		return m_MouseClicked[button];
 	}
 
-	void Window::getMousePosition(double& x, double& y) const {
+	void Window::getMousePosition(double& x, double& y) {
 		x = mx;
 		y = my;
 	}
@@ -148,7 +161,6 @@ namespace graphics {
 
 		glfwPollEvents();
 		glfwSwapBuffers(m_Window);
-		BatchRenderer2D::setWindowSize(maths::vec2((float)m_Width,(float)m_Height));
 		audio::SoundManager::update();
 		checkJoystick();
 		Debug::CheckError();

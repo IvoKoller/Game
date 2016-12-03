@@ -2,12 +2,11 @@
 #define LABEL_HPP
 
 #include "renderable2d.hpp"
-#include "../managers/staticManager.hpp"
 
 namespace evo {
 namespace graphics {
 
-	class Label : public Renderable2D, public StaticManager<Label> {
+	class Label : public Renderable2D {
 	public:
 		Font* m_Font;
 		std::string text;

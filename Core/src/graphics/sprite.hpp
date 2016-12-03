@@ -30,7 +30,7 @@ namespace graphics {
 		int m_CurrentFrame; //could/should theoretically be unsigned
 
 	public:
-		const physics::Collider* collider = nullptr;
+		const physics::Collider* collider = nullptr; 
 
 		Sprite(float x, float y, float width, float height, unsigned int color, bool StaticCollider = false);
 		Sprite(float x, float y, float width, float height, Texture* texture, bool StaticCollider = false);

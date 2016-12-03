@@ -3,8 +3,6 @@
 namespace evo {
 namespace graphics {
 
-	maths::vec2 BatchRenderer2D::m_Windowsize;
-
 	BatchRenderer2D::BatchRenderer2D() {
 		init();
 	}
@@ -70,8 +68,7 @@ namespace graphics {
 		Debug::CheckError();
 
 		float ts = 0.0f;
-		if (tid > 0)
-		{
+		if (tid > 0) {
 			bool found = false;
 			for (int i = 0; i < m_TextureSlots.size(); i++) {
 				if (m_TextureSlots[i] == tid) {
@@ -142,8 +139,8 @@ namespace graphics {
 			ts = (float)(m_TextureSlots.size());
 		}
 
-		float scaleX = m_Windowsize.x / 32.0f; //TODO: dynamic size
-		float scaleY = m_Windowsize.y / 18.0f;
+		float scaleX = 90;
+		float scaleY = 90;
 
 		float x = position.x;
 
@@ -208,21 +205,23 @@ namespace graphics {
 	}
 
 	void BatchRenderer2D::flush() {
-		for (int i = 0; i < m_TextureSlots.size(); i++) {
-			glActiveTexture(GL_TEXTURE0 + i);
-			glBindTexture(GL_TEXTURE_2D, m_TextureSlots[i]);
+		if(m_TextureSlots.size() > 0){
+			for (int i = 0; i < m_TextureSlots.size(); i++) {
+				glActiveTexture(GL_TEXTURE0 + i);
+				glBindTexture(GL_TEXTURE_2D, m_TextureSlots[i]);
+			}
+
+			glBindVertexArray(m_VAO);
+			m_IBO->bind();
+
+			glDrawElements(GL_TRIANGLES, m_IndexCount, GL_UNSIGNED_INT, NULL);
+
+			m_IBO->unbind();
+			glBindVertexArray(0);
+
+			m_IndexCount = 0;
+			Debug::CheckError();
 		}
-
-		glBindVertexArray(m_VAO);
-		m_IBO->bind();
-
-		glDrawElements(GL_TRIANGLES, m_IndexCount, GL_UNSIGNED_INT, NULL);
-
-		m_IBO->unbind();
-		glBindVertexArray(0);
-
-		m_IndexCount = 0;
-		Debug::CheckError();
 	}
 
 } }

@@ -10,8 +10,9 @@ namespace graphics {
 
 	class DefaultLayer : public Layer {
 		Camera& m_Camera;
+		float m_Parallax;
 	public:
-		DefaultLayer(Shader* shader, Camera& camera);
+		DefaultLayer(Shader* shader, Camera& camera, float parallax = 1.0f);
 		~DefaultLayer();
 
 		void render() override;

@@ -1,4 +1,5 @@
 #include "collider.hpp"
+#include "../graphics/window.hpp"
 
 namespace evo {
 namespace physics {
@@ -14,6 +15,25 @@ namespace physics {
 
 	bool Collider::CollidesWith(const unsigned int& id) const {
 		return CollidesWith(*get(id));
+	}
+
+	bool Collider::CollidesWithMouse(const maths::vec2& position) const {
+		double mx, my; float fmx, fmy;
+        graphics::Window::getMousePosition(mx, my);
+        fmx = -16 + static_cast<float>(mx)/(graphics::Window::getWidth()/32);
+        fmy = 9 - static_cast<float>(my)/(graphics::Window::getHeight()/18);
+        maths::vec2 cursor = maths::vec2(fmx, fmy);
+        maths::vec2 relativeMousePosition = cursor - position;
+		return Contains(cursor, position);
+	}
+	bool Collider::CollidesWithMouse() const {
+		double mx, my; float fmx, fmy;
+        graphics::Window::getMousePosition(mx, my);
+        fmx = -16 + static_cast<float>(mx)/(graphics::Window::getWidth()/32);
+        fmy = 9 - static_cast<float>(my)/(graphics::Window::getHeight()/18);
+        maths::vec2 cursor = maths::vec2(fmx, fmy);
+        maths::vec2 relativeMousePosition = cursor - maths::vec2(m_Min);
+		return Contains(cursor);
 	}
 
 	bool Collider::CollidesWith(const Collider& other) const {
@@ -40,7 +60,7 @@ namespace physics {
 	bool Collider::CollidesTopWith(const Collider& other) const {
 		maths::vec2 max(m_Min.x + m_Width, m_Min.y + m_Height);
 		maths::vec2 otherMax(other.m_Min.x + other.m_Width, other.m_Min.y + other.m_Height);
-		bool result = max.y >= other.m_Min.y && max.y < otherMax.y && max.x >= other.m_Min.x && m_Min.x <= otherMax.x;
+		bool result = max.y >= other.m_Min.y && max.y < otherMax.y && max.x > other.m_Min.x && m_Min.x < otherMax.x;
 		if(m_Inverted && other.m_Inverted == true) return true;
 		if(m_Inverted || other.m_Inverted == true) return !result;
 		return result;
@@ -49,7 +69,7 @@ namespace physics {
 	bool Collider::CollidesBottomWith(const Collider& other) const {
 		maths::vec2 max(m_Min.x + m_Width, m_Min.y + m_Height);
 		maths::vec2 otherMax(other.m_Min.x + other.m_Width, other.m_Min.y + other.m_Height);
-		bool result = m_Min.y <= otherMax.y && m_Min.y > other.m_Min.y && max.x >= other.m_Min.x && m_Min.x <= otherMax.x;
+		bool result = m_Min.y <= otherMax.y && m_Min.y > other.m_Min.y && max.x > other.m_Min.x && m_Min.x < otherMax.x;
 		if(m_Inverted && other.m_Inverted == true) return true;
 		if(m_Inverted || other.m_Inverted == true) return !result;
 		return result;
@@ -58,7 +78,7 @@ namespace physics {
 	bool Collider::CollidesLeftWith(const Collider& other) const {
 		maths::vec2 max(m_Min.x + m_Width, m_Min.y + m_Height);
 		maths::vec2 otherMax(other.m_Min.x + other.m_Width, other.m_Min.y + other.m_Height);
-		bool result = otherMax.x >= m_Min.x && m_Min.x > other.m_Min.x && max.y >= other.m_Min.y && m_Min.y <= otherMax.y;
+		bool result = otherMax.x >= m_Min.x && m_Min.x > other.m_Min.x && max.y > other.m_Min.y && m_Min.y < otherMax.y;
 		if(m_Inverted && other.m_Inverted == true) return true;
 		if(m_Inverted || other.m_Inverted == true) return !result;
 		return result;
@@ -67,7 +87,7 @@ namespace physics {
 	bool Collider::CollidesRightWith(const Collider& other) const {
 		maths::vec2 max(m_Min.x + m_Width, m_Min.y + m_Height);
 		maths::vec2 otherMax(other.m_Min.x + other.m_Width, other.m_Min.y + other.m_Height);
-		bool result = max.x >= other.m_Min.x && max.x < otherMax.x && max.y >= other.m_Min.y && m_Min.y <= otherMax.y;
+		bool result = max.x >= other.m_Min.x && max.x < otherMax.x && max.y > other.m_Min.y && m_Min.y < otherMax.y;
 		if(m_Inverted && other.m_Inverted == true) return true;
 		if(m_Inverted || other.m_Inverted == true) return !result;
 		return result;
@@ -120,6 +140,11 @@ namespace physics {
 	bool Collider::Contains(const maths::vec2& point) const {
 		maths::vec2 max(m_Min.x + m_Width, m_Min.y + m_Height);
 		return point >= m_Min && point <= max;
+	}
+
+	bool Collider::Contains(const maths::vec2& point, const maths::vec2& min) const {
+		maths::vec2 max(min.x + m_Width, min.y + m_Height);
+		return point >= min && point <= max;
 	}
 
 	bool Collider::operator==(const Collider& other) const {

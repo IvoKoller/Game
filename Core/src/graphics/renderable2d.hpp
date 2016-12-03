@@ -39,10 +39,10 @@ namespace graphics {
 		virtual ~Renderable2D() { }
 
 		virtual void submit(Renderer2D* renderer) const { renderer->submit(this); }
+		virtual void update() { }
 
 		void setColor(unsigned int color) { m_Color = color; }
-		void setColor(const maths::vec4& color)
-		{
+		void setColor(const maths::vec4& color) {
 			int r = color.x; //* 255.0f;
 			int g = color.y; //* 255.0f;
 			int b = color.z; //* 255.0f;

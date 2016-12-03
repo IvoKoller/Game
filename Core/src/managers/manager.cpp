@@ -61,8 +61,14 @@ namespace evo {
     }
 
     void Manager::clear(std::vector<Manager*>& vector) {
-        for (Manager* element : vector) delete element;
+        //printIDs(vector);
+        for (int i = 0; i < vector.size(); i++) {
+            Manager* m = vector[i];
+            //std::cout << m->id << std::endl;
+            delete m;
+        }
         vector.clear();
+        std::cout << vector.size() << std::endl;
     }
 
     void Manager::printIDs(std::vector<Manager*>& vector) {

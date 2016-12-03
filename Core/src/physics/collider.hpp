@@ -16,7 +16,7 @@ namespace physics {
     enum Layer { All, Static, Dynamic, Trigger };
 
     class Collider : public StaticManager<Collider> {
-        const maths::vec3& m_Min; //min = position
+        static maths::vec3 MousePosition;
         float m_Width;
         float m_Height;
         maths::vec3 m_ColorLevel;
@@ -24,8 +24,12 @@ namespace physics {
         bool m_Inverted;
 
     public:
+        const maths::vec3& m_Min; //min = position
         Collider(const maths::vec3& position, float width, float height,
             maths::vec3 clrlvl = maths::vec3(1,1,1), Layer layer = Layer::Static, bool invert = false);
+
+        bool CollidesWithMouse(const maths::vec2& position) const;
+        bool CollidesWithMouse() const;
 
         bool CollidesWith(const char* name) const;
         bool CollidesWith(const unsigned int& id) const;
@@ -49,6 +53,7 @@ namespace physics {
         Layer layer = Layer::All) const;
 
         bool Contains(const maths::vec2& point) const;
+        bool Contains(const maths::vec2& point, const maths::vec2& pos) const;
 
         bool operator==(const Collider& other) const;
         bool operator!=(const Collider& other) const;

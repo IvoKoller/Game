@@ -18,7 +18,8 @@ namespace evo {
 		public:
 			virtual ~Layer();
 			virtual void add(Renderable2D& renderable); //NOTE: Pass reference, not pointer to avoid nullptr exception
-			virtual void rem(Renderable2D& renderable);
+			virtual void remove(Renderable2D& renderable);
+			virtual void clear();
 			virtual void render();
 
 			const std::vector<Renderable2D*>& getRenderables() const { return m_Renderables; }

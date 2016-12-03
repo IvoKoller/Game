@@ -19,8 +19,7 @@ uniform vec4 filter;
 void main() {
 	float intensity = 1.0 / length(fs_in.position.xy - light_pos);
 	vec4 texColor = fs_in.color;
-	if (fs_in.tid > 0.0)
-	{
+	if (fs_in.tid > 0.0) {
 		int tid = int(fs_in.tid - 0.5);
 
 		//texColor = fs_in.color * texture(textures[tid], fs_in.uv);
