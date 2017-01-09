@@ -3,47 +3,34 @@
 
 This is the repo for my upcoming "Maturaproject" game. Enjoy!
 
-#Done:
-- [x] Add support for cross-platform relative directory
-- [x] Make fonts work
-- [x] Add support for Gorilla audio
-- [x] Read from tileset
-- [x] Different Animation styles
-- [x] Multi-tiles
-- [x] Camera
-- [x] Add support for animated tiles
-- [x] Add logging system
-- [x] Fix input (no diagonal walking)
-- [x] Add manager class
-- [x] Avoid duplicate names
-- [x] Add texture manager
-- [x] Write to file
-- [x] Custom error messages
+In order to compile the game one may have to install the following dependecies:
 
-#Todo:
+-GL 
+-GLU 
+-GLEW 
+-glfw3 
+-X11 
+-Xxf86vm 
+-Xrandr 
+-pthread 
+-Xi 
+-dl 
+-Xinerama 
+-Xcursor 
+-freeimage 
+-freetype 
+-ogg 
+-vorbis 
+-vorbisfile 
+-openal
 
-### New features:
-- [ ] Add collision/trigger-zone system
-- [ ] Add event system
-- [ ] Add 2D Physics (probably not)
+then, open the terminal, navigate to /Core and enter the command
 
-### Sprites:
-- [ ] Add repeated textures
-- [ ] Sprites of type
+*make game*
 
-### Animation
-- [ ] Fix timing of animation
+then enter
 
-### Manager:
-- [ ] Add layer manager -> single draw call possible?
+*./game* 
 
-### Refactoring, optimization & maintenance:
-- [ ] Forward declaration instead of include file
-- [ ] Only pointers when necessary -> use references
-- [ ] CMake instead of Makefile
-- [ ] Vector template class
-- [ ] Link to local binaries
-
-### Bugs:
-- [ ] Segmentation fault after running application for few minutes - buffer overflow?
-- [ ] Weird translation bug
+to run it. As this might be difficult to do, I offer to showcase the 
+functionality of the game engine, the editor and the game.

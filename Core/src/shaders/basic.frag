@@ -15,6 +15,7 @@ in DATA
 
 uniform sampler2D textures[32];
 uniform vec4 filter;
+uniform bool grayscale;
 
 void main() {
 	float intensity = 1.0 / length(fs_in.position.xy - light_pos);
@@ -34,5 +35,9 @@ void main() {
 		if(tid == 8) texColor = fs_in.color * texture(textures[8], fs_in.uv); //fs_in.color *
 		if(tid == 9) texColor = fs_in.color * texture(textures[9], fs_in.uv); //fs_in.color *
 	}
-	color = texColor * filter; //fs_in.color // * intensity;
+	if(grayscale){
+		vec4 clr = texColor * filter; //fs_in.color // * intensity;
+		float f = (clr.x + clr.y + clr.z)/(filter.x + filter.y + filter.z);
+		color =  vec4(f,f,f,clr.w);
+	}else{ color = texColor; }
 }

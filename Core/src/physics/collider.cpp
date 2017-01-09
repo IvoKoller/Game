@@ -81,6 +81,7 @@ namespace physics {
 		bool result = otherMax.x >= m_Min.x && m_Min.x > other.m_Min.x && max.y > other.m_Min.y && m_Min.y < otherMax.y;
 		if(m_Inverted && other.m_Inverted == true) return true;
 		if(m_Inverted || other.m_Inverted == true) return !result;
+		return other.Contains(maths::vec2(m_Min.x,(m_Min.y + m_Height)/2)); //better for platformer
 		return result;
 	}
 
@@ -90,6 +91,7 @@ namespace physics {
 		bool result = max.x >= other.m_Min.x && max.x < otherMax.x && max.y > other.m_Min.y && m_Min.y < otherMax.y;
 		if(m_Inverted && other.m_Inverted == true) return true;
 		if(m_Inverted || other.m_Inverted == true) return !result;
+		return other.Contains(maths::vec2(m_Min.x+m_Width,(m_Min.y + m_Height)/2)); //better for platformer
 		return result;
 	}
 

@@ -1,0 +1,4 @@
+Note: OpenGL Version: 3.3.0 NVIDIA 375.26 - src/graphics/window.cpp : 85
+3.2.1 X11 GLX EGL clock_gettime /dev/js Xf86vm
+OpenGL error: Invalid enum - src/graphics/window.cpp : 23
+Error: Couldn't get ID [4268058372] - src/managers/manager.cpp : 42
